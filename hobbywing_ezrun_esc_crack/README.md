@@ -7,4 +7,5 @@ The OTA uses the nRF52832 Module MS50SFA module as the BLE. According to the pin
 ![./racecar_1_5/imag/bluetooth_MS50SFA.jpg](https://github.com/flyback1228/racecar_1_5/blob/main/hobbywing_ezrun_esc_crack/img/bluetooth_MS50SFA.jpg)
 
 A group of transmit data contains 32 bytes
+
 ![./racecar_1_5/imag/received_bytes.png](https://github.com/flyback1228/racecar_1_5/blob/main/hobbywing_ezrun_esc_crack/img/received_bytes.png)
