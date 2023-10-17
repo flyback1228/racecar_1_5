@@ -9,6 +9,8 @@ The OTA uses the nRF52832 Module MS50SFA module as the BLE. According to the pin
 A group of transmit data contains 32 bytes
 
 ![./racecar_1_5/imag/received_bytes.png](https://github.com/flyback1228/racecar_1_5/blob/main/hobbywing_ezrun_esc_crack/img/received_bytes.png)
+
+
 1. Throttle (percentage)
 2. Throttle direction (1--forward, 2--reverse)
 3. RPM, 2 bytes, the second byte reprensents the high byte and the first byte is the low byte (0x16<<8 | 0x3B), the real RPM should be multiply by 10. RPM = (0x16<<8 | 0x3B)*10
