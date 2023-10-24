@@ -61,6 +61,8 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define ONBOARD_LED_Pin GPIO_PIN_3
 #define ONBOARD_LED_GPIO_Port GPIOE
+#define ESC_Input_Pin GPIO_PIN_5
+#define ESC_Input_GPIO_Port GPIOE
 #define S06_Pin GPIO_PIN_6
 #define S06_GPIO_Port GPIOE
 #define ONBOARD_KEY1_Pin GPIO_PIN_13
@@ -73,8 +75,8 @@ void Error_Handler(void);
 #define S02_GPIO_Port GPIOC
 #define S03_Pin GPIO_PIN_3
 #define S03_GPIO_Port GPIOC
-#define PWM0_Pin GPIO_PIN_0
-#define PWM0_GPIO_Port GPIOA
+#define Servo_Input_Pin GPIO_PIN_0
+#define Servo_Input_GPIO_Port GPIOA
 #define PWM1_Pin GPIO_PIN_1
 #define PWM1_GPIO_Port GPIOA
 #define PWM2_Pin GPIO_PIN_2
@@ -129,14 +131,12 @@ void Error_Handler(void);
 #define S09_GPIO_Port GPIOD
 #define PCA9685_OE_Pin GPIO_PIN_10
 #define PCA9685_OE_GPIO_Port GPIOD
-#define Servo_Input_Pin GPIO_PIN_14
-#define Servo_Input_GPIO_Port GPIOD
-#define ESC_Input_Pin GPIO_PIN_15
-#define ESC_Input_GPIO_Port GPIOD
 #define Servo_Output_Pin GPIO_PIN_6
 #define Servo_Output_GPIO_Port GPIOC
 #define ESC_Output_Pin GPIO_PIN_7
 #define ESC_Output_GPIO_Port GPIOC
+#define PWM0_Pin GPIO_PIN_15
+#define PWM0_GPIO_Port GPIOA
 #define LED_BLUE_Pin GPIO_PIN_3
 #define LED_BLUE_GPIO_Port GPIOD
 #define LED_RED_Pin GPIO_PIN_4
