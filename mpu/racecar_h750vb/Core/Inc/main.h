@@ -61,6 +61,8 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define ONBOARD_LED_Pin GPIO_PIN_3
 #define ONBOARD_LED_GPIO_Port GPIOE
+#define S04_Pin GPIO_PIN_4
+#define S04_GPIO_Port GPIOE
 #define ESC_Input_Pin GPIO_PIN_5
 #define ESC_Input_GPIO_Port GPIOE
 #define S06_Pin GPIO_PIN_6
@@ -83,14 +85,12 @@ void Error_Handler(void);
 #define PWM2_GPIO_Port GPIOA
 #define PWM3_Pin GPIO_PIN_3
 #define PWM3_GPIO_Port GPIOA
-#define S04_Pin GPIO_PIN_4
-#define S04_GPIO_Port GPIOA
+#define F03_Pin GPIO_PIN_4
+#define F03_GPIO_Port GPIOA
 #define S05_Pin GPIO_PIN_5
 #define S05_GPIO_Port GPIOA
 #define F00_Pin GPIO_PIN_6
 #define F00_GPIO_Port GPIOA
-#define F03_Pin GPIO_PIN_7
-#define F03_GPIO_Port GPIOA
 #define F01_Pin GPIO_PIN_4
 #define F01_GPIO_Port GPIOC
 #define F04_Pin GPIO_PIN_5
@@ -113,6 +113,8 @@ void Error_Handler(void);
 #define LCD_WR_RS_GPIO_Port GPIOE
 #define LCD_SDA_Pin GPIO_PIN_14
 #define LCD_SDA_GPIO_Port GPIOE
+#define LED_RED_Pin GPIO_PIN_15
+#define LED_RED_GPIO_Port GPIOE
 #define S10_Pin GPIO_PIN_10
 #define S10_GPIO_Port GPIOB
 #define S11_Pin GPIO_PIN_11
@@ -139,8 +141,6 @@ void Error_Handler(void);
 #define PWM0_GPIO_Port GPIOA
 #define LED_BLUE_Pin GPIO_PIN_3
 #define LED_BLUE_GPIO_Port GPIOD
-#define LED_RED_Pin GPIO_PIN_4
-#define LED_RED_GPIO_Port GPIOD
 #define LED_YELLOW_Pin GPIO_PIN_5
 #define LED_YELLOW_GPIO_Port GPIOD
 #define SPI1_CS_Pin GPIO_PIN_6
