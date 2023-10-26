@@ -3,12 +3,25 @@
 \usepackage{listings}
 \begin{document}
 
-Manual(RC Transimitter) input switch:
+\section{MPU Code}
+\subsection{ROS Communicate}
+Copy the contents in the folder ROS to the folder Core of the STM32 project. Change the including headers and uart prot in STM32Hardware.h to adapter the settings of the project. The core code can be done in the file mainpp.cpp and put the functions setup() and loop() defined in this file to the correct place of main.c.
+
+Note don't set dim of the MultiArray message. Just use the following code:
+
+
+\subsection{Manual(RC Transimitter) input switch}
+
 
 The PWM signals from receiver are forward to STM32. In STM32 we use "PWM INPUT" functions of the timer to capture the frequence and the duty cycle of the pwm signals. Channel 1 of TIM5 is used to capture servo input and Channel 1 of TIM15 is used to capture ESC input. The output of servo and esc signals in STM32 are Channel 1 and Channel 2 of TIM3. Note output frequences would be the same as the two output channels are in the same timer. This is feasible since the frequences of the input signals are from the same receiver.
+\begin{lstlisting}
+	std_msgs::Float32MultiArray forces;
+	forces.data = new std_msgs::Float32MultiArray::_data_type[8];
+	forces.data_length = 8;
+	//do not use the following:
+	//forces.layout.dim = new std_msgs::MultiArrayDimension();
 
-
-
+\end{lstlisting}
 1. Select "PWM input on CH1", and set PSC to (X-1) where X is the frequence of APB1 Timer Clocks and APB2 Timer Clocks in MHz (Please set the two timer clocks the same to simplify settings). This leads the capture precision be 1/1M=1us. This is reasonable since the max value of the 16-bit ARR is 65535, the lowest frequence which can be detected is 1M/65535 = 15Hz. Typically the frequence of PWM signals for RC are 50Hz, the count is around 1M/50Hz = 20000. Note the TIM3 has a 32-bit ARR. 
 Leave other settings default except check the global interrupt.
 
