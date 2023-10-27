@@ -16,4 +16,4 @@
 ../Core/Src/main.c:875:13:MX_TIM15_Init	8
 ../Core/Src/main.c:950:13:MX_USB_OTG_FS_PCD_Init	2
 ../Core/Src/main.c:986:13:MX_GPIO_Init	1
-../Core/Src/main.c:1095:6:Error_Handler	1
+../Core/Src/main.c:1094:6:Error_Handler	1
