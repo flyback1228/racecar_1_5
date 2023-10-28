@@ -63,6 +63,7 @@ uint8_t increment_count[SPEED_PIN_COUNT]={0};
 uint32_t speed_on_single_pin[SPEED_PIN_COUNT];
 uint32_t pulse[SPEED_PIN_COUNT][SPEED_BUFFER_SIZE];
 
+const uint32_t acsr = ('A'<<24) | ('C'<<16) | ('S'<<8) | 'R';
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
