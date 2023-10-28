@@ -63,8 +63,12 @@ void Error_Handler(void);
 #define LCD_CS_GPIO_Port GPIOA
 #define LCD_RST_Pin GPIO_PIN_4
 #define LCD_RST_GPIO_Port GPIOA
+#define LCD_SCK_Pin GPIO_PIN_5
+#define LCD_SCK_GPIO_Port GPIOA
 #define LCD_DC_Pin GPIO_PIN_6
 #define LCD_DC_GPIO_Port GPIOA
+#define LCD_MOSI_Pin GPIO_PIN_7
+#define LCD_MOSI_GPIO_Port GPIOA
 #define S00_Pin GPIO_PIN_0
 #define S00_GPIO_Port GPIOB
 #define S00_EXTI_IRQn EXTI0_IRQn
