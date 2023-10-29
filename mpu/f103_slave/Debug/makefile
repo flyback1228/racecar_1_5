@@ -75,8 +75,8 @@ all: main-build
 main-build: f103_slave.elf secondary-outputs
 
 # Tool invocations
-f103_slave.elf f103_slave.map: $(OBJS) $(USER_OBJS) C:\Users\acsr\Documents\project\racecar_1_5\mpu\f103_slave\STM32F103C8TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-g++ -o "f103_slave.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"C:\Users\acsr\Documents\project\racecar_1_5\mpu\f103_slave\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="f103_slave.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+f103_slave.elf f103_slave.map: $(OBJS) $(USER_OBJS) /home/acsr2004/Documents/racecar_1_5/mpu/f103_slave/STM32F103C8TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-g++ -o "f103_slave.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"/home/acsr2004/Documents/racecar_1_5/mpu/f103_slave/STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="f103_slave.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

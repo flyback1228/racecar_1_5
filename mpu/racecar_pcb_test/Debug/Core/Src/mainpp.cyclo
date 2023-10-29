@@ -1,0 +1,6 @@
+../Core/Inc/utility.h:13:20:void DWT_Init()	1
+../Core/Src/mainpp.cpp:25:19:HAL_StatusTypeDef read_speed_data()	5
+../Core/Src/mainpp.cpp:39:6:void HAL_UART_RxCpltCallback(UART_HandleTypeDef*)	2
+../Core/Src/mainpp.cpp:47:6:void HAL_UART_ErrorCallback(UART_HandleTypeDef*)	2
+../Core/Src/mainpp.cpp:53:6:void setup()	1
+../Core/Src/mainpp.cpp:58:6:void loop()	2

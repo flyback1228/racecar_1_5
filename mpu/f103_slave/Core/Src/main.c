@@ -59,7 +59,7 @@ FontDef Font_16x26 = {16,26,95*26,Font16x26};
 
 uint8_t pulse_pointer[SPEED_PIN_COUNT]={0};
 uint8_t increment_count[SPEED_PIN_COUNT]={0};
-uint32_t speed_on_single_pin[SPEED_PIN_COUNT];
+uint32_t speed_on_single_pin[SPEED_PIN_COUNT+1];
 uint32_t pulse[SPEED_PIN_COUNT][SPEED_BUFFER_SIZE];
 
 const uint32_t acsr = ('A'<<24) | ('C'<<16) | ('S'<<8) | 'R';
@@ -151,15 +151,15 @@ void calcVelocity(){
 
 	for(uint8_t i=0;i<SPEED_PIN_COUNT;++i){
 		if(increment_count[i]>=SPEED_MAX_INCREMENT){
-			speed_on_single_pin[i]=0;
+			speed_on_single_pin[i+1]=0;
 			continue;
 		}
 		uint32_t s=pulse[i][(pulse_pointer[i]+SPEED_BUFFER_SIZE-1)%SPEED_BUFFER_SIZE]-pulse[i][pulse_pointer[i]];
 		if(s==0){
-			speed_on_single_pin[i]=0;
+			speed_on_single_pin[i+1]=0;
 		}
 		else{
-			speed_on_single_pin[i] = (SPEED_BUFFER_SIZE-1)*1000000U/s;
+			speed_on_single_pin[i+1] = (SPEED_BUFFER_SIZE-1)*1000000U/s;
 		}
 	}
 }
@@ -168,7 +168,7 @@ void calcVelocity(){
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 	calcVelocity();
 //	HAL_UART_Transmit(&huart1, (uint8_t*)"hello", 5);
-	HAL_UART_Transmit(&huart1, (uint8_t*)speed_on_single_pin, sizeof(uint32_t)*SPEED_PIN_COUNT,10);
+	HAL_UART_Transmit(&huart1, (uint8_t*)speed_on_single_pin, sizeof(uint32_t)*(SPEED_PIN_COUNT+1),10);
 
 //	__NOP();
 }
@@ -208,6 +208,7 @@ int main(void)
   MX_TIM1_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
+  speed_on_single_pin[0]=acsr;
   HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_SET);
   HAL_GPIO_WritePin(LCD_LED_GPIO_Port, LCD_LED_Pin, GPIO_PIN_SET);
   DWT_Init();
@@ -229,11 +230,11 @@ int main(void)
     ST7735_WriteString(0, 0, "Frequence", Font_11x18, ST7735_RED, ST7735_BLACK);
     char str[3];
     for(uint8_t i=0;i<8;++i){
-		sprintf(str,"%03d", speed_on_single_pin[2*i]);
+		sprintf(str,"%03d", speed_on_single_pin[2*i+1]);
 		ST7735_WriteString(5, 18+i*10, str, Font_7x10, ST7735_GREEN, ST7735_BLACK);
     }
     for(uint8_t i=0;i<8;++i){
-		sprintf(str,"%03d", speed_on_single_pin[2*i+1]);
+		sprintf(str,"%03d", speed_on_single_pin[2*i+2]);
 		ST7735_WriteString(64+5, 18+i*10, str, Font_7x10, ST7735_GREEN, ST7735_BLACK);
     }
 
