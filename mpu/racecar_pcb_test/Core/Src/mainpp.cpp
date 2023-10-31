@@ -22,6 +22,7 @@ extern TIM_HandleTypeDef htim3;
 extern TIM_HandleTypeDef htim5;
 extern TIM_HandleTypeDef htim15;
 extern TIM_HandleTypeDef htim16;
+extern ADC_HandleTypeDef hadc1;
 #define SPEED_PIN_COUNT 16
 
 typedef enum{
@@ -40,6 +41,7 @@ char led_state;
 uint8_t ch3_cnt=0,ch4_cnt=99;
 
 uint32_t servo_duty,esc_duty,freq;
+uint32_t force_raw[8];
 
 HAL_StatusTypeDef read_speed_data(){
 	uint8_t i;
@@ -96,6 +98,20 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 		}
 	}
 }
+
+
+/*
+void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
+{
+
+	float force[8];
+	for(uint8_t i=0;i<8;++i){
+		force[i]=(float)force_raw[i]*3.3/4096.0;
+	}
+	char msg[100]={0};
+	sprintf(msg,"Force: %0.2f,%0.2f,%0.2f,%0.2f,%0.2f,%0.2f,%0.2f,%0.2f\n",force[0],force[1],force[2],force[3],force[4],force[5],force[6],force[7]);
+
+}*/
 
 void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim){
 
@@ -206,47 +222,6 @@ void test_brake(){
 	if(ch4_cnt==0)ch4_cnt=99;
 }
 
-void setup(){
-	DWT_Init();
-	HAL_UART_Receive_DMA(&huart5, (uint8_t*)received_speed, sizeof(uint32_t)*(SPEED_PIN_COUNT+1));
-	HAL_UART_Receive_DMA(&huart7, (uint8_t*)&led_state, 1);
-
-	HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, GPIO_PIN_RESET);
-	HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, GPIO_PIN_RESET);
-	HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_SET);
-
-	__HAL_TIM_SetCompare(&htim2, TIM_CHANNEL_1,33);
-	__HAL_TIM_SetCompare(&htim2, TIM_CHANNEL_2,67);
-	__HAL_TIM_SetCompare(&htim2, TIM_CHANNEL_3,ch3_cnt++);
-	__HAL_TIM_SetCompare(&htim2, TIM_CHANNEL_4,ch4_cnt--);
-
-	HAL_TIM_Base_Start_IT(&htim2);
-	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
-	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2);
-	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_3);
-	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_4);
-
-
-	HAL_GPIO_WritePin(Manual_Output_GPIO_Port, Manual_Output_Pin, GPIO_PIN_RESET);
-	freq = 0;
-	input_mode = HAL_GPIO_ReadPin(Manual_Input_GPIO_Port, Manual_Input_Pin)==GPIO_PIN_RESET?Auto:Manual;
-	if(input_mode==Manual){
-		HAL_TIM_IC_Start_IT(&htim5, TIM_CHANNEL_1);
-		HAL_TIM_IC_Start(&htim5, TIM_CHANNEL_2);
-		HAL_TIM_IC_Start_IT(&htim15, TIM_CHANNEL_1);
-		HAL_TIM_IC_Start(&htim15, TIM_CHANNEL_2);
-
-		HAL_TIM_Base_Start_IT(&htim16);
-	}
-
-	__HAL_TIM_SET_AUTORELOAD(&htim3,20000-1);
-	__HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_1,5000-1);
-	__HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_2,10000-1);
-
-	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
-	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
-
-}
 
 void input_test(){
 	InputMode mode = HAL_GPIO_ReadPin(Manual_Input_GPIO_Port, Manual_Input_Pin)==GPIO_PIN_RESET?Auto:Manual;
@@ -292,14 +267,73 @@ void input_test(){
 		HAL_UART_Transmit(&huart7, (uint8_t*)(&str[i++]), 1, 1);
 	}
 
+}
+
+void force_test(){
+	float force[8];
+	for(uint8_t i=0;i<8;++i){
+		force[i]=(float)force_raw[i]*3.3/0xFFFF;
+	}
+	char msg[100]={0};
+	sprintf(msg,"Force: %0.2f,%0.2f,%0.2f,%0.2f,%0.2f,%0.2f,%0.2f,%0.2f\n",force[0],force[1],force[2],force[3],force[4],force[5],force[6],force[7]);
+	uint8_t i=0;
+	while(msg[i]!=0 && i<100){
+		HAL_UART_Transmit(&huart7, (uint8_t*)(&msg[i++]), 1, 1);
+	}
+}
+
+void setup(){
+	DWT_Init();
+//	HAL_ADC_Start_DMA(&hadc1, force_raw, 8);
+	HAL_ADC_Start_DMA(&hadc1,force_raw,8);
+	HAL_UART_Receive_DMA(&huart5, (uint8_t*)received_speed, sizeof(uint32_t)*(SPEED_PIN_COUNT+1));
+	HAL_UART_Receive_DMA(&huart7, (uint8_t*)&led_state, 1);
+
+	HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_SET);
+
+	__HAL_TIM_SetCompare(&htim2, TIM_CHANNEL_1,33);
+	__HAL_TIM_SetCompare(&htim2, TIM_CHANNEL_2,67);
+	__HAL_TIM_SetCompare(&htim2, TIM_CHANNEL_3,ch3_cnt++);
+	__HAL_TIM_SetCompare(&htim2, TIM_CHANNEL_4,ch4_cnt--);
+
+	HAL_TIM_Base_Start_IT(&htim2);
+	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
+	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2);
+	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_3);
+	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_4);
+
+
+	HAL_GPIO_WritePin(Manual_Output_GPIO_Port, Manual_Output_Pin, GPIO_PIN_RESET);
+	freq = 0;
+	input_mode = HAL_GPIO_ReadPin(Manual_Input_GPIO_Port, Manual_Input_Pin)==GPIO_PIN_RESET?Auto:Manual;
+	if(input_mode==Manual){
+		HAL_TIM_IC_Start_IT(&htim5, TIM_CHANNEL_1);
+		HAL_TIM_IC_Start(&htim5, TIM_CHANNEL_2);
+		HAL_TIM_IC_Start_IT(&htim15, TIM_CHANNEL_1);
+		HAL_TIM_IC_Start(&htim15, TIM_CHANNEL_2);
+
+		HAL_TIM_Base_Start_IT(&htim16);
+	}
+
+	__HAL_TIM_SET_AUTORELOAD(&htim3,20000-1);
+	__HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_1,5000-1);
+	__HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_2,10000-1);
+
+	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
+	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
 
 
 
 }
 
 
+
+
 void loop(){
 
+	force_test();
 	input_test();
 	test_speed();
 	test_i2c();

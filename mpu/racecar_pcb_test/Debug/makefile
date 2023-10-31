@@ -76,7 +76,7 @@ main-build: racecar_pcb_test.elf secondary-outputs
 
 # Tool invocations
 racecar_pcb_test.elf racecar_pcb_test.map: $(OBJS) $(USER_OBJS) /home/acsr2004/Documents/racecar_1_5/mpu/racecar_pcb_test/STM32H750VBTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-g++ -o "racecar_pcb_test.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m7 -T"/home/acsr2004/Documents/racecar_1_5/mpu/racecar_pcb_test/STM32H750VBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="racecar_pcb_test.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+	arm-none-eabi-g++ -o "racecar_pcb_test.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m7 -T"/home/acsr2004/Documents/racecar_1_5/mpu/racecar_pcb_test/STM32H750VBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="racecar_pcb_test.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
