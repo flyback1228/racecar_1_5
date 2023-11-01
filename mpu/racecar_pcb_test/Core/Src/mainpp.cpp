@@ -333,12 +333,13 @@ void setup(){
 
 void loop(){
 
+	HAL_UART_Transmit(&huart7, (uint8_t*)("\n\n"), 2, 1);
 	force_test();
 	input_test();
 	test_speed();
 	test_i2c();
 	test_brake();
-	HAL_Delay(500);
+	HAL_Delay(1000);
 
 
 }
