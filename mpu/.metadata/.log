@@ -1521,3 +1521,9 @@ java.lang.Exception: The project description file (.project) for 'ceu6_test' is 
 
 !ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2023-11-12 14:15:04.954
 !MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY org.eclipse.cdt.core 1 0 2023-11-12 14:18:01.360
+!MESSAGE Indexed 'racecar_pcb_test' (29 sources, 211 headers) in 4.99 sec: 27,154 declarations; 145,946 references; 3 unresolved inclusions; 46 syntax errors; 791 unresolved names (0.45%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2023-11-12 14:40:10.163
+!MESSAGE Indexed 'racecar_h750vb' (38 sources, 219 headers) in 4.97 sec: 29,552 declarations; 170,933 references; 3 unresolved inclusions; 46 syntax errors; 768 unresolved names (0.38%)

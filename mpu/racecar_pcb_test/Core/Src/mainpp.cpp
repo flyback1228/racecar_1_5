@@ -282,6 +282,19 @@ void force_test(){
 	}
 }
 
+void BNO085_setup(){
+	HAL_GPIO_WritePin(BNO_P0_GPIO_Port, BNO_P0_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(BNO_P1_GPIO_Port, BNO_P1_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(BNO_BOOTN_GPIO_Port, BNO_BOOTN_Pin, GPIO_PIN_SET);
+
+	HAL_GPIO_WritePin(BNO_NRST_GPIO_Port,BNO_NRST_Pin,GPIO_PIN_SET);
+	HAL_Delay(1);
+	HAL_GPIO_WritePin(BNO_NRST_GPIO_Port,BNO_NRST_Pin,GPIO_PIN_RESET);
+	HAL_Delay(1);
+	HAL_GPIO_WritePin(BNO_NRST_GPIO_Port,BNO_NRST_Pin,GPIO_PIN_SET);
+
+}
+
 void setup(){
 	DWT_Init();
 //	HAL_ADC_Start_DMA(&hadc1, force_raw, 8);
@@ -324,7 +337,7 @@ void setup(){
 	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
 	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
 
-
+	BNO085_setup();
 
 }
 
