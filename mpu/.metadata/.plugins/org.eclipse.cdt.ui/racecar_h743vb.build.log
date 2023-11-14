@@ -1,4 +1,4 @@
-18:58:16 **** Incremental Build of configuration Debug for project racecar_h743vb ****
+22:27:35 **** Incremental Build of configuration Debug for project racecar_h743vb ****
 make -j8 all 
 arm-none-eabi-g++ "../Core/Src/mainpp.cpp" -mcpu=cortex-m7 -std=gnu++14 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32H743xx -c -I../Core/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -fno-use-cxa-atexit -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/mainpp.d" -MT"Core/Src/mainpp.o" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -o "Core/Src/mainpp.o"
 In file included from ../Core/Inc/ros.h:39,
@@ -30,17 +30,21 @@ In file included from ../Core/Inc/std_msgs/MultiArrayLayout.h:8,
 ../Core/Inc/std_msgs/MultiArrayDimension.h:12:9: note: 'std_msgs::MultiArrayLayout::_dim_type' {aka 'class std_msgs::MultiArrayDimension'} declared here
    12 |   class MultiArrayDimension : public ros::Msg
       |         ^~~~~~~~~~~~~~~~~~~
+../Core/Src/mainpp.cpp: In function 'void setup()':
+../Core/Src/mainpp.cpp:372:12: warning: unused variable 'inc' [-Wunused-variable]
+  372 |   uint16_t inc = TIM4->ARR/38;
+      |            ^~~
 arm-none-eabi-g++ -o "racecar_h743vb.elf" @"objects.list"   -mcpu=cortex-m7 -T"/home/acsr2004/Documents/racecar_1_5/mpu/racecar_h743vb/STM32H743VITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="racecar_h743vb.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
 Finished building target: racecar_h743vb.elf
  
 arm-none-eabi-size   racecar_h743vb.elf 
 arm-none-eabi-objdump -h -S  racecar_h743vb.elf  > "racecar_h743vb.list"
    text	   data	    bss	    dec	    hex	filename
-  82848	    108	   8168	  91124	  163f4	racecar_h743vb.elf
+  82104	    156	   8256	  90516	  16194	racecar_h743vb.elf
 Finished building: default.size.stdout
  
 Finished building: racecar_h743vb.list
  
 
-18:58:17 Build Finished. 0 errors, 3 warnings. (took 1s.138ms)
+22:27:36 Build Finished. 0 errors, 4 warnings. (took 1s.124ms)
 

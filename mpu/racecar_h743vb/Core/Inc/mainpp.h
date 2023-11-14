@@ -22,6 +22,25 @@ typedef struct{
 	uint16_t temperature;
 } ESC_SensorTypeDef;
 
+typedef struct{
+	float kp;
+	float ki;
+	float kd;
+	uint8_t publish_frequency;
+	uint8_t pid_frequency;
+
+	float steering_esc_pwm_frequency;
+	uint16_t steering_offset;
+	float steering_ratio;
+	float steering_max;
+	float steering_min;
+
+	uint16_t esc_offset;
+	uint16_t esc_max;
+	uint16_t esc_min;
+
+} ParameterTypeDef;
+
 enum pid_mode_enum{
 	PID_Auto,
 	PID_Manual

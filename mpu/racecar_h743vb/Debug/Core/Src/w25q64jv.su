@@ -1,0 +1,12 @@
+../Core/Src/w25q64jv.c:11:12:QSPI_W25Q64JV_AutoPollingMemReady	104	static
+../Core/Src/w25q64jv.c:35:12:QSPI_W25Q64JV_WriteEnable	96	static
+../Core/Src/w25q64jv.c:68:6:QSPI_W25Q64JV_Init	4	static
+../Core/Src/w25q64jv.c:71:5:QSPI_W25Q64JV_Reset	64	static
+../Core/Src/w25q64jv.c:95:5:QSPI_W25Q64JV_EraseSector	72	static
+../Core/Src/w25q64jv.c:119:5:QSPI_W25Q64JV_Read	80	static
+../Core/Src/w25q64jv.c:153:5:QSPI_W25Q64JV_PageProgram	80	static
+../Core/Src/w25q64jv.c:191:5:QSPI_W25Q64JV_Write_NoCheck	32	static
+../Core/Src/w25q64jv.c:208:5:QSPI_W25Q64JV_Write	40	static
+../Core/Src/w25q64jv.c:242:5:QSPI_W25Q64JV_EnableMemoryMappedMode	72	static
+../Core/Src/w25q64jv.c:267:5:QSPI_W25Q64JV_DeviceID	72	static
+../Core/Src/w25q64jv.c:288:5:QSPI_W25Q64JV_IDNumber	72	static

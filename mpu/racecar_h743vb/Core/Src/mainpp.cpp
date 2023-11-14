@@ -52,10 +52,10 @@ const uint32_t acsr = ('A'<<24) | ('C'<<16) | ('S'<<8) | 'R';
 uint32_t speed_receive[SPEED_PIN_COUNT+1];
 uint32_t speed[SPEED_PIN_COUNT];
 
-int32_t freq;
-uint16_t servo_duty,esc_duty;
-uint32_t triangle1[32];
-uint32_t triangle2[32];
+//int32_t freq;
+//uint16_t servo_duty,esc_duty;
+//uint32_t triangle1[32];
+//uint32_t triangle2[32];
 
 uint32_t TIMER_CLOCK_FREQ;
 uint32_t _index = 0;
@@ -66,17 +66,38 @@ uint8_t is_frequency_set;
 pid_mode_enum pid_mode = PID_Manual;
 uint8_t pid_its;
 
-float duty_cycle_set;
+float esc_duty_cycle_set;
 float speed_set;
 
 float duty_cycle_output;
 
-float kp = 2.0;
-float ki = 1.0;
-float kd = 0.0;
+uint32_t pre_steering_pulse=0;
+uint32_t pre_esc_pulse=0;
+//float kp = 2.0;
+//float ki = 1.0;
+//float kd = 0.0;
 
-uint8_t publish_frequency = 20;
-uint8_t pid_frequency = 10;
+ParameterTypeDef paramters ={
+		.kp = 2.0,
+		.ki = 1.0,
+		.kd = 0.0,
+		.publish_frequency = 20,
+		.pid_frequency = 10,
+		.steering_esc_pwm_frequency = 64.5,
+		.steering_offset=1500,
+		.steering_ratio=1.0/1000,
+		.steering_max = 17.0*3.14159/180,
+		.steering_min = -17.0*3.14159/180,
+
+		.esc_offset=1500,
+		.esc_max = 1750,
+		.esc_min = 1250
+
+
+};
+
+//uint8_t publish_frequency = 20;
+//uint8_t pid_frequency = 10;
 
 
 
@@ -152,36 +173,36 @@ void HAL_UART_ErrorCallback(UART_HandleTypeDef *UartHandle) {
 
 void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim){
 
-	if(!pwm_generator_indicator)return;
-
-	int32_t temp_freq;
-	if(htim->Instance==TIM5 && htim->Channel == HAL_TIM_ACTIVE_CHANNEL_1){
-
-		temp_freq = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_1);
-		servo_duty = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_2);
-
-		__HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_1,servo_duty);
-		__HAL_TIM_SetCounter(htim,0);
-
-		HAL_TIM_IC_Start_IT(&htim5, TIM_CHANNEL_1);
-		HAL_TIM_IC_Start(&htim5, TIM_CHANNEL_2);
-
-	}else if(htim->Instance==TIM15 && htim->Channel == HAL_TIM_ACTIVE_CHANNEL_1){
-
-		temp_freq = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_1);
-		esc_duty = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_2);
-
-		__HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_2,esc_duty);
-		__HAL_TIM_SetCounter(htim,0);
-
-		HAL_TIM_IC_Start_IT(&htim15, TIM_CHANNEL_1);
-		HAL_TIM_IC_Start(&htim15, TIM_CHANNEL_2);
-
-	}
-	if(freq<1000 || abs(temp_freq-freq)>50){
-		freq=temp_freq;
-		__HAL_TIM_SET_AUTORELOAD(&htim3,temp_freq);
-	}
+//	if(!pwm_generator_indicator)return;
+//
+//	int32_t temp_freq;
+//	if(htim->Instance==TIM5 && htim->Channel == HAL_TIM_ACTIVE_CHANNEL_1){
+//
+//		temp_freq = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_1);
+//		servo_duty = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_2);
+//
+//		__HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_1,servo_duty);
+//		__HAL_TIM_SetCounter(htim,0);
+//
+//		HAL_TIM_IC_Start_IT(&htim5, TIM_CHANNEL_1);
+//		HAL_TIM_IC_Start(&htim5, TIM_CHANNEL_2);
+//
+//	}else if(htim->Instance==TIM15 && htim->Channel == HAL_TIM_ACTIVE_CHANNEL_1){
+//
+//		temp_freq = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_1);
+//		esc_duty = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_2);
+//
+//		__HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_2,esc_duty);
+//		__HAL_TIM_SetCounter(htim,0);
+//
+//		HAL_TIM_IC_Start_IT(&htim15, TIM_CHANNEL_1);
+//		HAL_TIM_IC_Start(&htim15, TIM_CHANNEL_2);
+//
+//	}
+//	if(freq<1000 || abs(temp_freq-freq)>50){
+//		freq=temp_freq;
+//		__HAL_TIM_SET_AUTORELOAD(&htim3,temp_freq);
+//	}
 
 
 }
@@ -197,16 +218,34 @@ void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim){
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 
 	if(htim->Instance==TIM6){
-		  vesc_state.duty_cycle = esc_sensor.throttle/100.0;
-		  vesc_state.voltage_input = esc_sensor.voltage;
-		  vesc_state.current_input = esc_sensor.current;
-		  vesc_state.temperature_pcb = esc_sensor.temperature;
-		  vesc_state.speed = esc_sensor.rpm;
+		vesc_state.duty_cycle = esc_sensor.throttle/100.0;
+		vesc_state.voltage_input = esc_sensor.voltage;
+		vesc_state.current_input = esc_sensor.current;
+		vesc_state.temperature_pcb = esc_sensor.temperature;
+		vesc_state.speed = esc_sensor.rpm;
 
-		  vesc_pub.publish(&vesc_state);
-		  wheel_speed_pub.publish(&wheel_speed);
-		  force_pub.publish(&forces);
-		  nh.spinOnce();
+		vesc_pub.publish(&vesc_state);
+		wheel_speed_pub.publish(&wheel_speed);
+		force_pub.publish(&forces);
+		nh.spinOnce();
+	}else if(htim->Instance==TIM7){
+		//no esc topic received
+		if(pid_its++>10){
+			pid_its=10;
+			__HAL_TIM_SET_COMPARE(&htim3,TIM_CHANNEL_2,paramters.esc_offset);
+			return;
+		}
+		if(pid_mode==PID_Manual){
+			uint32_t esc_pulse=esc_duty_cycle_set*(paramters.esc_max-paramters.esc_offset)+paramters.esc_offset;
+			//if(pre_esc_pulse==esc_pulse) no action needed.
+			if(pre_esc_pulse!=esc_pulse){
+				pre_esc_pulse=esc_pulse;
+				__HAL_TIM_SET_COMPARE(&htim3,TIM_CHANNEL_2,pre_esc_pulse);
+			}
+		}else{
+			//apply pid
+		}
+
 	}
 
 //	HAL_TIM_IC_Start_DMA(htim, Channel, pData, Length)
@@ -239,7 +278,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 	case GPIO_PIN_5:
 		pwm_generator_indicator = !pwm_generator_indicator;
 		if(!pwm_generator_indicator){
-			freq=0;
+//			freq=0;
 			HAL_TIM_IC_Stop_IT(&htim5, TIM_CHANNEL_1);
 			HAL_TIM_IC_Stop(&htim5, TIM_CHANNEL_2);
 			HAL_TIM_IC_Stop_IT(&htim15, TIM_CHANNEL_1);
@@ -271,8 +310,18 @@ void speed_callback(const std_msgs::Float32& msg){
 void duty_cycle_callback(const std_msgs::Float32& msg){
 	pid_mode=PID_Manual;
 	pid_its=0;
-	duty_cycle_set = msg.data;
+	esc_duty_cycle_set = msg.data;
 }
+
+void steering_callback(const std_msgs::Float32& msg){
+	uint32_t steering_pulse = paramters.steering_ratio*(msg.data-paramters.steering_offset);
+	if(steering_pulse != pre_steering_pulse){
+		pre_steering_pulse = steering_pulse;
+		__HAL_TIM_SET_COMPARE(&htim3,TIM_CHANNEL_1,pre_steering_pulse);
+	}
+
+}
+
 
 void uart_setup(){
 	HAL_UART_Receive_DMA(&huart_esc, esc_receive, ESC_DATA_SIZE);
@@ -281,13 +330,25 @@ void uart_setup(){
 
 void timer_setup(){
 	//set tim6 ARR value based on topic publish frequency and start tim6
-	__HAL_TIM_SET_AUTORELOAD(&htim6,uint32_t(10000/publish_frequency-1));
+	__HAL_TIM_SET_AUTORELOAD(&htim6,uint32_t(10000/paramters.publish_frequency-1));
 	HAL_TIM_Base_Start_IT(&htim6);
 
 	//set tim7 ARR value based on PID calculation frequency and start tim7
-	__HAL_TIM_SET_AUTORELOAD(&htim7,uint32_t(10000/pid_frequency-1));
+	__HAL_TIM_SET_AUTORELOAD(&htim7,uint32_t(10000/paramters.pid_frequency-1));
 	HAL_TIM_Base_Start_IT(&htim7);
+
+	//start esc and steering servo pwm output
+	__HAL_TIM_SET_AUTORELOAD(&htim3,uint32_t(1000000/paramters.steering_esc_pwm_frequency-1));
+	__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1,paramters.steering_offset);
+	__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2,paramters.esc_offset);
+	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
+	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
 }
+
+
+ros::Subscriber<std_msgs::Float32> speed_sub("Commands/speed", &speed_callback );
+ros::Subscriber<std_msgs::Float32> duty_cycle_sub("Commands/duty_cycle", &duty_cycle_callback );
+ros::Subscriber<std_msgs::Float32> steering_sub("Commands/steering", &steering_callback );
 
 void ros_setup(){
 	forces.data = new std_msgs::Float32MultiArray::_data_type[8];
@@ -297,8 +358,7 @@ void ros_setup(){
 	wheel_speed.data = new std_msgs::Float32MultiArray::_data_type[16];
 	wheel_speed.data_length = 16;
 
-	ros::Subscriber<std_msgs::Float32> speed_sub("Commands/speed", &speed_callback );
-	ros::Subscriber<std_msgs::Float32> duty_cycle_sub("Commands/duty_cycle", &duty_cycle_callback );
+
 
 	nh.advertise(vesc_pub);
 	nh.advertise(force_pub);
@@ -323,16 +383,16 @@ void setup(void)
 
   uint16_t inc = TIM4->ARR/38;
 
-  for(int i=0;i<32;++i){
-	  triangle1[i] = (i+1)*inc;
-  }
-  inc*=2;
-  for(int i=0;i<16;++i){
-    triangle2[i] = (i+1)*inc;
-  }
-  for(int i=16;i<32;++i){
-    triangle2[i] = (33-(i+1))*inc;
-  }
+//  for(int i=0;i<32;++i){
+//	  triangle1[i] = (i+1)*inc;
+//  }
+//  inc*=2;
+//  for(int i=0;i<16;++i){
+//    triangle2[i] = (i+1)*inc;
+//  }
+//  for(int i=16;i<32;++i){
+//    triangle2[i] = (33-(i+1))*inc;
+//  }
 
   pwm_generator_indicator = 0;
   is_frequency_set = 0;
@@ -373,8 +433,8 @@ void loop(void)
 
 
 	_index=(_index+1)%32;
-	__HAL_TIM_SetCompare(&htim4, TIM_CHANNEL_1,triangle1[_index]);
-	__HAL_TIM_SetCompare(&htim4, TIM_CHANNEL_2,triangle2[_index]);
+//	__HAL_TIM_SetCompare(&htim4, TIM_CHANNEL_1,triangle1[_index]);
+//	__HAL_TIM_SetCompare(&htim4, TIM_CHANNEL_2,triangle2[_index]);
 
 
   for(int i=2;i<8;++i){
@@ -384,15 +444,15 @@ void loop(void)
   	  wheel_speed.data[i] = 10*i;
   }
 
-  forces.data[0] = freq;
-  forces.data[1] = servo_duty;
-
-
-  forces.data[2] = freq;
-  forces.data[3] = esc_duty;
-
-  forces.data[4]=TIMER_CLOCK_FREQ;
-  forces.data[5]=pwm_generator_indicator;
+//  forces.data[0] = freq;
+//  forces.data[1] = servo_duty;
+//
+//
+//  forces.data[2] = freq;
+//  forces.data[3] = esc_duty;
+//
+//  forces.data[4]=TIMER_CLOCK_FREQ;
+//  forces.data[5]=pwm_generator_indicator;
 
 
 
