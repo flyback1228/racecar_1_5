@@ -91,12 +91,6 @@ void Error_Handler(void);
 #define F02_GPIO_Port GPIOB
 #define BNO_INT_Pin GPIO_PIN_7
 #define BNO_INT_GPIO_Port GPIOE
-#define LCD_SWITCH_Pin GPIO_PIN_9
-#define LCD_SWITCH_GPIO_Port GPIOE
-#define LCD_LED_Pin GPIO_PIN_10
-#define LCD_LED_GPIO_Port GPIOE
-#define LCD_CS_Pin GPIO_PIN_11
-#define LCD_CS_GPIO_Port GPIOE
 #define LED_RED_Pin GPIO_PIN_15
 #define LED_RED_GPIO_Port GPIOE
 #define BNO_NRST_Pin GPIO_PIN_14
