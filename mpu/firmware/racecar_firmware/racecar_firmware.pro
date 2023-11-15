@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui serialport widgets qml
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -10,13 +10,17 @@ CONFIG += c++17
 
 SOURCES += \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    parametermodel.cpp
 
 HEADERS += \
-    mainwindow.h
+    mainwindow.h \
+    parametermodel.h \
+    paramter_type.h
 
 FORMS += \
     mainwindow.ui
+
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

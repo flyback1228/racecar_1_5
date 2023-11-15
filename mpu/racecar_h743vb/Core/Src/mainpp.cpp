@@ -13,7 +13,11 @@
 #include <vesc_msgs/VescState.h>
 #include "main.h"
 #include "stm32h7xx_hal_rcc.h"
+#include "w25q64jv.h"
+#include "string.h"
+#include <cstdio>
 
+extern TIM_HandleTypeDef htim2;
 extern TIM_HandleTypeDef htim3;
 extern TIM_HandleTypeDef htim4;
 extern TIM_HandleTypeDef htim5;
@@ -71,13 +75,17 @@ float speed_set;
 
 float duty_cycle_output;
 
+uint32_t tim2_arr;
+
 uint32_t pre_steering_pulse=0;
 uint32_t pre_esc_pulse=0;
+uint32_t pre_brake[]={0,0,0,0};
 //float kp = 2.0;
 //float ki = 1.0;
 //float kd = 0.0;
 
-ParameterTypeDef paramters ={
+ParameterTypeDef parameters ={
+		.header={'a','c','s','r'},
 		.kp = 2.0,
 		.ki = 1.0,
 		.kd = 0.0,
@@ -91,8 +99,9 @@ ParameterTypeDef paramters ={
 
 		.esc_offset=1500,
 		.esc_max = 1750,
-		.esc_min = 1250
+		.esc_min = 1250,
 
+		.tailer={'b','4','0','1'}
 
 };
 
@@ -232,11 +241,12 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 		//no esc topic received
 		if(pid_its++>10){
 			pid_its=10;
-			__HAL_TIM_SET_COMPARE(&htim3,TIM_CHANNEL_2,paramters.esc_offset);
+			__HAL_TIM_SET_COMPARE(&htim3,TIM_CHANNEL_2,parameters.esc_offset);
 			return;
 		}
+
 		if(pid_mode==PID_Manual){
-			uint32_t esc_pulse=esc_duty_cycle_set*(paramters.esc_max-paramters.esc_offset)+paramters.esc_offset;
+			uint32_t esc_pulse=esc_duty_cycle_set*(parameters.esc_max-parameters.esc_offset)+parameters.esc_offset;
 			//if(pre_esc_pulse==esc_pulse) no action needed.
 			if(pre_esc_pulse!=esc_pulse){
 				pre_esc_pulse=esc_pulse;
@@ -314,12 +324,35 @@ void duty_cycle_callback(const std_msgs::Float32& msg){
 }
 
 void steering_callback(const std_msgs::Float32& msg){
-	uint32_t steering_pulse = paramters.steering_ratio*(msg.data-paramters.steering_offset);
+	uint32_t steering_pulse = parameters.steering_ratio*(msg.data-parameters.steering_offset);
 	if(steering_pulse != pre_steering_pulse){
 		pre_steering_pulse = steering_pulse;
 		__HAL_TIM_SET_COMPARE(&htim3,TIM_CHANNEL_1,pre_steering_pulse);
 	}
 
+}
+
+void brake_callback(const std_msgs::Float32MultiArray& msg){
+	uint32_t c = msg.data[0]*tim2_arr;
+	if(c!=pre_brake[0]){
+		pre_brake[0]=c;
+		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1,c);
+	}
+	c = msg.data[1]*tim2_arr;
+	if(c!=pre_brake[1]){
+		pre_brake[1]=c;
+		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2,c);
+	}
+	c = msg.data[2]*tim2_arr;
+	if(c!=pre_brake[2]){
+		pre_brake[2]=c;
+		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3,c);
+	}
+	c = msg.data[3]*tim2_arr;
+	if(c!=pre_brake[3]){
+		pre_brake[3]=c;
+		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_4,c);
+	}
 }
 
 
@@ -330,25 +363,39 @@ void uart_setup(){
 
 void timer_setup(){
 	//set tim6 ARR value based on topic publish frequency and start tim6
-	__HAL_TIM_SET_AUTORELOAD(&htim6,uint32_t(10000/paramters.publish_frequency-1));
+	__HAL_TIM_SET_AUTORELOAD(&htim6,uint32_t(10000/parameters.publish_frequency-1));
 	HAL_TIM_Base_Start_IT(&htim6);
 
 	//set tim7 ARR value based on PID calculation frequency and start tim7
-	__HAL_TIM_SET_AUTORELOAD(&htim7,uint32_t(10000/paramters.pid_frequency-1));
+	__HAL_TIM_SET_AUTORELOAD(&htim7,uint32_t(10000/parameters.pid_frequency-1));
 	HAL_TIM_Base_Start_IT(&htim7);
 
 	//start esc and steering servo pwm output
-	__HAL_TIM_SET_AUTORELOAD(&htim3,uint32_t(1000000/paramters.steering_esc_pwm_frequency-1));
-	__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1,paramters.steering_offset);
-	__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2,paramters.esc_offset);
+	__HAL_TIM_SET_AUTORELOAD(&htim3,uint32_t(1000000/parameters.steering_esc_pwm_frequency-1));
+	__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1,parameters.steering_offset);
+	__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2,parameters.esc_offset);
 	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
 	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
+
+	//set brake pwm
+	tim2_arr = uint32_t(1000000/parameters.brake_pwm_frequency-1);
+	__HAL_TIM_SET_AUTORELOAD(&htim2,tim2_arr);
+	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1,0);
+	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2,0);
+	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3,0);
+	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_4,0);
+	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
+	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
+	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_3);
+	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_4);
+
 }
 
 
 ros::Subscriber<std_msgs::Float32> speed_sub("Commands/speed", &speed_callback );
 ros::Subscriber<std_msgs::Float32> duty_cycle_sub("Commands/duty_cycle", &duty_cycle_callback );
 ros::Subscriber<std_msgs::Float32> steering_sub("Commands/steering", &steering_callback );
+ros::Subscriber<std_msgs::Float32MultiArray> brake_sub("Commands/brakes", &brake_callback );
 
 void ros_setup(){
 	forces.data = new std_msgs::Float32MultiArray::_data_type[8];
@@ -365,6 +412,39 @@ void ros_setup(){
 	nh.advertise(wheel_speed_pub);
 }
 
+void read_parameters(){
+	QSPI_W25Q64JV_Init();
+	QSPI_W25Q64JV_Reset();
+
+	uint8_t id[2];
+	if (QSPI_OK != QSPI_W25Q64JV_DeviceID(id)) {
+	    while (1);
+	}
+	char str[]="Connect to ROM, ROM ID: [0x00,0x00]\n";
+	sprintf(str,"Connect to ROM, ROM ID: [0x%02x,0x%02x]\n",id[0],id[1]);
+	HAL_UART_Transmit(&huart7, (uint8_t*)str, sizeof(str), 10);
+
+
+#ifdef W25QWRITE
+
+#endif
+	char header[4];
+	QSPI_W25Q64JV_Read((uint8_t*)header, 0x00, 4);
+	if(header[0]!='a' || header[1]!='c' || header[2]!='s' || header[3]!='r'){
+		char str[]="Read Parameters Fails\n";
+		HAL_UART_Transmit(&huart7, (uint8_t*)str, sizeof(str), 10);
+	}
+
+	QSPI_W25Q64JV_Read((uint8_t*)(&parameters), 0x00, sizeof(ParameterTypeDef));
+	if(parameters.tailer[0]!='a' || header[1]!='c' || header[2]!='s' || header[3]!='r'){
+		char str[]="Read Parameters Fails\n";
+		HAL_UART_Transmit(&huart7, (uint8_t*)str, sizeof(str), 10);
+	}
+
+//	QSPI_W25Q64JV_Write((uint8_t*)(),0x0,2*Font_7x10.size);
+
+}
+
 
 void setup(void)
 {
@@ -372,6 +452,7 @@ void setup(void)
   uart_setup();
   timer_setup();
   ros_setup();
+
 
 //  HAL_TIM_PWM_Start_IT(&htim4, TIM_CHANNEL_2 );
 

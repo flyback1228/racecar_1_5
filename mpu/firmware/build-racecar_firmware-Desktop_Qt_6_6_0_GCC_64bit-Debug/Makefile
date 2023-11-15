@@ -14,10 +14,10 @@ EQ            = =
 
 CC            = gcc
 CXX           = g++
-DEFINES       = -DQT_QML_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
+DEFINES       = -DQT_QML_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_SERIALPORT_LIB -DQT_QML_LIB -DQT_QMLINTEGRATION_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -g -Wall -Wextra -fPIC -D_REENTRANT $(DEFINES)
 CXXFLAGS      = -pipe -g -std=gnu++1z -Wall -Wextra -fPIC -D_REENTRANT $(DEFINES)
-INCPATH       = -I../racecar_firmware -I. -I/home/acsr2004/Qt/6.6.0/gcc_64/include -I/home/acsr2004/Qt/6.6.0/gcc_64/include/QtWidgets -I/home/acsr2004/Qt/6.6.0/gcc_64/include/QtGui -I/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore -I. -I. -I/home/acsr2004/Qt/6.6.0/gcc_64/mkspecs/linux-g++
+INCPATH       = -I../racecar_firmware -I. -I/home/acsr2004/Qt/6.6.0/gcc_64/include -I/home/acsr2004/Qt/6.6.0/gcc_64/include/QtWidgets -I/home/acsr2004/Qt/6.6.0/gcc_64/include/QtGui -I/home/acsr2004/Qt/6.6.0/gcc_64/include/QtSerialPort -I/home/acsr2004/Qt/6.6.0/gcc_64/include/QtQml -I/home/acsr2004/Qt/6.6.0/gcc_64/include/QtQmlIntegration -I/home/acsr2004/Qt/6.6.0/gcc_64/include/QtNetwork -I/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore -I. -I. -I/home/acsr2004/Qt/6.6.0/gcc_64/mkspecs/linux-g++
 QMAKE         = /home/acsr2004/Qt/6.6.0/gcc_64/bin/qmake
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -40,7 +40,7 @@ DISTNAME      = racecar_firmware1.0.0
 DISTDIR = /home/acsr2004/Documents/racecar_1_5/mpu/firmware/build-racecar_firmware-Desktop_Qt_6_6_0_GCC_64bit-Debug/.tmp/racecar_firmware1.0.0
 LINK          = g++
 LFLAGS        = -Wl,-rpath,/home/acsr2004/Qt/6.6.0/gcc_64/lib -Wl,-rpath-link,/home/acsr2004/Qt/6.6.0/gcc_64/lib
-LIBS          = $(SUBLIBS) /home/acsr2004/Qt/6.6.0/gcc_64/lib/libQt6Widgets.so /home/acsr2004/Qt/6.6.0/gcc_64/lib/libQt6Gui.so /home/acsr2004/Qt/6.6.0/gcc_64/lib/libQt6Core.so -lpthread -lGL   
+LIBS          = $(SUBLIBS) /home/acsr2004/Qt/6.6.0/gcc_64/lib/libQt6Widgets.so /home/acsr2004/Qt/6.6.0/gcc_64/lib/libQt6Gui.so /home/acsr2004/Qt/6.6.0/gcc_64/lib/libQt6SerialPort.so /home/acsr2004/Qt/6.6.0/gcc_64/lib/libQt6Qml.so -pthread /home/acsr2004/Qt/6.6.0/gcc_64/lib/libQt6Network.so /home/acsr2004/Qt/6.6.0/gcc_64/lib/libQt6Core.so -lpthread -lGL   
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -53,10 +53,14 @@ OBJECTS_DIR   = ./
 ####### Files
 
 SOURCES       = ../racecar_firmware/main.cpp \
-		../racecar_firmware/mainwindow.cpp moc_mainwindow.cpp
+		../racecar_firmware/mainwindow.cpp \
+		../racecar_firmware/parametermodel.cpp moc_mainwindow.cpp \
+		moc_parametermodel.cpp
 OBJECTS       = main.o \
 		mainwindow.o \
-		moc_mainwindow.o
+		parametermodel.o \
+		moc_mainwindow.o \
+		moc_parametermodel.o
 DIST          = /home/acsr2004/Qt/6.6.0/gcc_64/mkspecs/features/spec_pre.prf \
 		/home/acsr2004/Qt/6.6.0/gcc_64/mkspecs/common/unix.conf \
 		/home/acsr2004/Qt/6.6.0/gcc_64/mkspecs/common/linux.conf \
@@ -362,6 +366,7 @@ DIST          = /home/acsr2004/Qt/6.6.0/gcc_64/mkspecs/features/spec_pre.prf \
 		/home/acsr2004/Qt/6.6.0/gcc_64/mkspecs/features/qt_config.prf \
 		/home/acsr2004/Qt/6.6.0/gcc_64/mkspecs/linux-g++/qmake.conf \
 		/home/acsr2004/Qt/6.6.0/gcc_64/mkspecs/features/spec_post.prf \
+		../racecar_firmware/.qmake.stash \
 		/home/acsr2004/Qt/6.6.0/gcc_64/mkspecs/features/exclusive_builds.prf \
 		/home/acsr2004/Qt/6.6.0/gcc_64/mkspecs/features/toolchain.prf \
 		/home/acsr2004/Qt/6.6.0/gcc_64/mkspecs/features/default_pre.prf \
@@ -383,8 +388,11 @@ DIST          = /home/acsr2004/Qt/6.6.0/gcc_64/mkspecs/features/spec_pre.prf \
 		/home/acsr2004/Qt/6.6.0/gcc_64/mkspecs/features/exceptions.prf \
 		/home/acsr2004/Qt/6.6.0/gcc_64/mkspecs/features/yacc.prf \
 		/home/acsr2004/Qt/6.6.0/gcc_64/mkspecs/features/lex.prf \
-		../racecar_firmware/racecar_firmware.pro ../racecar_firmware/mainwindow.h ../racecar_firmware/main.cpp \
-		../racecar_firmware/mainwindow.cpp
+		../racecar_firmware/racecar_firmware.pro ../racecar_firmware/mainwindow.h \
+		../racecar_firmware/parametermodel.h \
+		../racecar_firmware/paramter_type.h ../racecar_firmware/main.cpp \
+		../racecar_firmware/mainwindow.cpp \
+		../racecar_firmware/parametermodel.cpp
 QMAKE_TARGET  = racecar_firmware
 DESTDIR       = 
 TARGET        = racecar_firmware
@@ -701,6 +709,7 @@ Makefile: ../racecar_firmware/racecar_firmware.pro /home/acsr2004/Qt/6.6.0/gcc_6
 		/home/acsr2004/Qt/6.6.0/gcc_64/mkspecs/features/qt_config.prf \
 		/home/acsr2004/Qt/6.6.0/gcc_64/mkspecs/linux-g++/qmake.conf \
 		/home/acsr2004/Qt/6.6.0/gcc_64/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		/home/acsr2004/Qt/6.6.0/gcc_64/mkspecs/features/exclusive_builds.prf \
 		/home/acsr2004/Qt/6.6.0/gcc_64/mkspecs/features/toolchain.prf \
 		/home/acsr2004/Qt/6.6.0/gcc_64/mkspecs/features/default_pre.prf \
@@ -725,6 +734,9 @@ Makefile: ../racecar_firmware/racecar_firmware.pro /home/acsr2004/Qt/6.6.0/gcc_6
 		../racecar_firmware/racecar_firmware.pro \
 		/home/acsr2004/Qt/6.6.0/gcc_64/lib/libQt6Widgets.prl \
 		/home/acsr2004/Qt/6.6.0/gcc_64/lib/libQt6Gui.prl \
+		/home/acsr2004/Qt/6.6.0/gcc_64/lib/libQt6SerialPort.prl \
+		/home/acsr2004/Qt/6.6.0/gcc_64/lib/libQt6Qml.prl \
+		/home/acsr2004/Qt/6.6.0/gcc_64/lib/libQt6Network.prl \
 		/home/acsr2004/Qt/6.6.0/gcc_64/lib/libQt6Core.prl
 	$(QMAKE) -o Makefile ../racecar_firmware/racecar_firmware.pro -spec linux-g++ CONFIG+=debug CONFIG+=qml_debug
 /home/acsr2004/Qt/6.6.0/gcc_64/mkspecs/features/spec_pre.prf:
@@ -1032,6 +1044,7 @@ Makefile: ../racecar_firmware/racecar_firmware.pro /home/acsr2004/Qt/6.6.0/gcc_6
 /home/acsr2004/Qt/6.6.0/gcc_64/mkspecs/features/qt_config.prf:
 /home/acsr2004/Qt/6.6.0/gcc_64/mkspecs/linux-g++/qmake.conf:
 /home/acsr2004/Qt/6.6.0/gcc_64/mkspecs/features/spec_post.prf:
+.qmake.stash:
 /home/acsr2004/Qt/6.6.0/gcc_64/mkspecs/features/exclusive_builds.prf:
 /home/acsr2004/Qt/6.6.0/gcc_64/mkspecs/features/toolchain.prf:
 /home/acsr2004/Qt/6.6.0/gcc_64/mkspecs/features/default_pre.prf:
@@ -1056,6 +1069,9 @@ Makefile: ../racecar_firmware/racecar_firmware.pro /home/acsr2004/Qt/6.6.0/gcc_6
 ../racecar_firmware/racecar_firmware.pro:
 /home/acsr2004/Qt/6.6.0/gcc_64/lib/libQt6Widgets.prl:
 /home/acsr2004/Qt/6.6.0/gcc_64/lib/libQt6Gui.prl:
+/home/acsr2004/Qt/6.6.0/gcc_64/lib/libQt6SerialPort.prl:
+/home/acsr2004/Qt/6.6.0/gcc_64/lib/libQt6Qml.prl:
+/home/acsr2004/Qt/6.6.0/gcc_64/lib/libQt6Network.prl:
 /home/acsr2004/Qt/6.6.0/gcc_64/lib/libQt6Core.prl:
 qmake: FORCE
 	@$(QMAKE) -o Makefile ../racecar_firmware/racecar_firmware.pro -spec linux-g++ CONFIG+=debug CONFIG+=qml_debug
@@ -1072,8 +1088,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /home/acsr2004/Qt/6.6.0/gcc_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../racecar_firmware/mainwindow.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../racecar_firmware/main.cpp ../racecar_firmware/mainwindow.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../racecar_firmware/mainwindow.h ../racecar_firmware/parametermodel.h ../racecar_firmware/paramter_type.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../racecar_firmware/main.cpp ../racecar_firmware/mainwindow.cpp ../racecar_firmware/parametermodel.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../racecar_firmware/mainwindow.ui $(DISTDIR)/
 
 
@@ -1106,9 +1122,9 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /home/acsr2004/Qt/6.6.0/gcc_64/mkspecs/features/data/dummy.cpp
 	g++ -pipe -g -std=gnu++1z -Wall -Wextra -fPIC -dM -E -o moc_predefs.h /home/acsr2004/Qt/6.6.0/gcc_64/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_mainwindow.cpp
+compiler_moc_header_make_all: moc_mainwindow.cpp moc_parametermodel.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_mainwindow.cpp
+	-$(DEL_FILE) moc_mainwindow.cpp moc_parametermodel.cpp
 moc_mainwindow.cpp: ../racecar_firmware/mainwindow.h \
 		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtWidgets/QMainWindow \
 		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtWidgets/qmainwindow.h \
@@ -1273,9 +1289,118 @@ moc_mainwindow.cpp: ../racecar_firmware/mainwindow.h \
 		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtGui/QTransform \
 		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qnativeinterface.h \
 		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtWidgets/qtabwidget.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtWidgets/QPushButton \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtWidgets/qpushbutton.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtWidgets/qabstractbutton.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtSerialPort/QSerialPort \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtSerialPort/qserialport.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtSerialPort/qserialportglobal.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtSerialPort/qtserialportexports.h \
 		moc_predefs.h \
 		/home/acsr2004/Qt/6.6.0/gcc_64/libexec/moc
-	/home/acsr2004/Qt/6.6.0/gcc_64/libexec/moc $(DEFINES) --include /home/acsr2004/Documents/racecar_1_5/mpu/firmware/build-racecar_firmware-Desktop_Qt_6_6_0_GCC_64bit-Debug/moc_predefs.h -I/home/acsr2004/Qt/6.6.0/gcc_64/mkspecs/linux-g++ -I/home/acsr2004/Documents/racecar_1_5/mpu/firmware/racecar_firmware -I/home/acsr2004/Qt/6.6.0/gcc_64/include -I/home/acsr2004/Qt/6.6.0/gcc_64/include/QtWidgets -I/home/acsr2004/Qt/6.6.0/gcc_64/include/QtGui -I/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore -I. -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../racecar_firmware/mainwindow.h -o moc_mainwindow.cpp
+	/home/acsr2004/Qt/6.6.0/gcc_64/libexec/moc $(DEFINES) --include /home/acsr2004/Documents/racecar_1_5/mpu/firmware/build-racecar_firmware-Desktop_Qt_6_6_0_GCC_64bit-Debug/moc_predefs.h -I/home/acsr2004/Qt/6.6.0/gcc_64/mkspecs/linux-g++ -I/home/acsr2004/Documents/racecar_1_5/mpu/firmware/racecar_firmware -I/home/acsr2004/Qt/6.6.0/gcc_64/include -I/home/acsr2004/Qt/6.6.0/gcc_64/include/QtWidgets -I/home/acsr2004/Qt/6.6.0/gcc_64/include/QtGui -I/home/acsr2004/Qt/6.6.0/gcc_64/include/QtSerialPort -I/home/acsr2004/Qt/6.6.0/gcc_64/include/QtQml -I/home/acsr2004/Qt/6.6.0/gcc_64/include/QtQmlIntegration -I/home/acsr2004/Qt/6.6.0/gcc_64/include/QtNetwork -I/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore -I. -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../racecar_firmware/mainwindow.h -o moc_mainwindow.cpp
+
+moc_parametermodel.cpp: ../racecar_firmware/parametermodel.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/QObject \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qobject.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qobjectdefs.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qnamespace.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qglobal.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qtversionchecks.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qtconfiginclude.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qconfig.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qtcore-config.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qtconfigmacros.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qtcoreexports.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qcompilerdetection.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qsystemdetection.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qprocessordetection.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qtdeprecationmarkers.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qtpreprocessorsupport.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qassert.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qtnoop.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qtypes.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qtversion.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qtclasshelpermacros.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qtypeinfo.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qcontainerfwd.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qsysinfo.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qlogging.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qflags.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qcompare_impl.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qatomic.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qbasicatomic.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qatomic_cxx11.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qgenericatomic.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qconstructormacros.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qdarwinhelpers.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qexceptionhandling.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qforeach.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qttypetraits.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qfunctionpointer.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qglobalstatic.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qmalloc.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qminmax.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qnumeric.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qoverload.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qswap.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qtenvironmentvariables.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qtresource.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qttranslation.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qversiontagging.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qtmetamacros.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qfunctionaltools_impl.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qstring.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qchar.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qstringview.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qbytearray.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qrefcount.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qarraydata.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qpair.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qarraydatapointer.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qarraydataops.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qcontainertools_impl.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qxptype_traits.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/q20functional.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/q20memory.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qbytearrayalgorithms.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qbytearrayview.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qstringfwd.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/q20type_traits.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qstringliteral.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qstringalgorithms.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qlatin1stringview.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qanystringview.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qutf8stringview.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qstringtokenizer.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qstringbuilder.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qlist.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qhashfunctions.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qiterator.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qbytearraylist.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qstringlist.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qalgorithms.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qstringmatcher.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qcoreevent.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qscopedpointer.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qmetatype.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qcompare.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qdatastream.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qiodevicebase.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qfloat16.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qmath.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qiterable.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qmetacontainer.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qcontainerinfo.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qtaggedpointer.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qscopeguard.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qobject_impl.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qbindingstorage.h \
+		../racecar_firmware/paramter_type.h \
+		moc_predefs.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/libexec/moc
+	/home/acsr2004/Qt/6.6.0/gcc_64/libexec/moc $(DEFINES) --include /home/acsr2004/Documents/racecar_1_5/mpu/firmware/build-racecar_firmware-Desktop_Qt_6_6_0_GCC_64bit-Debug/moc_predefs.h -I/home/acsr2004/Qt/6.6.0/gcc_64/mkspecs/linux-g++ -I/home/acsr2004/Documents/racecar_1_5/mpu/firmware/racecar_firmware -I/home/acsr2004/Qt/6.6.0/gcc_64/include -I/home/acsr2004/Qt/6.6.0/gcc_64/include/QtWidgets -I/home/acsr2004/Qt/6.6.0/gcc_64/include/QtGui -I/home/acsr2004/Qt/6.6.0/gcc_64/include/QtSerialPort -I/home/acsr2004/Qt/6.6.0/gcc_64/include/QtQml -I/home/acsr2004/Qt/6.6.0/gcc_64/include/QtQmlIntegration -I/home/acsr2004/Qt/6.6.0/gcc_64/include/QtNetwork -I/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore -I. -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../racecar_firmware/parametermodel.h -o moc_parametermodel.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -1462,6 +1587,13 @@ main.o: ../racecar_firmware/main.cpp ../racecar_firmware/mainwindow.h \
 		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtGui/QTransform \
 		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qnativeinterface.h \
 		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtWidgets/qtabwidget.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtWidgets/QPushButton \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtWidgets/qpushbutton.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtWidgets/qabstractbutton.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtSerialPort/QSerialPort \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtSerialPort/qserialport.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtSerialPort/qserialportglobal.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtSerialPort/qtserialportexports.h \
 		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtWidgets/QApplication \
 		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtWidgets/qapplication.h \
 		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qcoreapplication.h \
@@ -1650,11 +1782,126 @@ mainwindow.o: ../racecar_firmware/mainwindow.cpp ../racecar_firmware/mainwindow.
 		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtGui/QTransform \
 		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qnativeinterface.h \
 		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtWidgets/qtabwidget.h \
-		ui_mainwindow.h
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtWidgets/QPushButton \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtWidgets/qpushbutton.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtWidgets/qabstractbutton.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtSerialPort/QSerialPort \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtSerialPort/qserialport.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtSerialPort/qserialportglobal.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtSerialPort/qtserialportexports.h \
+		ui_mainwindow.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtSerialPort/QSerialPortInfo \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtSerialPort/qserialportinfo.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtWidgets/QMessageBox \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtWidgets/qmessagebox.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtWidgets/qdialog.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../racecar_firmware/mainwindow.cpp
+
+parametermodel.o: ../racecar_firmware/parametermodel.cpp ../racecar_firmware/parametermodel.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/QObject \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qobject.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qobjectdefs.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qnamespace.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qglobal.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qtversionchecks.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qtconfiginclude.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qconfig.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qtcore-config.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qtconfigmacros.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qtcoreexports.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qcompilerdetection.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qsystemdetection.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qprocessordetection.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qtdeprecationmarkers.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qtpreprocessorsupport.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qassert.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qtnoop.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qtypes.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qtversion.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qtclasshelpermacros.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qtypeinfo.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qcontainerfwd.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qsysinfo.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qlogging.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qflags.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qcompare_impl.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qatomic.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qbasicatomic.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qatomic_cxx11.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qgenericatomic.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qconstructormacros.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qdarwinhelpers.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qexceptionhandling.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qforeach.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qttypetraits.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qfunctionpointer.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qglobalstatic.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qmalloc.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qminmax.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qnumeric.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qoverload.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qswap.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qtenvironmentvariables.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qtresource.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qttranslation.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qversiontagging.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qtmetamacros.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qfunctionaltools_impl.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qstring.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qchar.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qstringview.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qbytearray.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qrefcount.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qarraydata.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qpair.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qarraydatapointer.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qarraydataops.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qcontainertools_impl.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qxptype_traits.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/q20functional.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/q20memory.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qbytearrayalgorithms.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qbytearrayview.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qstringfwd.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/q20type_traits.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qstringliteral.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qstringalgorithms.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qlatin1stringview.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qanystringview.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qutf8stringview.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qstringtokenizer.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qstringbuilder.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qlist.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qhashfunctions.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qiterator.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qbytearraylist.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qstringlist.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qalgorithms.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qstringmatcher.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qcoreevent.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qscopedpointer.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qmetatype.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qcompare.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qdatastream.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qiodevicebase.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qfloat16.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qmath.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qiterable.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qmetacontainer.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qcontainerinfo.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qtaggedpointer.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qscopeguard.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qobject_impl.h \
+		/home/acsr2004/Qt/6.6.0/gcc_64/include/QtCore/qbindingstorage.h \
+		../racecar_firmware/paramter_type.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o parametermodel.o ../racecar_firmware/parametermodel.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp
+
+moc_parametermodel.o: moc_parametermodel.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_parametermodel.o moc_parametermodel.cpp
 
 ####### Install
 

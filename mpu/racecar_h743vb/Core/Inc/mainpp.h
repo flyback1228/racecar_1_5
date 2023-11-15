@@ -7,6 +7,9 @@
 
 #ifndef MAINPP_H_
 #define MAINPP_H_
+
+#define W25QWRITE
+
 #include "stm32h7xx_hal.h"
 
 #ifdef __cplusplus
@@ -23,6 +26,7 @@ typedef struct{
 } ESC_SensorTypeDef;
 
 typedef struct{
+	char header[4];
 	float kp;
 	float ki;
 	float kd;
@@ -38,6 +42,10 @@ typedef struct{
 	uint16_t esc_offset;
 	uint16_t esc_max;
 	uint16_t esc_min;
+
+	float brake_pwm_frequency;
+
+	char tailer[4];
 
 } ParameterTypeDef;
 
