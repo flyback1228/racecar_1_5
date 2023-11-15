@@ -11,19 +11,68 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Racecar Configuration</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="tab_version">
        <attribute name="title">
         <string>Version</string>
        </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_6">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_11">
+          <item>
+           <widget class="QLabel" name="label_10">
+            <property name="text">
+             <string>Current Firmware Version</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="ledVersion">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="text">
+             <string>1.0</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_13">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <spacer name="verticalSpacer_4">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
       </widget>
       <widget class="QWidget" name="tab_pid">
        <property name="toolTip">
@@ -288,7 +337,7 @@
            <widget class="QLabel" name="label_7">
             <property name="minimumSize">
              <size>
-              <width>100</width>
+              <width>160</width>
               <height>0</height>
              </size>
             </property>
@@ -352,7 +401,7 @@
               <widget class="QLabel" name="label_6">
                <property name="minimumSize">
                 <size>
-                 <width>100</width>
+                 <width>150</width>
                  <height>0</height>
                 </size>
                </property>
@@ -371,7 +420,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEdit">
+              <widget class="QLineEdit" name="ledEscOffset">
                <property name="minimumSize">
                 <size>
                  <width>50</width>
@@ -404,7 +453,7 @@
               <widget class="QLabel" name="label_8">
                <property name="minimumSize">
                 <size>
-                 <width>100</width>
+                 <width>150</width>
                  <height>0</height>
                 </size>
                </property>
@@ -415,7 +464,7 @@
                 </size>
                </property>
                <property name="text">
-                <string>min</string>
+                <string>min duty cycle</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -423,7 +472,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEdit_2">
+              <widget class="QLineEdit" name="ledEscMin">
                <property name="minimumSize">
                 <size>
                  <width>50</width>
@@ -456,7 +505,7 @@
               <widget class="QLabel" name="label_9">
                <property name="minimumSize">
                 <size>
-                 <width>100</width>
+                 <width>150</width>
                  <height>0</height>
                 </size>
                </property>
@@ -467,7 +516,7 @@
                 </size>
                </property>
                <property name="text">
-                <string>max</string>
+                <string>max duty cycle</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -475,7 +524,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEdit_3">
+              <widget class="QLineEdit" name="ledEscMax">
                <property name="minimumSize">
                 <size>
                  <width>50</width>
@@ -517,7 +566,7 @@
               <widget class="QLabel" name="label_11">
                <property name="minimumSize">
                 <size>
-                 <width>100</width>
+                 <width>150</width>
                  <height>0</height>
                 </size>
                </property>
@@ -536,7 +585,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEdit_5">
+              <widget class="QLineEdit" name="ledSteeringOffset">
                <property name="minimumSize">
                 <size>
                  <width>50</width>
@@ -569,7 +618,7 @@
               <widget class="QLabel" name="label_12">
                <property name="minimumSize">
                 <size>
-                 <width>100</width>
+                 <width>150</width>
                  <height>0</height>
                 </size>
                </property>
@@ -580,7 +629,7 @@
                 </size>
                </property>
                <property name="text">
-                <string>min</string>
+                <string>min steering angle</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -588,7 +637,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEdit_6">
+              <widget class="QLineEdit" name="ledSteeringMin">
                <property name="minimumSize">
                 <size>
                  <width>50</width>
@@ -621,7 +670,7 @@
               <widget class="QLabel" name="label_13">
                <property name="minimumSize">
                 <size>
-                 <width>100</width>
+                 <width>150</width>
                  <height>0</height>
                 </size>
                </property>
@@ -632,7 +681,7 @@
                 </size>
                </property>
                <property name="text">
-                <string>max</string>
+                <string>max steering angle</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -640,7 +689,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEdit_7">
+              <widget class="QLineEdit" name="ledSteeringMax">
                <property name="minimumSize">
                 <size>
                  <width>50</width>
@@ -673,7 +722,7 @@
               <widget class="QLabel" name="ratio">
                <property name="minimumSize">
                 <size>
-                 <width>100</width>
+                 <width>150</width>
                  <height>0</height>
                 </size>
                </property>
@@ -692,7 +741,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEdit_8">
+              <widget class="QLineEdit" name="ledSteeringRate">
                <property name="minimumSize">
                 <size>
                  <width>50</width>
@@ -737,10 +786,105 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="tab">
+      <widget class="QWidget" name="tab_miscellaneous">
        <attribute name="title">
-        <string>Page</string>
+        <string>Miscellaneous</string>
        </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_7">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_16">
+          <item>
+           <widget class="QLabel" name="label_14">
+            <property name="minimumSize">
+             <size>
+              <width>200</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>ROS Topic Frequency</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="ledRosFrequency">
+            <property name="text">
+             <string>20</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_14">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_17">
+          <item>
+           <widget class="QLabel" name="labelBrakeFrequency">
+            <property name="minimumSize">
+             <size>
+              <width>200</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Brake PWM Frequency</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="ledBrakeFrequency">
+            <property name="text">
+             <string>1000</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_15">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <spacer name="verticalSpacer_5">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
       </widget>
      </widget>
     </item>
@@ -762,6 +906,9 @@
       </item>
       <item>
        <widget class="QPushButton" name="btnOpen">
+        <property name="toolTip">
+         <string>open serial port</string>
+        </property>
         <property name="text">
          <string>Open</string>
         </property>
@@ -769,8 +916,44 @@
       </item>
       <item>
        <widget class="QPushButton" name="btnClose">
+        <property name="toolTip">
+         <string>close serial port</string>
+        </property>
         <property name="text">
          <string>Close</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="verticalSpacer_6">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnLoad">
+        <property name="toolTip">
+         <string>load configuration file</string>
+        </property>
+        <property name="text">
+         <string>Load</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnSave">
+        <property name="toolTip">
+         <string>save configurations to file</string>
+        </property>
+        <property name="text">
+         <string>Save</string>
         </property>
        </widget>
       </item>
@@ -789,6 +972,9 @@
       </item>
       <item>
        <widget class="QPushButton" name="btnRead">
+        <property name="toolTip">
+         <string>read mpu configurations</string>
+        </property>
         <property name="text">
          <string>Read</string>
         </property>
@@ -796,6 +982,9 @@
       </item>
       <item>
        <widget class="QPushButton" name="btnWrite">
+        <property name="toolTip">
+         <string>write configurations to mpu</string>
+        </property>
         <property name="text">
          <string>Write</string>
         </property>

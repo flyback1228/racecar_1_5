@@ -34,6 +34,12 @@ public:
     QHBoxLayout *horizontalLayout;
     QTabWidget *tabWidget;
     QWidget *tab_version;
+    QVBoxLayout *verticalLayout_6;
+    QHBoxLayout *horizontalLayout_11;
+    QLabel *label_10;
+    QLineEdit *ledVersion;
+    QSpacerItem *horizontalSpacer_13;
+    QSpacerItem *verticalSpacer_4;
     QWidget *tab_pid;
     QVBoxLayout *verticalLayout_3;
     QHBoxLayout *horizontalLayout_3;
@@ -63,42 +69,55 @@ public:
     QVBoxLayout *verticalLayout_5;
     QHBoxLayout *horizontalLayout_7;
     QLabel *label_6;
-    QLineEdit *lineEdit;
+    QLineEdit *ledEscOffset;
     QSpacerItem *horizontalSpacer_6;
     QHBoxLayout *horizontalLayout_9;
     QLabel *label_8;
-    QLineEdit *lineEdit_2;
+    QLineEdit *ledEscMin;
     QSpacerItem *horizontalSpacer_7;
     QHBoxLayout *horizontalLayout_10;
     QLabel *label_9;
-    QLineEdit *lineEdit_3;
+    QLineEdit *ledEscMax;
     QSpacerItem *horizontalSpacer_8;
     QGroupBox *groupBox_2;
     QVBoxLayout *verticalLayout_4;
     QHBoxLayout *horizontalLayout_12;
     QLabel *label_11;
-    QLineEdit *lineEdit_5;
+    QLineEdit *ledSteeringOffset;
     QSpacerItem *horizontalSpacer_9;
     QHBoxLayout *horizontalLayout_13;
     QLabel *label_12;
-    QLineEdit *lineEdit_6;
+    QLineEdit *ledSteeringMin;
     QSpacerItem *horizontalSpacer_10;
     QHBoxLayout *horizontalLayout_14;
     QLabel *label_13;
-    QLineEdit *lineEdit_7;
+    QLineEdit *ledSteeringMax;
     QSpacerItem *horizontalSpacer_11;
     QHBoxLayout *horizontalLayout_15;
     QLabel *ratio;
-    QLineEdit *lineEdit_8;
+    QLineEdit *ledSteeringRate;
     QSpacerItem *horizontalSpacer_12;
     QSpacerItem *verticalSpacer_3;
-    QWidget *tab;
+    QWidget *tab_miscellaneous;
+    QVBoxLayout *verticalLayout_7;
+    QHBoxLayout *horizontalLayout_16;
+    QLabel *label_14;
+    QLineEdit *ledRosFrequency;
+    QSpacerItem *horizontalSpacer_14;
+    QHBoxLayout *horizontalLayout_17;
+    QLabel *labelBrakeFrequency;
+    QLineEdit *ledBrakeFrequency;
+    QSpacerItem *horizontalSpacer_15;
+    QSpacerItem *verticalSpacer_5;
     QVBoxLayout *verticalLayout;
     QHBoxLayout *horizontalLayout_2;
     QLabel *label;
     QComboBox *cmbPort;
     QPushButton *btnOpen;
     QPushButton *btnClose;
+    QSpacerItem *verticalSpacer_6;
+    QPushButton *btnLoad;
+    QPushButton *btnSave;
     QSpacerItem *verticalSpacer;
     QPushButton *btnRead;
     QPushButton *btnWrite;
@@ -118,6 +137,32 @@ public:
         tabWidget->setObjectName("tabWidget");
         tab_version = new QWidget();
         tab_version->setObjectName("tab_version");
+        verticalLayout_6 = new QVBoxLayout(tab_version);
+        verticalLayout_6->setObjectName("verticalLayout_6");
+        horizontalLayout_11 = new QHBoxLayout();
+        horizontalLayout_11->setObjectName("horizontalLayout_11");
+        label_10 = new QLabel(tab_version);
+        label_10->setObjectName("label_10");
+
+        horizontalLayout_11->addWidget(label_10);
+
+        ledVersion = new QLineEdit(tab_version);
+        ledVersion->setObjectName("ledVersion");
+        ledVersion->setEnabled(false);
+
+        horizontalLayout_11->addWidget(ledVersion);
+
+        horizontalSpacer_13 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_11->addItem(horizontalSpacer_13);
+
+
+        verticalLayout_6->addLayout(horizontalLayout_11);
+
+        verticalSpacer_4 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayout_6->addItem(verticalSpacer_4);
+
         tabWidget->addTab(tab_version, QString());
         tab_pid = new QWidget();
         tab_pid->setObjectName("tab_pid");
@@ -229,7 +274,7 @@ public:
         horizontalLayout_8->setObjectName("horizontalLayout_8");
         label_7 = new QLabel(tab_esc);
         label_7->setObjectName("label_7");
-        label_7->setMinimumSize(QSize(100, 0));
+        label_7->setMinimumSize(QSize(160, 0));
         label_7->setMaximumSize(QSize(100, 16777215));
         label_7->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
 
@@ -257,17 +302,17 @@ public:
         horizontalLayout_7->setObjectName("horizontalLayout_7");
         label_6 = new QLabel(groupBox);
         label_6->setObjectName("label_6");
-        label_6->setMinimumSize(QSize(100, 0));
+        label_6->setMinimumSize(QSize(150, 0));
         label_6->setMaximumSize(QSize(100, 16777215));
         label_6->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
 
         horizontalLayout_7->addWidget(label_6);
 
-        lineEdit = new QLineEdit(groupBox);
-        lineEdit->setObjectName("lineEdit");
-        lineEdit->setMinimumSize(QSize(50, 0));
+        ledEscOffset = new QLineEdit(groupBox);
+        ledEscOffset->setObjectName("ledEscOffset");
+        ledEscOffset->setMinimumSize(QSize(50, 0));
 
-        horizontalLayout_7->addWidget(lineEdit);
+        horizontalLayout_7->addWidget(ledEscOffset);
 
         horizontalSpacer_6 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
@@ -280,17 +325,17 @@ public:
         horizontalLayout_9->setObjectName("horizontalLayout_9");
         label_8 = new QLabel(groupBox);
         label_8->setObjectName("label_8");
-        label_8->setMinimumSize(QSize(100, 0));
+        label_8->setMinimumSize(QSize(150, 0));
         label_8->setMaximumSize(QSize(100, 16777215));
         label_8->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
 
         horizontalLayout_9->addWidget(label_8);
 
-        lineEdit_2 = new QLineEdit(groupBox);
-        lineEdit_2->setObjectName("lineEdit_2");
-        lineEdit_2->setMinimumSize(QSize(50, 0));
+        ledEscMin = new QLineEdit(groupBox);
+        ledEscMin->setObjectName("ledEscMin");
+        ledEscMin->setMinimumSize(QSize(50, 0));
 
-        horizontalLayout_9->addWidget(lineEdit_2);
+        horizontalLayout_9->addWidget(ledEscMin);
 
         horizontalSpacer_7 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
@@ -303,17 +348,17 @@ public:
         horizontalLayout_10->setObjectName("horizontalLayout_10");
         label_9 = new QLabel(groupBox);
         label_9->setObjectName("label_9");
-        label_9->setMinimumSize(QSize(100, 0));
+        label_9->setMinimumSize(QSize(150, 0));
         label_9->setMaximumSize(QSize(100, 16777215));
         label_9->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
 
         horizontalLayout_10->addWidget(label_9);
 
-        lineEdit_3 = new QLineEdit(groupBox);
-        lineEdit_3->setObjectName("lineEdit_3");
-        lineEdit_3->setMinimumSize(QSize(50, 0));
+        ledEscMax = new QLineEdit(groupBox);
+        ledEscMax->setObjectName("ledEscMax");
+        ledEscMax->setMinimumSize(QSize(50, 0));
 
-        horizontalLayout_10->addWidget(lineEdit_3);
+        horizontalLayout_10->addWidget(ledEscMax);
 
         horizontalSpacer_8 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
@@ -333,17 +378,17 @@ public:
         horizontalLayout_12->setObjectName("horizontalLayout_12");
         label_11 = new QLabel(groupBox_2);
         label_11->setObjectName("label_11");
-        label_11->setMinimumSize(QSize(100, 0));
+        label_11->setMinimumSize(QSize(150, 0));
         label_11->setMaximumSize(QSize(100, 16777215));
         label_11->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
 
         horizontalLayout_12->addWidget(label_11);
 
-        lineEdit_5 = new QLineEdit(groupBox_2);
-        lineEdit_5->setObjectName("lineEdit_5");
-        lineEdit_5->setMinimumSize(QSize(50, 0));
+        ledSteeringOffset = new QLineEdit(groupBox_2);
+        ledSteeringOffset->setObjectName("ledSteeringOffset");
+        ledSteeringOffset->setMinimumSize(QSize(50, 0));
 
-        horizontalLayout_12->addWidget(lineEdit_5);
+        horizontalLayout_12->addWidget(ledSteeringOffset);
 
         horizontalSpacer_9 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
@@ -356,17 +401,17 @@ public:
         horizontalLayout_13->setObjectName("horizontalLayout_13");
         label_12 = new QLabel(groupBox_2);
         label_12->setObjectName("label_12");
-        label_12->setMinimumSize(QSize(100, 0));
+        label_12->setMinimumSize(QSize(150, 0));
         label_12->setMaximumSize(QSize(100, 16777215));
         label_12->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
 
         horizontalLayout_13->addWidget(label_12);
 
-        lineEdit_6 = new QLineEdit(groupBox_2);
-        lineEdit_6->setObjectName("lineEdit_6");
-        lineEdit_6->setMinimumSize(QSize(50, 0));
+        ledSteeringMin = new QLineEdit(groupBox_2);
+        ledSteeringMin->setObjectName("ledSteeringMin");
+        ledSteeringMin->setMinimumSize(QSize(50, 0));
 
-        horizontalLayout_13->addWidget(lineEdit_6);
+        horizontalLayout_13->addWidget(ledSteeringMin);
 
         horizontalSpacer_10 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
@@ -379,17 +424,17 @@ public:
         horizontalLayout_14->setObjectName("horizontalLayout_14");
         label_13 = new QLabel(groupBox_2);
         label_13->setObjectName("label_13");
-        label_13->setMinimumSize(QSize(100, 0));
+        label_13->setMinimumSize(QSize(150, 0));
         label_13->setMaximumSize(QSize(100, 16777215));
         label_13->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
 
         horizontalLayout_14->addWidget(label_13);
 
-        lineEdit_7 = new QLineEdit(groupBox_2);
-        lineEdit_7->setObjectName("lineEdit_7");
-        lineEdit_7->setMinimumSize(QSize(50, 0));
+        ledSteeringMax = new QLineEdit(groupBox_2);
+        ledSteeringMax->setObjectName("ledSteeringMax");
+        ledSteeringMax->setMinimumSize(QSize(50, 0));
 
-        horizontalLayout_14->addWidget(lineEdit_7);
+        horizontalLayout_14->addWidget(ledSteeringMax);
 
         horizontalSpacer_11 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
@@ -402,17 +447,17 @@ public:
         horizontalLayout_15->setObjectName("horizontalLayout_15");
         ratio = new QLabel(groupBox_2);
         ratio->setObjectName("ratio");
-        ratio->setMinimumSize(QSize(100, 0));
+        ratio->setMinimumSize(QSize(150, 0));
         ratio->setMaximumSize(QSize(100, 16777215));
         ratio->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
 
         horizontalLayout_15->addWidget(ratio);
 
-        lineEdit_8 = new QLineEdit(groupBox_2);
-        lineEdit_8->setObjectName("lineEdit_8");
-        lineEdit_8->setMinimumSize(QSize(50, 0));
+        ledSteeringRate = new QLineEdit(groupBox_2);
+        ledSteeringRate->setObjectName("ledSteeringRate");
+        ledSteeringRate->setMinimumSize(QSize(50, 0));
 
-        horizontalLayout_15->addWidget(lineEdit_8);
+        horizontalLayout_15->addWidget(ledSteeringRate);
 
         horizontalSpacer_12 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
@@ -429,9 +474,57 @@ public:
         verticalLayout_2->addItem(verticalSpacer_3);
 
         tabWidget->addTab(tab_esc, QString());
-        tab = new QWidget();
-        tab->setObjectName("tab");
-        tabWidget->addTab(tab, QString());
+        tab_miscellaneous = new QWidget();
+        tab_miscellaneous->setObjectName("tab_miscellaneous");
+        verticalLayout_7 = new QVBoxLayout(tab_miscellaneous);
+        verticalLayout_7->setObjectName("verticalLayout_7");
+        horizontalLayout_16 = new QHBoxLayout();
+        horizontalLayout_16->setObjectName("horizontalLayout_16");
+        label_14 = new QLabel(tab_miscellaneous);
+        label_14->setObjectName("label_14");
+        label_14->setMinimumSize(QSize(200, 0));
+        label_14->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
+
+        horizontalLayout_16->addWidget(label_14);
+
+        ledRosFrequency = new QLineEdit(tab_miscellaneous);
+        ledRosFrequency->setObjectName("ledRosFrequency");
+
+        horizontalLayout_16->addWidget(ledRosFrequency);
+
+        horizontalSpacer_14 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_16->addItem(horizontalSpacer_14);
+
+
+        verticalLayout_7->addLayout(horizontalLayout_16);
+
+        horizontalLayout_17 = new QHBoxLayout();
+        horizontalLayout_17->setObjectName("horizontalLayout_17");
+        labelBrakeFrequency = new QLabel(tab_miscellaneous);
+        labelBrakeFrequency->setObjectName("labelBrakeFrequency");
+        labelBrakeFrequency->setMinimumSize(QSize(200, 0));
+        labelBrakeFrequency->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
+
+        horizontalLayout_17->addWidget(labelBrakeFrequency);
+
+        ledBrakeFrequency = new QLineEdit(tab_miscellaneous);
+        ledBrakeFrequency->setObjectName("ledBrakeFrequency");
+
+        horizontalLayout_17->addWidget(ledBrakeFrequency);
+
+        horizontalSpacer_15 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_17->addItem(horizontalSpacer_15);
+
+
+        verticalLayout_7->addLayout(horizontalLayout_17);
+
+        verticalSpacer_5 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayout_7->addItem(verticalSpacer_5);
+
+        tabWidget->addTab(tab_miscellaneous, QString());
 
         horizontalLayout->addWidget(tabWidget);
 
@@ -462,6 +555,20 @@ public:
 
         verticalLayout->addWidget(btnClose);
 
+        verticalSpacer_6 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayout->addItem(verticalSpacer_6);
+
+        btnLoad = new QPushButton(centralwidget);
+        btnLoad->setObjectName("btnLoad");
+
+        verticalLayout->addWidget(btnLoad);
+
+        btnSave = new QPushButton(centralwidget);
+        btnSave->setObjectName("btnSave");
+
+        verticalLayout->addWidget(btnSave);
+
         verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
         verticalLayout->addItem(verticalSpacer);
@@ -490,7 +597,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(0);
+        tabWidget->setCurrentIndex(2);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -498,7 +605,9 @@ public:
 
     void retranslateUi(QMainWindow *MainWindow)
     {
-        MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
+        MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "Racecar Configuration", nullptr));
+        label_10->setText(QCoreApplication::translate("MainWindow", "Current Firmware Version", nullptr));
+        ledVersion->setText(QCoreApplication::translate("MainWindow", "1.0", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab_version), QCoreApplication::translate("MainWindow", "Version", nullptr));
 #if QT_CONFIG(tooltip)
         tab_pid->setToolTip(QCoreApplication::translate("MainWindow", "set PID parameters", nullptr));
@@ -522,26 +631,50 @@ public:
         ledEscFrequency->setText(QCoreApplication::translate("MainWindow", "64.5", nullptr));
         groupBox->setTitle(QCoreApplication::translate("MainWindow", "ESC", nullptr));
         label_6->setText(QCoreApplication::translate("MainWindow", "offset", nullptr));
-        lineEdit->setText(QCoreApplication::translate("MainWindow", "1500", nullptr));
-        label_8->setText(QCoreApplication::translate("MainWindow", "min", nullptr));
-        lineEdit_2->setText(QCoreApplication::translate("MainWindow", "0", nullptr));
-        label_9->setText(QCoreApplication::translate("MainWindow", "max", nullptr));
-        lineEdit_3->setText(QCoreApplication::translate("MainWindow", "100", nullptr));
+        ledEscOffset->setText(QCoreApplication::translate("MainWindow", "1500", nullptr));
+        label_8->setText(QCoreApplication::translate("MainWindow", "min duty cycle", nullptr));
+        ledEscMin->setText(QCoreApplication::translate("MainWindow", "0", nullptr));
+        label_9->setText(QCoreApplication::translate("MainWindow", "max duty cycle", nullptr));
+        ledEscMax->setText(QCoreApplication::translate("MainWindow", "100", nullptr));
         groupBox_2->setTitle(QCoreApplication::translate("MainWindow", "Steering Servo", nullptr));
         label_11->setText(QCoreApplication::translate("MainWindow", "offset", nullptr));
-        lineEdit_5->setText(QCoreApplication::translate("MainWindow", "1500", nullptr));
-        label_12->setText(QCoreApplication::translate("MainWindow", "min", nullptr));
-        lineEdit_6->setText(QCoreApplication::translate("MainWindow", "-17", nullptr));
-        label_13->setText(QCoreApplication::translate("MainWindow", "max", nullptr));
-        lineEdit_7->setText(QCoreApplication::translate("MainWindow", "17", nullptr));
+        ledSteeringOffset->setText(QCoreApplication::translate("MainWindow", "1500", nullptr));
+        label_12->setText(QCoreApplication::translate("MainWindow", "min steering angle", nullptr));
+        ledSteeringMin->setText(QCoreApplication::translate("MainWindow", "-17", nullptr));
+        label_13->setText(QCoreApplication::translate("MainWindow", "max steering angle", nullptr));
+        ledSteeringMax->setText(QCoreApplication::translate("MainWindow", "17", nullptr));
         ratio->setText(QCoreApplication::translate("MainWindow", "rate", nullptr));
-        lineEdit_8->setText(QCoreApplication::translate("MainWindow", "1000", nullptr));
+        ledSteeringRate->setText(QCoreApplication::translate("MainWindow", "1000", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab_esc), QCoreApplication::translate("MainWindow", "ESC", nullptr));
-        tabWidget->setTabText(tabWidget->indexOf(tab), QCoreApplication::translate("MainWindow", "Page", nullptr));
+        label_14->setText(QCoreApplication::translate("MainWindow", "ROS Topic Frequency", nullptr));
+        ledRosFrequency->setText(QCoreApplication::translate("MainWindow", "20", nullptr));
+        labelBrakeFrequency->setText(QCoreApplication::translate("MainWindow", "Brake PWM Frequency", nullptr));
+        ledBrakeFrequency->setText(QCoreApplication::translate("MainWindow", "1000", nullptr));
+        tabWidget->setTabText(tabWidget->indexOf(tab_miscellaneous), QCoreApplication::translate("MainWindow", "Miscellaneous", nullptr));
         label->setText(QCoreApplication::translate("MainWindow", "port", nullptr));
+#if QT_CONFIG(tooltip)
+        btnOpen->setToolTip(QCoreApplication::translate("MainWindow", "open serial port", nullptr));
+#endif // QT_CONFIG(tooltip)
         btnOpen->setText(QCoreApplication::translate("MainWindow", "Open", nullptr));
+#if QT_CONFIG(tooltip)
+        btnClose->setToolTip(QCoreApplication::translate("MainWindow", "close serial port", nullptr));
+#endif // QT_CONFIG(tooltip)
         btnClose->setText(QCoreApplication::translate("MainWindow", "Close", nullptr));
+#if QT_CONFIG(tooltip)
+        btnLoad->setToolTip(QCoreApplication::translate("MainWindow", "load configuration file", nullptr));
+#endif // QT_CONFIG(tooltip)
+        btnLoad->setText(QCoreApplication::translate("MainWindow", "Load", nullptr));
+#if QT_CONFIG(tooltip)
+        btnSave->setToolTip(QCoreApplication::translate("MainWindow", "save configurations to file", nullptr));
+#endif // QT_CONFIG(tooltip)
+        btnSave->setText(QCoreApplication::translate("MainWindow", "Save", nullptr));
+#if QT_CONFIG(tooltip)
+        btnRead->setToolTip(QCoreApplication::translate("MainWindow", "read mpu configurations", nullptr));
+#endif // QT_CONFIG(tooltip)
         btnRead->setText(QCoreApplication::translate("MainWindow", "Read", nullptr));
+#if QT_CONFIG(tooltip)
+        btnWrite->setToolTip(QCoreApplication::translate("MainWindow", "write configurations to mpu", nullptr));
+#endif // QT_CONFIG(tooltip)
         btnWrite->setText(QCoreApplication::translate("MainWindow", "Write", nullptr));
     } // retranslateUi
 

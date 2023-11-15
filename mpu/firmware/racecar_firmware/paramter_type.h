@@ -5,6 +5,8 @@
 #include <math.h>
 struct ParameterTypeDef{
     char header[4];
+    uint8_t version;
+    uint8_t subversion;
     float kp;
     float ki;
     float kd;
