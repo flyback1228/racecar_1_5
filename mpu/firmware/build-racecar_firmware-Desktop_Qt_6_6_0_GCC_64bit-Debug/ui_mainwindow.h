@@ -18,6 +18,7 @@
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
+#include <QtWidgets/QPlainTextEdit>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QStatusBar>
@@ -32,6 +33,7 @@ class Ui_MainWindow
 public:
     QWidget *centralwidget;
     QHBoxLayout *horizontalLayout;
+    QVBoxLayout *verticalLayout_8;
     QTabWidget *tabWidget;
     QWidget *tab_version;
     QVBoxLayout *verticalLayout_6;
@@ -109,6 +111,7 @@ public:
     QLineEdit *ledBrakeFrequency;
     QSpacerItem *horizontalSpacer_15;
     QSpacerItem *verticalSpacer_5;
+    QPlainTextEdit *pteMessage;
     QVBoxLayout *verticalLayout;
     QHBoxLayout *horizontalLayout_2;
     QLabel *label;
@@ -133,6 +136,9 @@ public:
         centralwidget->setObjectName("centralwidget");
         horizontalLayout = new QHBoxLayout(centralwidget);
         horizontalLayout->setObjectName("horizontalLayout");
+        verticalLayout_8 = new QVBoxLayout();
+        verticalLayout_8->setObjectName("verticalLayout_8");
+        verticalLayout_8->setContentsMargins(10, -1, -1, -1);
         tabWidget = new QTabWidget(centralwidget);
         tabWidget->setObjectName("tabWidget");
         tab_version = new QWidget();
@@ -526,7 +532,15 @@ public:
 
         tabWidget->addTab(tab_miscellaneous, QString());
 
-        horizontalLayout->addWidget(tabWidget);
+        verticalLayout_8->addWidget(tabWidget);
+
+        pteMessage = new QPlainTextEdit(centralwidget);
+        pteMessage->setObjectName("pteMessage");
+
+        verticalLayout_8->addWidget(pteMessage);
+
+
+        horizontalLayout->addLayout(verticalLayout_8);
 
         verticalLayout = new QVBoxLayout();
         verticalLayout->setObjectName("verticalLayout");
@@ -597,7 +611,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(2);
+        tabWidget->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(MainWindow);

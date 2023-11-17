@@ -27,6 +27,8 @@ typedef struct{
 
 typedef struct{
 	char header[4];
+	uint8_t version;
+	uint8_t subversion;
 	float kp;
 	float ki;
 	float kd;

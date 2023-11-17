@@ -19,9 +19,9 @@
 
 extern TIM_HandleTypeDef htim2;
 extern TIM_HandleTypeDef htim3;
-extern TIM_HandleTypeDef htim4;
+//extern TIM_HandleTypeDef htim4;
 extern TIM_HandleTypeDef htim5;
-extern TIM_HandleTypeDef htim6;
+extern TIM_HandleTypeDef htim16;
 extern TIM_HandleTypeDef htim7;
 extern TIM_HandleTypeDef htim15;
 
@@ -30,6 +30,10 @@ extern UART_HandleTypeDef huart4;
 extern UART_HandleTypeDef huart5;
 extern UART_HandleTypeDef huart7;
 extern UART_HandleTypeDef huart3;
+
+extern DMA_HandleTypeDef hdma_uart7_rx;
+
+extern ADC_HandleTypeDef hadc1;
 
 #define huart_ros huart4
 #define huart_esc hlpuart1
@@ -66,9 +70,12 @@ uint32_t _index = 0;
 uint8_t pwm_generator_indicator,pre_pwm_generator_indicator;
 uint8_t is_frequency_set;
 //float duty_cycle = 0.5,voltage = 0.1,current = 0.2 ,speed = 1000.0, temperature=24.5;
+uint16_t force_raw[8];
 
 pid_mode_enum pid_mode = PID_Manual;
 uint8_t pid_its;
+
+uint8_t usb_buf[100];
 
 float esc_duty_cycle_set;
 float speed_set;
@@ -172,6 +179,33 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
 
 }
 
+void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size){
+	if (huart->Instance == UART7)
+	{
+		if(usb_buf[0]=='x' && usb_buf[1]=='i' && usb_buf[2]=='l' && usb_buf[3]=='i' && usb_buf[4]=='n'){
+			HAL_UART_Transmit(&huart7, (uint8_t*)(&parameters) , sizeof(ParameterTypeDef), 10);
+		}else if(usb_buf[0]=='a' && usb_buf[1]=='c' && usb_buf[2]=='s' && usb_buf[3]=='r'){
+			uint32_t i = sizeof(ParameterTypeDef)-4;
+			if(usb_buf[i]!='b' || usb_buf[i+1]!='4'|| usb_buf[i+2]!='0'|| usb_buf[i+3]!='1'){
+				uint8_t data[]= "Receive Wrong Data\n";
+				HAL_UART_Transmit(&huart7,data, sizeof(data), 10);
+			}else{
+				memcpy(&parameters,usb_buf,sizeof(ParameterTypeDef));
+				uint8_t data[]= "Write the Configuration Complete!\n";
+				HAL_UART_Transmit(&huart7,data, sizeof(data), 10);
+				QSPI_W25Q64JV_Write((uint8_t*)(&parameters),0x0,sizeof(ParameterTypeDef));
+
+			}
+
+		}else{
+			uint8_t data[]= "Receive Wrong Data\n";
+			HAL_UART_Transmit(&huart7,data, sizeof(data), 10);
+		}
+		HAL_UARTEx_ReceiveToIdle_DMA(&huart7, (uint8_t *) usb_buf, 100);
+		__HAL_DMA_DISABLE_IT(&hdma_uart7_rx, DMA_IT_HT);
+	}
+}
+
 void HAL_UART_ErrorCallback(UART_HandleTypeDef *UartHandle) {
     if(UartHandle->Instance==LPUART1) {
     	HAL_UART_Receive_DMA(&huart_esc, esc_receive, ESC_DATA_SIZE);
@@ -235,7 +269,12 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 
 		vesc_pub.publish(&vesc_state);
 		wheel_speed_pub.publish(&wheel_speed);
+
+		for(uint8_t i=0;i<8;++i){
+			forces.data[i]=(float)force_raw[i]*3.3/0xFFFF;
+		}
 		force_pub.publish(&forces);
+
 		nh.spinOnce();
 	}else if(htim->Instance==TIM7){
 		//no esc topic received
@@ -355,16 +394,22 @@ void brake_callback(const std_msgs::Float32MultiArray& msg){
 	}
 }
 
+void adc_setup(){
+	HAL_ADC_Start_DMA(&hadc1,(uint32_t*)force_raw,8);
+}
 
 void uart_setup(){
 	HAL_UART_Receive_DMA(&huart_esc, esc_receive, ESC_DATA_SIZE);
 	HAL_UART_Receive_DMA(&huart_f103, (uint8_t*)speed_receive, sizeof(uint32_t)*(SPEED_PIN_COUNT+1));
+
+	HAL_UARTEx_ReceiveToIdle_DMA(&huart7, usb_buf, 100);
+	__HAL_DMA_DISABLE_IT(&hdma_uart7_rx, DMA_IT_HT);
 }
 
 void timer_setup(){
 	//set tim6 ARR value based on topic publish frequency and start tim6
-	__HAL_TIM_SET_AUTORELOAD(&htim6,uint32_t(10000/parameters.publish_frequency-1));
-	HAL_TIM_Base_Start_IT(&htim6);
+	__HAL_TIM_SET_AUTORELOAD(&htim16,uint32_t(10000/parameters.publish_frequency-1));
+	HAL_TIM_Base_Start_IT(&htim16);
 
 	//set tim7 ARR value based on PID calculation frequency and start tim7
 	__HAL_TIM_SET_AUTORELOAD(&htim7,uint32_t(10000/parameters.pid_frequency-1));
@@ -424,20 +469,19 @@ void read_parameters(){
 	sprintf(str,"Connect to ROM, ROM ID: [0x%02x,0x%02x]\n",id[0],id[1]);
 	HAL_UART_Transmit(&huart7, (uint8_t*)str, sizeof(str), 10);
 
-
-#ifdef W25QWRITE
-
-#endif
 	char header[4];
 	QSPI_W25Q64JV_Read((uint8_t*)header, 0x00, 4);
 	if(header[0]!='a' || header[1]!='c' || header[2]!='s' || header[3]!='r'){
-		char str[]="Read Parameters Fails\n";
+		char str[]="Read Parameters Head Fails\n";
+		HAL_UART_Transmit(&huart7, (uint8_t*)header, 4, 10);
 		HAL_UART_Transmit(&huart7, (uint8_t*)str, sizeof(str), 10);
+		return;
 	}
 
 	QSPI_W25Q64JV_Read((uint8_t*)(&parameters), 0x00, sizeof(ParameterTypeDef));
-	if(parameters.tailer[0]!='a' || header[1]!='c' || header[2]!='s' || header[3]!='r'){
-		char str[]="Read Parameters Fails\n";
+	if(parameters.tailer[0]!='b' || parameters.tailer[1]!='4' || parameters.tailer[2]!='0' || parameters.tailer[3]!='1'){
+		char str[]="Read Parameters Tailor Fails\n";
+		HAL_UART_Transmit(&huart7, (uint8_t*)parameters.tailer, 4, 10);
 		HAL_UART_Transmit(&huart7, (uint8_t*)str, sizeof(str), 10);
 	}
 
@@ -448,6 +492,8 @@ void read_parameters(){
 
 void setup(void)
 {
+
+	read_parameters();
   nh.initNode();
   uart_setup();
   timer_setup();
@@ -479,9 +525,9 @@ void setup(void)
   is_frequency_set = 0;
   uint32_t clock = HAL_RCC_GetPCLK1Freq();
   TIMER_CLOCK_FREQ = clock/(TIM5->PSC+1);
-
-  HAL_TIM_PWM_Start_IT(&htim4, TIM_CHANNEL_1 );
-  HAL_TIM_PWM_Start_IT(&htim4, TIM_CHANNEL_2 );
+//
+//  HAL_TIM_PWM_Start_IT(&htim4, TIM_CHANNEL_1 );
+//  HAL_TIM_PWM_Start_IT(&htim4, TIM_CHANNEL_2 );
 
 //  HAL_TIM_PWM_
 
@@ -491,7 +537,9 @@ void setup(void)
   HAL_TIM_IC_Start_IT(&htim15, TIM_CHANNEL_1);
   HAL_TIM_IC_Start(&htim15, TIM_CHANNEL_2);
 
-//  HAL_TIM_Base_Start_IT(&htim6);
+
+
+  HAL_GPIO_WritePin(ONBOARD_LED_GPIO_Port, ONBOARD_LED_Pin, GPIO_PIN_SET);
 
 
 
@@ -541,7 +589,7 @@ void loop(void)
 //  duty1=0;
 //  freq2=1;
 //  duty2=1;
-
+  HAL_GPIO_TogglePin(ONBOARD_LED_GPIO_Port, ONBOARD_LED_Pin);
   HAL_Delay(1000);
 }
 

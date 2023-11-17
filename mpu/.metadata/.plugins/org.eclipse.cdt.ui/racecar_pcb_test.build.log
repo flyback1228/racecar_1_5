@@ -1,4 +1,4 @@
-18:38:22 **** Build of configuration Debug for project racecar_pcb_test ****
+15:55:36 **** Build of configuration Debug for project racecar_pcb_test ****
 make -j8 all 
 arm-none-eabi-size   racecar_pcb_test.elf 
    text	   data	    bss	    dec	    hex	filename
@@ -6,5 +6,5 @@ arm-none-eabi-size   racecar_pcb_test.elf
 Finished building: default.size.stdout
  
 
-18:38:22 Build Finished. 0 errors, 0 warnings. (took 426ms)
+15:55:36 Build Finished. 0 errors, 0 warnings. (took 426ms)
 

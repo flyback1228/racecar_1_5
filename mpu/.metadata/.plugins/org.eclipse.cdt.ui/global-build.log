@@ -1,46 +1,13 @@
-13:39:33 **** Incremental Build of configuration Debug for project racecar_h743vb ****
+17:18:19 **** Incremental Build of configuration Debug for project racecar_h743vb ****
 make -j8 all 
-arm-none-eabi-g++ "../Core/Src/mainpp.cpp" -mcpu=cortex-m7 -std=gnu++14 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32H743xx -c -I../Core/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -fno-use-cxa-atexit -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/mainpp.d" -MT"Core/Src/mainpp.o" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -o "Core/Src/mainpp.o"
-In file included from ../Core/Inc/ros.h:39,
-                 from ../Core/Src/mainpp.cpp:9:
-../Core/Inc/STM32Hardware.h: In member function 'void STM32Hardware::write(uint8_t*, int)':
-../Core/Inc/STM32Hardware.h:117:22: warning: comparison of integer expressions of different signedness: 'int' and 'long unsigned int' [-Wsign-compare]
-  117 |       int n_tail = n <= tbuflen - twind ? n : tbuflen - twind;
-      |                    ~~^~~~~~~~~~~~~~~~~~
-In file included from ../Core/Inc/std_msgs/Float32MultiArray.h:8,
-                 from ../Core/Src/mainpp.cpp:11:
-../Core/Inc/std_msgs/MultiArrayLayout.h: In member function 'virtual int std_msgs::MultiArrayLayout::deserialize(unsigned char*)':
-../Core/Inc/std_msgs/MultiArrayLayout.h:57:60: warning: 'void* realloc(void*, size_t)' moving an object of non-trivially copyable type 'std_msgs::MultiArrayLayout::_dim_type' {aka 'class std_msgs::MultiArrayDimension'}; use 'new' and 'delete' instead [-Wclass-memaccess]
-   57 |         this->dim = (std_msgs::MultiArrayDimension*)realloc(this->dim, dim_lengthT * sizeof(std_msgs::MultiArrayDimension));
-      |                                                     ~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-In file included from ../Core/Inc/std_msgs/MultiArrayLayout.h:8,
-                 from ../Core/Inc/std_msgs/Float32MultiArray.h:8,
-                 from ../Core/Src/mainpp.cpp:11:
-../Core/Inc/std_msgs/MultiArrayDimension.h:12:9: note: 'std_msgs::MultiArrayLayout::_dim_type' {aka 'class std_msgs::MultiArrayDimension'} declared here
-   12 |   class MultiArrayDimension : public ros::Msg
-      |         ^~~~~~~~~~~~~~~~~~~
-In file included from ../Core/Inc/std_msgs/Float32MultiArray.h:8,
-                 from ../Core/Src/mainpp.cpp:11:
-../Core/Inc/std_msgs/MultiArrayLayout.h:61:15: warning: 'void* memcpy(void*, const void*, size_t)' writing to an object of type 'std_msgs::MultiArrayLayout::_dim_type' {aka 'class std_msgs::MultiArrayDimension'} with no trivial copy-assignment; use copy-assignment or copy-initialization instead [-Wclass-memaccess]
-   61 |         memcpy( &(this->dim[i]), &(this->st_dim), sizeof(std_msgs::MultiArrayDimension));
-      |         ~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-In file included from ../Core/Inc/std_msgs/MultiArrayLayout.h:8,
-                 from ../Core/Inc/std_msgs/Float32MultiArray.h:8,
-                 from ../Core/Src/mainpp.cpp:11:
-../Core/Inc/std_msgs/MultiArrayDimension.h:12:9: note: 'std_msgs::MultiArrayLayout::_dim_type' {aka 'class std_msgs::MultiArrayDimension'} declared here
-   12 |   class MultiArrayDimension : public ros::Msg
-      |         ^~~~~~~~~~~~~~~~~~~
-../Core/Src/mainpp.cpp: In function 'void setup()':
-../Core/Src/mainpp.cpp:465:12: warning: unused variable 'inc' [-Wunused-variable]
-  465 |   uint16_t inc = TIM4->ARR/38;
-      |            ^~~
+arm-none-eabi-g++ "../Core/Src/pid.cpp" -mcpu=cortex-m7 -std=gnu++14 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32H743xx -c -I../Core/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -fno-use-cxa-atexit -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/pid.d" -MT"Core/Src/pid.o" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -o "Core/Src/pid.o"
 arm-none-eabi-g++ -o "racecar_h743vb.elf" @"objects.list"   -mcpu=cortex-m7 -T"/home/acsr2004/Documents/racecar_1_5/mpu/racecar_h743vb/STM32H743VITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="racecar_h743vb.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
 Finished building target: racecar_h743vb.elf
  
 arm-none-eabi-size   racecar_h743vb.elf 
 arm-none-eabi-objdump -h -S  racecar_h743vb.elf  > "racecar_h743vb.list"
    text	   data	    bss	    dec	    hex	filename
-  82412	    168	   8348	  90928	  16330	racecar_h743vb.elf
+  87760	    172	  12696	 100628	  18914	racecar_h743vb.elf
 Finished building: default.size.stdout
  
 Finished building: racecar_h743vb.list
