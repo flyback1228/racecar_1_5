@@ -75,6 +75,8 @@ void Error_Handler(void);
 #define F05_GPIO_Port GPIOB
 #define F02_Pin GPIO_PIN_1
 #define F02_GPIO_Port GPIOB
+#define BNO_INT_Pin GPIO_PIN_7
+#define BNO_INT_GPIO_Port GPIOE
 #define LED_RED_Pin GPIO_PIN_15
 #define LED_RED_GPIO_Port GPIOE
 #define BNO_NRST_Pin GPIO_PIN_14
