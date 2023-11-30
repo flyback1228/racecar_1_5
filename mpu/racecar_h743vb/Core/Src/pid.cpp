@@ -11,7 +11,7 @@ PID<T>::PID(T *input, T *output, T *setpoint, T Kp, T Ki, T Kd,uint8_t add_input
 	output_   = output;
 	input_    = input;
 	setpoint_ = setpoint;
-	mode_     = PID_MODE_MANUAL;
+//	mode_     = PID_MODE_MANUAL;
 	
 	PID<T>::Set_Tunings(Kp, Ki, Kd, add_input);
 	
@@ -23,7 +23,7 @@ PID<T>::PID(T *input, T *output, T *setpoint, T Kp, T Ki, T Kd,uint8_t add_input
 template <typename T>
 void PID<T>::Compute(void)
 {
-	if(mode_ == PID_MODE_MANUAL)return;
+//	if(mode_ == PID_MODE_MANUAL)return;
 	uint32_t now = HAL_GetTick();
 	uint32_t dt = now - last_time_;
 	
@@ -47,11 +47,11 @@ void PID<T>::Compute(void)
 }
 
 /* ~~~~~~~~~~~~~~~~~ PID Mode ~~~~~~~~~~~~~~~~~~ */
-template <typename T>
-void PID<T>::Set_Mode(PIDMode_TypeDef Mode)
-{
-	mode_ = Mode;
-}
+//template <typename T>
+//void PID<T>::Set_Mode(PIDMode_TypeDef Mode)
+//{
+//	mode_ = Mode;
+//}
 
 
 /* ~~~~~~~~~~~~~~~~ PID Limits ~~~~~~~~~~~~~~~~~ */

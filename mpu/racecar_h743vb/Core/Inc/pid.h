@@ -13,12 +13,12 @@
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Types ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 /* PID Mode */
-typedef enum
-{
-	PID_MODE_MANUAL    = 0,
-	PID_MODE_AUTOMATIC = 1
-
-}PIDMode_TypeDef;
+//typedef enum
+//{
+//	PID_MODE_AUTOMATIC = 0,
+//	PID_MODE_MANUAL    = 1
+//
+//}PIDMode_TypeDef;
 
 /* PID P On x */
 typedef enum
@@ -43,7 +43,7 @@ class PID
 private:
 	
 //	PIDPON_TypeDef  _pOnE;
-	PIDMode_TypeDef mode_;
+//	PIDMode_TypeDef mode_;
 
 //	PIDPON_TypeDef  _pOn;
 
@@ -88,7 +88,7 @@ private:
 	void Compute(void);
 
 	/* ::::::::::: PID Mode :::::::::::: */
-	void            Set_Mode(PIDMode_TypeDef Mode);
+//	void            Set_Mode(PIDMode_TypeDef Mode);
 //	PIDMode_TypeDef GetMode(void);
 
 	/* :::::::::: PID Limits ::::::::::: */

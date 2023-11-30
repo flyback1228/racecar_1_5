@@ -1,4 +1,4 @@
-17:18:19 **** Incremental Build of configuration Debug for project racecar_h743vb ****
+16:46:51 **** Incremental Build of configuration Debug for project racecar_h743vb ****
 make -j8 all 
 arm-none-eabi-g++ "../Core/Src/pid.cpp" -mcpu=cortex-m7 -std=gnu++14 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32H743xx -c -I../Core/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -fno-use-cxa-atexit -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/pid.d" -MT"Core/Src/pid.o" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -o "Core/Src/pid.o"
 arm-none-eabi-g++ -o "racecar_h743vb.elf" @"objects.list"   -mcpu=cortex-m7 -T"/home/acsr2004/Documents/racecar_1_5/mpu/racecar_h743vb/STM32H743VITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="racecar_h743vb.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
@@ -7,11 +7,11 @@ Finished building target: racecar_h743vb.elf
 arm-none-eabi-size   racecar_h743vb.elf 
 arm-none-eabi-objdump -h -S  racecar_h743vb.elf  > "racecar_h743vb.list"
    text	   data	    bss	    dec	    hex	filename
-  87760	    172	  12696	 100628	  18914	racecar_h743vb.elf
+  88240	    172	  12720	 101132	  18b0c	racecar_h743vb.elf
 Finished building: default.size.stdout
  
 Finished building: racecar_h743vb.list
  
 
-17:18:20 Build Finished. 0 errors, 0 warnings. (took 978ms)
+16:46:52 Build Finished. 0 errors, 0 warnings. (took 979ms)
 

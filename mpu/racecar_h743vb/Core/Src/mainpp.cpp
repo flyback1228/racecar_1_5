@@ -1,34 +1,44 @@
 /*
- * main.cpp
+ * mainpp.cpp
 
  *
- *  Created on: 2018/01/17
- *      Author: yoneken
+ *  Created on: 2023/11/17
+ *      Author: xli185
  */
 #include <mainpp.h>
 #include <ros.h>
-//#include <std_msgs/String.h>
 #include <std_msgs/Float32MultiArray.h>
 #include <std_msgs/Float32.h>
+#include <std_msgs/Bool.h>
+
 #include <vesc_msgs/VescState.h>
 #include "main.h"
 #include "stm32h7xx_hal_rcc.h"
 #include "w25q64jv.h"
 #include "string.h"
 #include <cstdio>
+#include <pid.h>
 
 extern TIM_HandleTypeDef htim2;
 extern TIM_HandleTypeDef htim3;
-//extern TIM_HandleTypeDef htim4;
 extern TIM_HandleTypeDef htim5;
 extern TIM_HandleTypeDef htim16;
 extern TIM_HandleTypeDef htim7;
 extern TIM_HandleTypeDef htim15;
 
+//communicate with ESC
 extern UART_HandleTypeDef hlpuart1;
+
+//communicate with NVIDIA Jetson, used as ROS port
 extern UART_HandleTypeDef huart4;
+
+//communicate with STM32F103
 extern UART_HandleTypeDef huart5;
+
+//to cp2102, usb port
 extern UART_HandleTypeDef huart7;
+
+//communicate with BNO085
 extern UART_HandleTypeDef huart3;
 
 extern DMA_HandleTypeDef hdma_uart7_rx;
@@ -44,35 +54,32 @@ extern ADC_HandleTypeDef hadc1;
 
 ros::NodeHandle nh;
 
-//std_msgs::String str_msg;
+//esc message and publisher
 vesc_msgs::VescState vesc_state;
-std_msgs::Float32MultiArray forces;
-std_msgs::Float32MultiArray wheel_speed;
-
 ros::Publisher vesc_pub("vesc_sensor", &vesc_state);
+
+//force message and publisher
+std_msgs::Float32MultiArray forces;
 ros::Publisher force_pub("forces", &forces);
+
+//wheel speed message and publisher
+std_msgs::Float32MultiArray wheel_speed;
 ros::Publisher wheel_speed_pub("forces", &wheel_speed);
+
 
 ESC_SensorTypeDef esc_sensor;
 uint8_t esc_receive[ESC_DATA_SIZE];
 
-const uint32_t acsr = ('A'<<24) | ('C'<<16) | ('S'<<8) | 'R';
-uint32_t speed_receive[SPEED_PIN_COUNT+1];
-uint32_t speed[SPEED_PIN_COUNT];
 
-//int32_t freq;
-//uint16_t servo_duty,esc_duty;
-//uint32_t triangle1[32];
-//uint32_t triangle2[32];
+const uint32_t acsr = ('A'<<24) | ('C'<<16) | ('S'<<8) | 'R';//speed head
+uint32_t speed_receive[SPEED_PIN_COUNT+1];//speed data from STM32F103, the first element is acsr
+uint32_t speed[SPEED_PIN_COUNT];//speed frequency
 
-uint32_t TIMER_CLOCK_FREQ;
-uint32_t _index = 0;
 uint8_t pwm_generator_indicator,pre_pwm_generator_indicator;
 uint8_t is_frequency_set;
-//float duty_cycle = 0.5,voltage = 0.1,current = 0.2 ,speed = 1000.0, temperature=24.5;
 uint16_t force_raw[8];
 
-pid_mode_enum pid_mode = PID_Manual;
+PIDMode_TypeDef pid_mode = PID_MODE_MANUAL;
 uint8_t pid_its;
 
 uint8_t usb_buf[100];
@@ -81,15 +88,13 @@ float esc_duty_cycle_set;
 float speed_set;
 
 float duty_cycle_output;
+//bool input_mode;
 
 uint32_t tim2_arr;
 
 uint32_t pre_steering_pulse=0;
 uint32_t pre_esc_pulse=0;
 uint32_t pre_brake[]={0,0,0,0};
-//float kp = 2.0;
-//float ki = 1.0;
-//float kd = 0.0;
 
 ParameterTypeDef parameters ={
 		.header={'a','c','s','r'},
@@ -176,7 +181,6 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
 	}else if(huart==&huart_f103){
 		read_speed_data(speed_receive);
 	}
-
 }
 
 void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size){
@@ -284,7 +288,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 			return;
 		}
 
-		if(pid_mode==PID_Manual){
+		if(pid_mode==PID_MODE_MANUAL){
 			uint32_t esc_pulse=esc_duty_cycle_set*(parameters.esc_max-parameters.esc_offset)+parameters.esc_offset;
 			//if(pre_esc_pulse==esc_pulse) no action needed.
 			if(pre_esc_pulse!=esc_pulse){
@@ -351,13 +355,13 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 }
 
 void speed_callback(const std_msgs::Float32& msg){
-	pid_mode = PID_Auto;
+	pid_mode = PID_MODE_AUTOMATIC;
 	pid_its=0;
 	speed_set=msg.data;
 }
 
 void duty_cycle_callback(const std_msgs::Float32& msg){
-	pid_mode=PID_Manual;
+	pid_mode=PID_MODE_MANUAL;
 	pid_its=0;
 	esc_duty_cycle_set = msg.data;
 }
@@ -392,6 +396,10 @@ void brake_callback(const std_msgs::Float32MultiArray& msg){
 		pre_brake[3]=c;
 		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_4,c);
 	}
+}
+
+void input_mode_callback(const std_msgs::Bool& msg){
+	HAL_GPIO_WritePin(Manual_Output_GPIO_Port, Manual_Output_Pin, (GPIO_PinState)msg.data);
 }
 
 void adc_setup(){
@@ -441,6 +449,7 @@ ros::Subscriber<std_msgs::Float32> speed_sub("Commands/speed", &speed_callback )
 ros::Subscriber<std_msgs::Float32> duty_cycle_sub("Commands/duty_cycle", &duty_cycle_callback );
 ros::Subscriber<std_msgs::Float32> steering_sub("Commands/steering", &steering_callback );
 ros::Subscriber<std_msgs::Float32MultiArray> brake_sub("Commands/brakes", &brake_callback );
+ros::Subscriber<std_msgs::Bool> input_mode_sub("Commands/input_mode", &input_mode_callback );
 
 void ros_setup(){
 	forces.data = new std_msgs::Float32MultiArray::_data_type[8];
@@ -455,6 +464,18 @@ void ros_setup(){
 	nh.advertise(vesc_pub);
 	nh.advertise(force_pub);
 	nh.advertise(wheel_speed_pub);
+}
+
+void gpio_setup(){
+	//set default pid mode to manual
+	HAL_GPIO_WritePin(Manual_Output_GPIO_Port, Manual_Output_Pin, GPIO_PIN_SET);
+
+	//red led, used as power indicator
+	HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_SET);
+
+	//blue and yellow led, default off
+	HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, GPIO_PIN_RESET);
 }
 
 void read_parameters(){
@@ -499,6 +520,8 @@ void setup(void)
   timer_setup();
   ros_setup();
 
+//  input_mode = true;
+
 
 //  HAL_TIM_PWM_Start_IT(&htim4, TIM_CHANNEL_2 );
 
@@ -524,7 +547,7 @@ void setup(void)
   pwm_generator_indicator = 0;
   is_frequency_set = 0;
   uint32_t clock = HAL_RCC_GetPCLK1Freq();
-  TIMER_CLOCK_FREQ = clock/(TIM5->PSC+1);
+//  TIMER_CLOCK_FREQ = clock/(TIM5->PSC+1);
 //
 //  HAL_TIM_PWM_Start_IT(&htim4, TIM_CHANNEL_1 );
 //  HAL_TIM_PWM_Start_IT(&htim4, TIM_CHANNEL_2 );
@@ -545,33 +568,48 @@ void setup(void)
 
 }
 
-
+uint8_t loop_index = 0;
 
 void loop(void)
 {
+	auto state = HAL_GPIO_ReadPin(Manual_Input_GPIO_Port, Manual_Input_Pin);
+
+	if(state==GPIO_PIN_SET){
+		pid_mode=PID_MODE_MANUAL;
+	}else if(state==GPIO_PIN_RESET){
+		pid_mode=PID_MODE_AUTOMATIC;
+	}
+	HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, state);
+
+	loop_index++;
+	HAL_Delay(50);
+	if(loop_index==10){
+		HAL_GPIO_TogglePin(ONBOARD_LED_GPIO_Port, ONBOARD_LED_Pin);
+	}
+
 //  HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
 
 //  str_msg.data = hello;
 //  chatter.publish(&str_msg);
 
-  vesc_state.duty_cycle = esc_sensor.throttle/100.0;
-  vesc_state.voltage_input = esc_sensor.voltage;
-  vesc_state.current_input = esc_sensor.current;
-  vesc_state.temperature_pcb = esc_sensor.temperature;
-  vesc_state.speed = esc_sensor.rpm;
-
-
-	_index=(_index+1)%32;
-//	__HAL_TIM_SetCompare(&htim4, TIM_CHANNEL_1,triangle1[_index]);
-//	__HAL_TIM_SetCompare(&htim4, TIM_CHANNEL_2,triangle2[_index]);
-
-
-  for(int i=2;i<8;++i){
-	  forces.data[i] = 0.1*i;
-  }
-  for(int i=0;i<16;++i){
-  	  wheel_speed.data[i] = 10*i;
-  }
+//  vesc_state.duty_cycle = esc_sensor.throttle/100.0;
+//  vesc_state.voltage_input = esc_sensor.voltage;
+//  vesc_state.current_input = esc_sensor.current;
+//  vesc_state.temperature_pcb = esc_sensor.temperature;
+//  vesc_state.speed = esc_sensor.rpm;
+//
+//
+//	_index=(_index+1)%32;
+////	__HAL_TIM_SetCompare(&htim4, TIM_CHANNEL_1,triangle1[_index]);
+////	__HAL_TIM_SetCompare(&htim4, TIM_CHANNEL_2,triangle2[_index]);
+//
+//
+//  for(int i=2;i<8;++i){
+//	  forces.data[i] = 0.1*i;
+//  }
+//  for(int i=0;i<16;++i){
+//  	  wheel_speed.data[i] = 10*i;
+//  }
 
 //  forces.data[0] = freq;
 //  forces.data[1] = servo_duty;
@@ -589,7 +627,6 @@ void loop(void)
 //  duty1=0;
 //  freq2=1;
 //  duty2=1;
-  HAL_GPIO_TogglePin(ONBOARD_LED_GPIO_Port, ONBOARD_LED_Pin);
-  HAL_Delay(1000);
+
 }
 

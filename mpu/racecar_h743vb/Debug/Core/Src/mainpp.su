@@ -53,6 +53,11 @@
 ../Core/Inc/std_msgs/Float32.h:39:17:virtual int std_msgs::Float32::deserialize(unsigned char*)	24	static
 ../Core/Inc/std_msgs/Float32.h:56:26:virtual const char* std_msgs::Float32::getType()	16	static
 ../Core/Inc/std_msgs/Float32.h:57:26:virtual const char* std_msgs::Float32::getMD5()	16	static
+../Core/Inc/std_msgs/Bool.h:18:5:std_msgs::Bool::Bool()	16	static
+../Core/Inc/std_msgs/Bool.h:23:17:virtual int std_msgs::Bool::serialize(unsigned char*) const	24	static
+../Core/Inc/std_msgs/Bool.h:36:17:virtual int std_msgs::Bool::deserialize(unsigned char*)	24	static
+../Core/Inc/std_msgs/Bool.h:50:26:virtual const char* std_msgs::Bool::getType()	16	static
+../Core/Inc/std_msgs/Bool.h:51:26:virtual const char* std_msgs::Bool::getMD5()	16	static
 ../Core/Inc/vesc_msgs/VescState.h:49:5:vesc_msgs::VescState::VescState()	16	static
 ../Core/Inc/vesc_msgs/VescState.h:66:17:virtual int vesc_msgs::VescState::serialize(unsigned char*) const	24	static
 ../Core/Inc/vesc_msgs/VescState.h:94:17:virtual int vesc_msgs::VescState::deserialize(unsigned char*)	24	static
@@ -60,28 +65,30 @@
 ../Core/Inc/vesc_msgs/VescState.h:124:18:virtual const char* vesc_msgs::VescState::getMD5()	16	static
 ../Core/Inc/ros/node_handle.h:50:7:constexpr ros::NodeHandleBase_::NodeHandleBase_()	16	static
 ../Core/Inc/ros/node_handle.h:104:7:constexpr ros::NodeHandle_<STM32Hardware>::NodeHandle_()	16	static
-../Core/Src/mainpp.cpp:123:19:HAL_StatusTypeDef read_ble_data(uint8_t*)	24	static
-../Core/Src/mainpp.cpp:150:19:HAL_StatusTypeDef read_speed_data(uint32_t*)	24	static
-../Core/Src/mainpp.cpp:164:6:void HAL_UART_TxCpltCallback(UART_HandleTypeDef*)	16	static
-../Core/Src/mainpp.cpp:171:6:void HAL_UART_RxCpltCallback(UART_HandleTypeDef*)	16	static
-../Core/Src/mainpp.cpp:182:6:void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef*, uint16_t)	104	static
-../Core/Src/mainpp.cpp:209:6:void HAL_UART_ErrorCallback(UART_HandleTypeDef*)	16	static
-../Core/Src/mainpp.cpp:217:6:void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef*)	16	static
-../Core/Src/mainpp.cpp:253:6:void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef*)	16	static
-../Core/Src/mainpp.cpp:261:6:void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef*)	24	static
-../Core/Src/mainpp.cpp:313:6:void HAL_TIM_ErrorCallback(TIM_HandleTypeDef*)	16	static
-../Core/Src/mainpp.cpp:325:6:void HAL_GPIO_EXTI_Callback(uint16_t)	16	static
-../Core/Src/mainpp.cpp:353:6:void speed_callback(const std_msgs::Float32&)	16	static
-../Core/Src/mainpp.cpp:359:6:void duty_cycle_callback(const std_msgs::Float32&)	16	static
-../Core/Src/mainpp.cpp:365:6:void steering_callback(const std_msgs::Float32&)	24	static
-../Core/Src/mainpp.cpp:374:6:void brake_callback(const std_msgs::Float32MultiArray&)	24	static
-../Core/Src/mainpp.cpp:397:6:void adc_setup()	8	static
-../Core/Src/mainpp.cpp:401:6:void uart_setup()	8	static
-../Core/Src/mainpp.cpp:409:6:void timer_setup()	8	static
-../Core/Src/mainpp.cpp:445:6:void ros_setup()	8	static
-../Core/Src/mainpp.cpp:460:6:void read_parameters()	128	static
-../Core/Src/mainpp.cpp:493:6:void setup()	16	static
-../Core/Src/mainpp.cpp:550:6:void loop()	16	static
+../Core/Src/mainpp.cpp:130:19:HAL_StatusTypeDef read_ble_data(uint8_t*)	24	static
+../Core/Src/mainpp.cpp:157:19:HAL_StatusTypeDef read_speed_data(uint32_t*)	24	static
+../Core/Src/mainpp.cpp:171:6:void HAL_UART_TxCpltCallback(UART_HandleTypeDef*)	16	static
+../Core/Src/mainpp.cpp:178:6:void HAL_UART_RxCpltCallback(UART_HandleTypeDef*)	16	static
+../Core/Src/mainpp.cpp:188:6:void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef*, uint16_t)	104	static
+../Core/Src/mainpp.cpp:215:6:void HAL_UART_ErrorCallback(UART_HandleTypeDef*)	16	static
+../Core/Src/mainpp.cpp:223:6:void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef*)	16	static
+../Core/Src/mainpp.cpp:259:6:void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef*)	16	static
+../Core/Src/mainpp.cpp:267:6:void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef*)	24	static
+../Core/Src/mainpp.cpp:319:6:void HAL_TIM_ErrorCallback(TIM_HandleTypeDef*)	16	static
+../Core/Src/mainpp.cpp:331:6:void HAL_GPIO_EXTI_Callback(uint16_t)	16	static
+../Core/Src/mainpp.cpp:359:6:void speed_callback(const std_msgs::Float32&)	16	static
+../Core/Src/mainpp.cpp:365:6:void duty_cycle_callback(const std_msgs::Float32&)	16	static
+../Core/Src/mainpp.cpp:371:6:void steering_callback(const std_msgs::Float32&)	24	static
+../Core/Src/mainpp.cpp:380:6:void brake_callback(const std_msgs::Float32MultiArray&)	24	static
+../Core/Src/mainpp.cpp:403:6:void input_mode_callback(const std_msgs::Bool&)	16	static
+../Core/Src/mainpp.cpp:407:6:void adc_setup()	8	static
+../Core/Src/mainpp.cpp:411:6:void uart_setup()	8	static
+../Core/Src/mainpp.cpp:419:6:void timer_setup()	8	static
+../Core/Src/mainpp.cpp:456:6:void ros_setup()	8	static
+../Core/Src/mainpp.cpp:471:6:void gpio_setup()	8	static
+../Core/Src/mainpp.cpp:483:6:void read_parameters()	128	static
+../Core/Src/mainpp.cpp:516:6:void setup()	16	static
+../Core/Src/mainpp.cpp:575:6:void loop()	16	static
 ../Core/Inc/ros/msg.h:188:15:static void ros::Msg::varToArr(A, V) [with A = unsigned char*; V = long unsigned int]	24	static
 ../Core/Inc/ros/msg.h:196:15:static void ros::Msg::arrToVar(V&, A) [with V = long unsigned int; A = unsigned char*]	24	static
 ../Core/Inc/ros/node_handle.h:128:13:Hardware* ros::NodeHandle_<Hardware, MAX_SUBSCRIBERS, MAX_PUBLISHERS, INPUT_SIZE, OUTPUT_SIZE>::getHardware() [with Hardware = STM32Hardware; int MAX_SUBSCRIBERS = 25; int MAX_PUBLISHERS = 25; int INPUT_SIZE = 512; int OUTPUT_SIZE = 512]	16	static
@@ -89,6 +96,7 @@
 ../Core/Inc/ros/subscriber.h:44:7:ros::Subscriber_::Subscriber_()	16	static
 ../Core/Inc/ros/subscriber.h:107:3:ros::Subscriber<MsgT, void>::Subscriber(const char*, ros::Subscriber<MsgT, void>::CallbackT, int) [with MsgT = std_msgs::Float32]	24	static
 ../Core/Inc/ros/subscriber.h:107:3:ros::Subscriber<MsgT, void>::Subscriber(const char*, ros::Subscriber<MsgT, void>::CallbackT, int) [with MsgT = std_msgs::Float32MultiArray]	24	static
+../Core/Inc/ros/subscriber.h:107:3:ros::Subscriber<MsgT, void>::Subscriber(const char*, ros::Subscriber<MsgT, void>::CallbackT, int) [with MsgT = std_msgs::Bool]	24	static
 ../Core/Inc/ros/node_handle.h:390:8:bool ros::NodeHandle_<Hardware, MAX_SUBSCRIBERS, MAX_PUBLISHERS, INPUT_SIZE, OUTPUT_SIZE>::advertise(ros::Publisher&) [with Hardware = STM32Hardware; int MAX_SUBSCRIBERS = 25; int MAX_PUBLISHERS = 25; int INPUT_SIZE = 512; int OUTPUT_SIZE = 512]	24	static
 ../Core/Inc/ros/node_handle.h:134:8:void ros::NodeHandle_<Hardware, MAX_SUBSCRIBERS, MAX_PUBLISHERS, INPUT_SIZE, OUTPUT_SIZE>::initNode() [with Hardware = STM32Hardware; int MAX_SUBSCRIBERS = 25; int MAX_PUBLISHERS = 25; int INPUT_SIZE = 512; int OUTPUT_SIZE = 512]	16	static
 ../Core/Inc/ros/node_handle.h:347:8:void ros::NodeHandle_<Hardware, MAX_SUBSCRIBERS, MAX_PUBLISHERS, INPUT_SIZE, OUTPUT_SIZE>::requestSyncTime() [with Hardware = STM32Hardware; int MAX_SUBSCRIBERS = 25; int MAX_PUBLISHERS = 25; int INPUT_SIZE = 512; int OUTPUT_SIZE = 512]	32	static
@@ -98,7 +106,11 @@
 ../Core/Inc/ros/node_handle.h:377:8:void ros::NodeHandle_<Hardware, MAX_SUBSCRIBERS, MAX_PUBLISHERS, INPUT_SIZE, OUTPUT_SIZE>::setNow(const ros::Time&) [with Hardware = STM32Hardware; int MAX_SUBSCRIBERS = 25; int MAX_PUBLISHERS = 25; int INPUT_SIZE = 512; int OUTPUT_SIZE = 512]	24	static
 ../Core/Inc/ros/node_handle.h:531:8:void ros::NodeHandle_<Hardware, MAX_SUBSCRIBERS, MAX_PUBLISHERS, INPUT_SIZE, OUTPUT_SIZE>::logerror(const char*) [with Hardware = STM32Hardware; int MAX_SUBSCRIBERS = 25; int MAX_PUBLISHERS = 25; int INPUT_SIZE = 512; int OUTPUT_SIZE = 512]	16	static
 ../Core/Inc/ros/node_handle.h:510:8:void ros::NodeHandle_<Hardware, MAX_SUBSCRIBERS, MAX_PUBLISHERS, INPUT_SIZE, OUTPUT_SIZE>::log(char, const char*) [with Hardware = STM32Hardware; int MAX_SUBSCRIBERS = 25; int MAX_PUBLISHERS = 25; int INPUT_SIZE = 512; int OUTPUT_SIZE = 512]	40	static
-../Core/Src/mainpp.cpp:594:1:void __static_initialization_and_destruction_0(int, int)	16	static
+../Core/Src/mainpp.cpp:633:1:void __static_initialization_and_destruction_0(int, int)	16	static
+../Core/Inc/ros/subscriber.h:114:16:void ros::Subscriber<MsgT, void>::callback(unsigned char*) [with MsgT = std_msgs::Bool]	16	static
+../Core/Inc/ros/subscriber.h:128:15:int ros::Subscriber<MsgT, void>::getEndpointType() [with MsgT = std_msgs::Bool]	16	static
+../Core/Inc/ros/subscriber.h:120:24:const char* ros::Subscriber<MsgT, void>::getMsgType() [with MsgT = std_msgs::Bool]	16	static
+../Core/Inc/ros/subscriber.h:124:24:const char* ros::Subscriber<MsgT, void>::getMsgMD5() [with MsgT = std_msgs::Bool]	16	static
 ../Core/Inc/ros/subscriber.h:114:16:void ros::Subscriber<MsgT, void>::callback(unsigned char*) [with MsgT = std_msgs::Float32MultiArray]	16	static
 ../Core/Inc/ros/subscriber.h:128:15:int ros::Subscriber<MsgT, void>::getEndpointType() [with MsgT = std_msgs::Float32MultiArray]	16	static
 ../Core/Inc/ros/subscriber.h:120:24:const char* ros::Subscriber<MsgT, void>::getMsgType() [with MsgT = std_msgs::Float32MultiArray]	16	static
@@ -108,4 +120,4 @@
 ../Core/Inc/ros/subscriber.h:120:24:const char* ros::Subscriber<MsgT, void>::getMsgType() [with MsgT = std_msgs::Float32]	16	static
 ../Core/Inc/ros/subscriber.h:124:24:const char* ros::Subscriber<MsgT, void>::getMsgMD5() [with MsgT = std_msgs::Float32]	16	static
 ../Core/Inc/ros/node_handle.h:338:16:bool ros::NodeHandle_<Hardware, MAX_SUBSCRIBERS, MAX_PUBLISHERS, INPUT_SIZE, OUTPUT_SIZE>::connected() [with Hardware = STM32Hardware; int MAX_SUBSCRIBERS = 25; int MAX_PUBLISHERS = 25; int INPUT_SIZE = 512; int OUTPUT_SIZE = 512]	16	static
-../Core/Src/mainpp.cpp:594:1:cpp)	8	static
+../Core/Src/mainpp.cpp:633:1:cpp)	8	static
