@@ -258,9 +258,9 @@ void input_test(){
 
 	char str[200]={0};
 	if(mode==Auto){
-		sprintf(str,"Input Mode: Auto, Frequency: %lu Hz, ESC DutyCycle: %u%%, SERVO DutyCycle: %lu%%\n",1000000/arr,esc_cnt*100/arr,servo_cnt*100/arr);
+		sprintf(str,"Input Mode: Auto, Frequency: %u Hz, ESC DutyCycle: %u%%, SERVO DutyCycle: %u%%\n",1000000/arr,esc_cnt*100/arr,servo_cnt*100/arr);
 	}else{
-		sprintf(str,"Input Mode: Manual, Frequency: %lu Hz, ESC DutyCycle: %u%%, SERVO DutyCycle: %lu%%\n",1000000/arr,esc_cnt*100/arr,servo_cnt*100/arr);
+		sprintf(str,"Input Mode: Manual, Frequency: %u Hz, ESC DutyCycle: %u%%, SERVO DutyCycle: %u%%\n",1000000/arr,esc_cnt*100/arr,servo_cnt*100/arr);
 	}
 	uint8_t i=0;
 	while(str[i]!=0 && i<200){
