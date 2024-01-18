@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
+		<item key="selection" value="pwm_generator_indicator"/>
+		<item key="wrap" value="true"/>
+		<item key="casesensitive" value="false"/>
+		<item key="wholeword" value="false"/>
+		<item key="incremental" value="false"/>
+		<item key="isRegEx" value="false"/>
+		<list key="findhistory">
+			<item value="pwm_generator_indicator"/>
+			<item value="_index"/>
+			<item value="TIMER_CLOCK_FREQ"/>
+			<item value="huart4"/>
+			<item value="pid_mode"/>
+			<item value="mode"/>
+			<item value="pin_mode"/>
+			<item value="brake_callback"/>
+			<item value="subscribe"/>
+			<item value="PID_Manual"/>
+			<item value="_pOn"/>
+			<item value="GetMode"/>
+			<item value="Compute"/>
+			<item value="last_time_"/>
+			<item value="_dispKp"/>
+		</list>
+		<list key="replacehistory">
+		</list>
+	</section>
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
+		<item key="DIALOG_X_ORIGIN" value="122"/>
+		<item key="DIALOG_Y_ORIGIN" value="301"/>
+		<item key="DIALOG_WIDTH" value="363"/>
+		<item key="DIALOG_HEIGHT" value="437"/>
+		<item key="DIALOG_FONT_NAME" value="1|Ubuntu|11.0|0|GTK|1|"/>
+	</section>
+</section>

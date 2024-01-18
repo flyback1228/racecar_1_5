@@ -1,0 +1,10 @@
+15:55:31 **** Build of configuration Debug for project f103_slave ****
+make -j8 all 
+arm-none-eabi-size   f103_slave.elf 
+   text	   data	    bss	    dec	    hex	filename
+  23440	    124	   3332	  26896	   6910	f103_slave.elf
+Finished building: default.size.stdout
+ 
+
+15:55:31 Build Finished. 0 errors, 0 warnings. (took 427ms)
+

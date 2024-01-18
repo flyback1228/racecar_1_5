@@ -1,0 +1,10 @@
+15:48:47 **** Incremental Build of configuration Debug for project racecar_pcb_test ****
+make -j8 all 
+arm-none-eabi-size   racecar_pcb_test.elf 
+   text	   data	    bss	    dec	    hex	filename
+  77460	    484	   3540	  81484	  13e4c	racecar_pcb_test.elf
+Finished building: default.size.stdout
+ 
+
+15:48:47 Build Finished. 0 errors, 0 warnings. (took 419ms)
+
