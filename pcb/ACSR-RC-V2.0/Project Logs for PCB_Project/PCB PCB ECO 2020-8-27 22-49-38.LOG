@@ -1,0 +1,20 @@
+Added Component: Designator=P1(VH3.96-3P)
+Added Component: Designator=P2(VH3.96-3P)
+Added Component: Designator=P3(VH3.96-3P)
+Added Component: Designator=P4(VH3.96-3P)
+Added Pin To Net: NetName=+5V Pin=P1-1
+Added Pin To Net: NetName=GND Pin=P1-2
+Added Pin To Net: NetName=A3144-1 Pin=P1-3
+Added Pin To Net: NetName=+5V Pin=P2-1
+Added Pin To Net: NetName=GND Pin=P2-2
+Added Pin To Net: NetName=A3144-2 Pin=P2-3
+Added Pin To Net: NetName=+5V Pin=P3-1
+Added Pin To Net: NetName=GND Pin=P3-2
+Added Pin To Net: NetName=A3144-3 Pin=P3-3
+Added Pin To Net: NetName=+5V Pin=P4-1
+Added Pin To Net: NetName=GND Pin=P4-2
+Added Pin To Net: NetName=A3144-4 Pin=P4-3
+Added Member To Class: ClassName=电原理图 Member=Component P1 A3144
+Added Member To Class: ClassName=电原理图 Member=Component P2 A3144
+Added Member To Class: ClassName=电原理图 Member=Component P3 A3144
+Added Member To Class: ClassName=电原理图 Member=Component P4 A3144

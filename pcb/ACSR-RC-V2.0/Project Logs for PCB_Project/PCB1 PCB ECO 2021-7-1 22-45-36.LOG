@@ -1,0 +1,8 @@
+Change Component Footprint: Designator=J22 Old Footprint=HDR1X2H New Footprint=XH2.54-2P
+Change Component Footprint: Designator=J23 Old Footprint=HDR1X2H New Footprint=XH2.54-2P
+Change Component Footprint: Designator=J24 Old Footprint=HDR1X2H New Footprint=XH2.54-2P
+Change Component Footprint: Designator=J25 Old Footprint=HDR1X2H New Footprint=XH2.54-2P
+Change Component Comment : Designator=J22 Old Comment=Header 2H New Comment=XH2.54-2P
+Change Component Comment : Designator=J23 Old Comment=Header 2H New Comment=XH2.54-2P
+Change Component Comment : Designator=J24 Old Comment=Header 2H New Comment=XH2.54-2P
+Change Component Comment : Designator=J25 Old Comment=Header 2H New Comment=XH2.54-2P

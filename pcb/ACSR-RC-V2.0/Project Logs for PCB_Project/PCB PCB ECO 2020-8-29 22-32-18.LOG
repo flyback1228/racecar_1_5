@@ -1,0 +1,9 @@
+Change Component Footprint: Designator=R19 Old Footprint=AXIAL-0.4 New Footprint=0805
+Added Component: Designator=R17(VR3)
+Added Component: Designator=R29(VR3)
+Added Pin To Net: NetName=+5V Pin=R17-1
+Added Pin To Net: NetName=GND Pin=R17-2
+Added Pin To Net: NetName=+5V Pin=R29-1
+Added Pin To Net: NetName=GND Pin=R29-2
+Added Member To Class: ClassName=电原理图 Member=Component R17 Res Tap
+Added Member To Class: ClassName=电原理图 Member=Component R29 Res Tap

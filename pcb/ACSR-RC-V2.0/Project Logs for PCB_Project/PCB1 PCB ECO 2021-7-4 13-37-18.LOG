@@ -1,0 +1,9 @@
+Removed Pin From Net: NetName=+12V Pin=F1-2
+Removed Pin From Net: NetName=+12V Pin=F1-2
+Removed Pin From Net: NetName=GND Pin=J6-2A
+Removed Pin From Net: NetName=GND Pin=J6-3A
+Removed Pin From Net: NetName=+12V Pin=J9-1
+Removed Pin From Net: NetName=GND Pin=J9-2
+Removed Member From Class: ClassName=电原理图 Member=F1
+Removed Member From Class: ClassName=电原理图 Member=J6
+Removed Member From Class: ClassName=电原理图 Member=J9

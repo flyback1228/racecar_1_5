@@ -1,0 +1,21 @@
+Added Component: Designator=F2(FUSE-CAR)
+Added Component: Designator=J10(DC-005)
+Added Component: Designator=J17(XH2.54-2P)
+Added Component: Designator=J18(XH2.54-2P)
+Added Pin To Net: NetName=+12V Pin=F2-2
+Added Pin To Net: NetName=+12V Pin=F2-2
+Added Pin To Net: NetName=+24V Pin=J17-1
+Added Pin To Net: NetName=GND Pin=J17-2
+Added Pin To Net: NetName=+12V Pin=J18-1
+Added Pin To Net: NetName=GND1 Pin=J10-2A
+Added Pin To Net: NetName=GND1 Pin=J10-3A
+Added Pin To Net: NetName=GND1 Pin=J18-2
+Added Net: Name=GND1
+Added Pin To Net: NetName=NetF2_1 Pin=F2-1
+Added Pin To Net: NetName=NetF2_1 Pin=F2-1
+Added Pin To Net: NetName=NetF2_1 Pin=J10-1A
+Added Net: Name=NetF2_1
+Added Member To Class: ClassName=BTS7960 Member=Component F2 Fuse 1
+Added Member To Class: ClassName=BTS7960 Member=Component J10 PWR2.5
+Added Member To Class: ClassName=BTS7960 Member=Component J17 XH2.54-2P
+Added Member To Class: ClassName=BTS7960 Member=Component J18 XH2.54-2P

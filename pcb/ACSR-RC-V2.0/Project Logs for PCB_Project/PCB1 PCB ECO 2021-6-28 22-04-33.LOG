@@ -1,0 +1,11 @@
+Change Component Footprint: Designator=R5 Old Footprint=AXIAL-0.4 New Footprint=0805
+Change Component Footprint: Designator=R6 Old Footprint=AXIAL-0.4 New Footprint=0805
+Change Component Footprint: Designator=R7 Old Footprint=AXIAL-0.4 New Footprint=0805
+Change Component Footprint: Designator=R8 Old Footprint=AXIAL-0.4 New Footprint=0805
+Change Component Footprint: Designator=R9 Old Footprint=AXIAL-0.4 New Footprint=0805
+Change Component Footprint: Designator=R10 Old Footprint=AXIAL-0.4 New Footprint=0805
+Change Component Footprint: Designator=R11 Old Footprint=AXIAL-0.4 New Footprint=0805
+Change Component Footprint: Designator=R12 Old Footprint=AXIAL-0.4 New Footprint=0805
+Added Room: Name=Arduino Nano
+Added Room: Name=BTS7960
+Added Room: Name=µÁ‘≠¿ÌÕº

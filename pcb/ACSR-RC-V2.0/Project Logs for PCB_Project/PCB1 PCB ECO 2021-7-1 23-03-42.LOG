@@ -1,0 +1,9 @@
+Change Component Comment : Designator=J7 Old Comment=USB TypeB New Comment=USB TypeA
+Added Component: Designator=C1(C1210_N)
+Added Component: Designator=E1(USB Expand)
+Added Component: Designator=J8(XH2.54-2P)
+Added Pin To Net: NetName=+5V Pin=J8-1
+Added Pin To Net: NetName=GND Pin=J8-2
+Added Member To Class: ClassName=电原理图 Member=Component C1 Cap Var
+Added Member To Class: ClassName=电原理图 Member=Component E1 USB3.0 Expand
+Added Member To Class: ClassName=电原理图 Member=Component J8 XH2.54-2P

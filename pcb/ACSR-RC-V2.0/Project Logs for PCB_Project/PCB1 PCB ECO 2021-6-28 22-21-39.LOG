@@ -1,0 +1,3 @@
+Removed Member From Class: ClassName=BTS7960 Member=R21
+Change Component Designator: OldDesignator=R21 NewDesignator=R29
+Added Member To Class: ClassName=BTS7960 Member=Component R29 Res2

@@ -1,0 +1,170 @@
+Removed Pin From Net: NetName=+3.3V Pin=C40-1
+Removed Pin From Net: NetName=+3.3V Pin=C41-2
+Removed Pin From Net: NetName=+5V Pin=C42-2
+Removed Pin From Net: NetName=RX4 Pin=J33-1
+Removed Pin From Net: NetName=TX4 Pin=J33-2
+Removed Pin From Net: NetName=GND Pin=R68-1
+Removed Pin From Net: NetName=+5V Pin=U2-8
+Removed Member From Class: ClassName=Arduino Nano Member=R68
+Change Component Comment : Designator=R35 Old Comment=0603-1k次㊣1ㄔ New Comment=0603-510次㊣1ㄔ
+Change Component Comment : Designator=R38 Old Comment=0603-1k次㊣1ㄔ New Comment=0603-510次㊣1ㄔ
+Change Component Comment : Designator=R41 Old Comment=0603-1k次㊣1ㄔ New Comment=0603-510次㊣1ㄔ
+Change Component Comment : Designator=R44 Old Comment=0603-1k次㊣1ㄔ New Comment=0603-510次㊣1ㄔ
+Change Component Comment : Designator=R15 Old Comment=0603-51k次㊣1ㄔ New Comment=0603-5.1k次㊣1ㄔ
+Change Component Comment : Designator=R16 Old Comment=0603-51k次㊣1ㄔ New Comment=0603-5.1k次㊣1ㄔ
+Change Component Comment : Designator=R17 Old Comment=0603-51k次㊣1ㄔ New Comment=0603-5.1k次㊣1ㄔ
+Change Component Comment : Designator=R18 Old Comment=0603-51k次㊣1ㄔ New Comment=0603-5.1k次㊣1ㄔ
+Change Component Comment : Designator=R7 Old Comment=0603-51k次㊣1ㄔ New Comment=0603-50k次㊣1ㄔ
+Change Component Comment : Designator=R8 Old Comment=0603-51k次㊣1ㄔ New Comment=0603-50k次㊣1ㄔ
+Change Component Comment : Designator=R9 Old Comment=0603-51k次㊣1ㄔ New Comment=0603-50k次㊣1ㄔ
+Change Component Comment : Designator=R10 Old Comment=0603-51k次㊣1ㄔ New Comment=0603-50k次㊣1ㄔ
+Change Component Comment : Designator=R11 Old Comment=0603-51k次㊣1ㄔ New Comment=0603-50k次㊣1ㄔ
+Change Component Comment : Designator=R12 Old Comment=0603-51k次㊣1ㄔ New Comment=0603-50k次㊣1ㄔ
+Change Component Comment : Designator=R13 Old Comment=0603-51k次㊣1ㄔ New Comment=0603-50k次㊣1ㄔ
+Change Component Comment : Designator=R14 Old Comment=0603-51k次㊣1ㄔ New Comment=0603-50k次㊣1ㄔ
+Change Component Comment : Designator=R2 Old Comment=0603-120k次㊣1ㄔ New Comment=0603-100k次㊣1ㄔ
+Change Component Comment : Designator=C42 Old Comment=0805-50V-1uF New Comment=0603-50V-1uF
+Change Component Comment : Designator=RAD3 Old Comment=3224W-10k New Comment=3224W-100k
+Change Component Comment : Designator=RAD4 Old Comment=3224W-10k New Comment=3224W-100k
+Change Component Comment : Designator=RAD5 Old Comment=3224W-10k New Comment=3224W-100k
+Change Component Comment : Designator=RAD6 Old Comment=3224W-10k New Comment=3224W-100k
+Change Component Comment : Designator=RAD7 Old Comment=3224W-10k New Comment=3224W-100k
+Change Component Comment : Designator=RAD8 Old Comment=3224W-10k New Comment=3224W-100k
+Change Component Comment : Designator=RAD9 Old Comment=3224W-10k New Comment=3224W-100k
+Change Component Comment : Designator=RAD10 Old Comment=3224W-10k New Comment=3224W-100k
+Change Component Comment : Designator=RAD1 Old Comment=3224W-51k New Comment=3224W-50k
+Change Component Comment : Designator=U22 Old Comment=BTN7970 New Comment=BTN8962
+Change Component Comment : Designator=U23 Old Comment=BTN7970 New Comment=BTN8962
+Change Component Comment : Designator=U24 Old Comment=BTN7970 New Comment=BTN8962
+Change Component Comment : Designator=U25 Old Comment=BTN7970 New Comment=BTN8962
+Change Component Comment : Designator=LED5 Old Comment=LED-耳3(港蟯) New Comment=0603-LED-(懦)
+Change Component Comment : Designator=U1 Old Comment=LM1117-1.2 New Comment=LM1117GS-1.2
+Added Component: Designator=C61(CC0603)
+Added Component: Designator=C62(CC0603)
+Added Component: Designator=C63(CC0603)
+Added Component: Designator=C64(CC0603)
+Added Component: Designator=C65(CC0603)
+Added Component: Designator=C66(CC0603)
+Added Component: Designator=C67(CC0603)
+Added Component: Designator=C68(CC0603)
+Added Component: Designator=R2(0603)
+Added Component: Designator=R6(0603)
+Added Component: Designator=R53(0603)
+Added Component: Designator=R54(0603)
+Added Component: Designator=R55(0603)
+Added Component: Designator=R60(0603)
+Added Component: Designator=R61(0603)
+Added Component: Designator=R62(0603)
+Added Component: Designator=R63(0603)
+Added Component: Designator=R64(0603)
+Added Pin To Net: NetName=+5V Pin=C40-1
+Added Pin To Net: NetName=+5V Pin=C41-2
+Added Pin To Net: NetName=+3.3V Pin=C42-2
+Added Pin To Net: NetName=GND Pin=C61-1
+Added Pin To Net: NetName=GND Pin=C62-1
+Added Pin To Net: NetName=GND Pin=C63-1
+Added Pin To Net: NetName=IS2 Pin=C63-2
+Added Pin To Net: NetName=GND Pin=C64-1
+Added Pin To Net: NetName=GND Pin=C65-1
+Added Pin To Net: NetName=IS3 Pin=C65-2
+Added Pin To Net: NetName=GND Pin=C66-1
+Added Pin To Net: NetName=GND Pin=C67-1
+Added Pin To Net: NetName=IS4 Pin=C67-2
+Added Pin To Net: NetName=GND Pin=C68-1
+Added Pin To Net: NetName=IS1 Pin=C68-2
+Added Pin To Net: NetName=+3.3V Pin=J29-41
+Added Pin To Net: NetName=GND Pin=R2-2
+Added Pin To Net: NetName=+5V Pin=R6-1
+Added Pin To Net: NetName=+3.3V Pin=U2-5
+Added Pin To Net: NetName=NetC61_2 Pin=C61-2
+Added Pin To Net: NetName=NetC61_2 Pin=R35-2
+Added Pin To Net: NetName=NetC61_2 Pin=U22-5
+Added Net: Name=NetC61_2
+Added Pin To Net: NetName=NetC62_2 Pin=C62-2
+Added Pin To Net: NetName=NetC62_2 Pin=R38-2
+Added Pin To Net: NetName=NetC62_2 Pin=U23-5
+Added Net: Name=NetC62_2
+Added Pin To Net: NetName=NetC64_2 Pin=C64-2
+Added Pin To Net: NetName=NetC64_2 Pin=R41-2
+Added Pin To Net: NetName=NetC64_2 Pin=U24-5
+Added Net: Name=NetC64_2
+Added Pin To Net: NetName=NetC66_2 Pin=C66-2
+Added Pin To Net: NetName=NetC66_2 Pin=R44-2
+Added Pin To Net: NetName=NetC66_2 Pin=U25-5
+Added Net: Name=NetC66_2
+Added Pin To Net: NetName=NetR2_1 Pin=R2-1
+Added Pin To Net: NetName=NetR2_1 Pin=R6-2
+Added Pin To Net: NetName=NetR2_1 Pin=U2-8
+Added Net: Name=NetR2_1
+Added Pin To Net: NetName=NetR53_1 Pin=R53-1
+Added Pin To Net: NetName=NetR53_1 Pin=U20-18
+Added Net: Name=NetR53_1
+Added Pin To Net: NetName=NetR53_2 Pin=R53-2
+Added Pin To Net: NetName=NetR53_2 Pin=U22-2
+Added Net: Name=NetR53_2
+Added Pin To Net: NetName=NetR54_1 Pin=R54-1
+Added Pin To Net: NetName=NetR54_1 Pin=U20-16
+Added Net: Name=NetR54_1
+Added Pin To Net: NetName=NetR54_2 Pin=R54-2
+Added Pin To Net: NetName=NetR54_2 Pin=U22-3
+Added Net: Name=NetR54_2
+Added Pin To Net: NetName=NetR55_1 Pin=R55-1
+Added Pin To Net: NetName=NetR55_1 Pin=U20-14
+Added Net: Name=NetR55_1
+Added Pin To Net: NetName=NetR55_2 Pin=R55-2
+Added Pin To Net: NetName=NetR55_2 Pin=U23-2
+Added Net: Name=NetR55_2
+Added Pin To Net: NetName=NetR60_1 Pin=R60-1
+Added Pin To Net: NetName=NetR60_1 Pin=U20-12
+Added Net: Name=NetR60_1
+Added Pin To Net: NetName=NetR60_2 Pin=R60-2
+Added Pin To Net: NetName=NetR60_2 Pin=U23-3
+Added Net: Name=NetR60_2
+Added Pin To Net: NetName=NetR61_1 Pin=R61-1
+Added Pin To Net: NetName=NetR61_1 Pin=U20-9
+Added Net: Name=NetR61_1
+Added Pin To Net: NetName=NetR61_2 Pin=R61-2
+Added Pin To Net: NetName=NetR61_2 Pin=U24-2
+Added Net: Name=NetR61_2
+Added Pin To Net: NetName=NetR62_1 Pin=R62-1
+Added Pin To Net: NetName=NetR62_1 Pin=U20-7
+Added Net: Name=NetR62_1
+Added Pin To Net: NetName=NetR62_2 Pin=R62-2
+Added Pin To Net: NetName=NetR62_2 Pin=U24-3
+Added Net: Name=NetR62_2
+Added Pin To Net: NetName=NetR63_1 Pin=R63-1
+Added Pin To Net: NetName=NetR63_1 Pin=U20-5
+Added Net: Name=NetR63_1
+Added Pin To Net: NetName=NetR63_2 Pin=R63-2
+Added Pin To Net: NetName=NetR63_2 Pin=U25-2
+Added Net: Name=NetR63_2
+Added Pin To Net: NetName=NetR64_1 Pin=R64-1
+Added Pin To Net: NetName=NetR64_1 Pin=U20-3
+Added Net: Name=NetR64_1
+Added Pin To Net: NetName=NetR64_2 Pin=R64-2
+Added Pin To Net: NetName=NetR64_2 Pin=U25-3
+Added Net: Name=NetR64_2
+Added Pin To Net: NetName=RX8 Pin=J28-4
+Added Pin To Net: NetName=RX8 Pin=J33-1
+Added Net: Name=RX8
+Added Pin To Net: NetName=TX8 Pin=J28-3
+Added Pin To Net: NetName=TX8 Pin=J33-2
+Added Net: Name=TX8
+Added Member To Class: ClassName=BTS7960 Member=Component C61 0603-50V-0.1uF
+Added Member To Class: ClassName=BTS7960 Member=Component C62 0603-50V-0.1uF
+Added Member To Class: ClassName=BTS7960 Member=Component C63 0603-50V-1nF
+Added Member To Class: ClassName=BTS7960 Member=Component C64 0603-50V-0.1uF
+Added Member To Class: ClassName=BTS7960 Member=Component C65 0603-50V-1nF
+Added Member To Class: ClassName=BTS7960 Member=Component C66 0603-50V-0.1uF
+Added Member To Class: ClassName=BTS7960 Member=Component C67 0603-50V-1nF
+Added Member To Class: ClassName=BTS7960 Member=Component C68 0603-50V-1nF
+Added Member To Class: ClassName=Arduino Nano Member=Component R2 0603-47.5k次㊣1ㄔ
+Added Member To Class: ClassName=Arduino Nano Member=Component R6 0603-22.1k次㊣1ㄔ
+Added Member To Class: ClassName=BTS7960 Member=Component R53 0603-10k次㊣1ㄔ
+Added Member To Class: ClassName=BTS7960 Member=Component R54 0603-10k次㊣1ㄔ
+Added Member To Class: ClassName=BTS7960 Member=Component R55 0603-10k次㊣1ㄔ
+Added Member To Class: ClassName=BTS7960 Member=Component R60 0603-10k次㊣1ㄔ
+Added Member To Class: ClassName=BTS7960 Member=Component R61 0603-10k次㊣1ㄔ
+Added Member To Class: ClassName=BTS7960 Member=Component R62 0603-10k次㊣1ㄔ
+Added Member To Class: ClassName=BTS7960 Member=Component R63 0603-10k次㊣1ㄔ
+Added Member To Class: ClassName=BTS7960 Member=Component R64 0603-10k次㊣1ㄔ

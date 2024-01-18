@@ -1,0 +1,7 @@
+Added Component: Designator=J55(HDR1X2)
+Added Pin To Net: NetName=GND Pin=J55-2
+Added Pin To Net: NetName=RECEIVER Pin=J55-1
+Added Pin To Net: NetName=RECEIVER Pin=K1-2
+Added Net: Name=RECEIVER
+Added Member To Class: ClassName=BTS7960 Member=Component C37 CD-50V-220uF-F8(SMD)
+Added Member To Class: ClassName=BTS7960 Member=Component J55 XH2.54-2P

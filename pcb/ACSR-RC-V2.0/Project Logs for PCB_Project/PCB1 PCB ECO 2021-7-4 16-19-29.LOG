@@ -1,0 +1,20 @@
+Added Component: Designator=LED1(LED-R3)
+Added Component: Designator=LED2(LED-R3)
+Added Component: Designator=R25(0805)
+Added Component: Designator=R31(0805)
+Added Pin To Net: NetName=GND Pin=LED1-2
+Added Pin To Net: NetName=GND Pin=LED2-2
+Added Pin To Net: NetName=+5V Pin=R25-2
+Added Pin To Net: NetName=LED2 Pin=R31-2
+Added Pin To Net: NetName=LED2 Pin=U31-30
+Added Net: Name=LED2
+Added Pin To Net: NetName=NetLED1_1 Pin=LED1-1
+Added Pin To Net: NetName=NetLED1_1 Pin=R31-1
+Added Net: Name=NetLED1_1
+Added Pin To Net: NetName=NetLED2_1 Pin=LED2-1
+Added Pin To Net: NetName=NetLED2_1 Pin=R25-1
+Added Net: Name=NetLED2_1
+Added Member To Class: ClassName=Arduino Nano Member=Component LED1 LED-φ3(翠绿)
+Added Member To Class: ClassName=电原理图 Member=Component LED2 LED-φ3(翠绿)
+Added Member To Class: ClassName=电原理图 Member=Component R25 0805-51kΩ±1％
+Added Member To Class: ClassName=Arduino Nano Member=Component R31 0805-51kΩ±1％

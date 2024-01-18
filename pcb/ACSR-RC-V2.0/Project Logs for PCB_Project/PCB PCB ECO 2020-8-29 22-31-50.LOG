@@ -1,0 +1,29 @@
+Change Component Footprint: Designator=R9 Old Footprint=AXIAL-0.4 New Footprint=0805
+Change Component Footprint: Designator=R10 Old Footprint=AXIAL-0.4 New Footprint=0805
+Change Component Footprint: Designator=R11 Old Footprint=AXIAL-0.4 New Footprint=0805
+Change Component Footprint: Designator=R12 Old Footprint=AXIAL-0.4 New Footprint=0805
+Change Component Footprint: Designator=R13 Old Footprint=AXIAL-0.4 New Footprint=0805
+Change Component Footprint: Designator=R14 Old Footprint=AXIAL-0.4 New Footprint=0805
+Change Component Footprint: Designator=R15 Old Footprint=AXIAL-0.4 New Footprint=0805
+Change Component Footprint: Designator=R16 Old Footprint=AXIAL-0.4 New Footprint=0805
+Change Component Footprint: Designator=R18 Old Footprint=AXIAL-0.4 New Footprint=0805
+Change Component Footprint: Designator=R20 Old Footprint=AXIAL-0.4 New Footprint=0805
+Change Component Footprint: Designator=R21 Old Footprint=AXIAL-0.4 New Footprint=0805
+Change Component Footprint: Designator=R22 Old Footprint=AXIAL-0.4 New Footprint=0805
+Change Component Footprint: Designator=R23 Old Footprint=AXIAL-0.4 New Footprint=0805
+Change Component Footprint: Designator=R24 Old Footprint=AXIAL-0.4 New Footprint=0805
+Change Component Footprint: Designator=R25 Old Footprint=AXIAL-0.4 New Footprint=0805
+Change Component Footprint: Designator=R26 Old Footprint=AXIAL-0.4 New Footprint=0805
+Change Component Footprint: Designator=R27 Old Footprint=AXIAL-0.4 New Footprint=0805
+Change Component Footprint: Designator=R28 Old Footprint=AXIAL-0.4 New Footprint=0805
+Change Component Footprint: Designator=R30 Old Footprint=AXIAL-0.4 New Footprint=0805
+Change Component Footprint: Designator=R31 Old Footprint=AXIAL-0.4 New Footprint=0805
+Change Component Footprint: Designator=R32 Old Footprint=AXIAL-0.4 New Footprint=0805
+Added Component: Designator=R17(VR3)
+Added Component: Designator=R29(VR3)
+Added Pin To Net: NetName=+5V Pin=R17-1
+Added Pin To Net: NetName=GND Pin=R17-2
+Added Pin To Net: NetName=+5V Pin=R29-1
+Added Pin To Net: NetName=GND Pin=R29-2
+Added Member To Class: ClassName=电原理图 Member=Component R17 Res Tap
+Added Member To Class: ClassName=电原理图 Member=Component R29 Res Tap

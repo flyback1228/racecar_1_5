@@ -1,0 +1,5 @@
+Change Component Footprint: Designator=SW1 Old Footprint=SPST-2 New Footprint=KEY_SWITCH
+Change Component Footprint: Designator=J3 Old Footprint=XH2.54-2P New Footprint=DG7620-2P
+Change Component Comment : Designator=J3 Old Comment=XH2.54-2P New Comment=DG7620-2P
+Added Pin To Net: NetName=NetR49_1 Pin=SW1-5
+Added Pin To Net: NetName=NetR48_1 Pin=SW1-6

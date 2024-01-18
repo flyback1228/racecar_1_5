@@ -1,0 +1,22 @@
+Removed Pin From Net: NetName=VIN1 Pin=J7-1
+Removed Pin From Net: NetName=GND Pin=J7-2
+Removed Pin From Net: NetName=VIN2 Pin=J9-1
+Removed Pin From Net: NetName=GND Pin=J9-2
+Change Component Footprint: Designator=J7 Old Footprint=VH3.96-2P New Footprint=VH3.96-3P
+Change Component Footprint: Designator=J9 Old Footprint=VH3.96-2P New Footprint=VH3.96-3P
+Change Component Comment : Designator=J7 Old Comment=VH3.96-2P New Comment=VH3.96-3P
+Change Component Comment : Designator=J9 Old Comment=VH3.96-2P New Comment=VH3.96-3P
+Added Component: Designator=R17(VR3)
+Added Component: Designator=R29(VR3)
+Added Pin To Net: NetName=+5V Pin=J7-1
+Added Pin To Net: NetName=VIN1 Pin=J7-2
+Added Pin To Net: NetName=GND Pin=J7-3
+Added Pin To Net: NetName=+5V Pin=J9-1
+Added Pin To Net: NetName=VIN2 Pin=J9-2
+Added Pin To Net: NetName=GND Pin=J9-3
+Added Pin To Net: NetName=+5V Pin=R17-1
+Added Pin To Net: NetName=GND Pin=R17-2
+Added Pin To Net: NetName=+5V Pin=R29-1
+Added Pin To Net: NetName=GND Pin=R29-2
+Added Member To Class: ClassName=电原理图 Member=Component R17 Res Tap
+Added Member To Class: ClassName=电原理图 Member=Component R29 Res Tap

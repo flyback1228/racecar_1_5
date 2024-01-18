@@ -1,0 +1,24 @@
+Removed Pin From Net: NetName=3.3V Pin=C40-1
+Removed Pin From Net: NetName=3.3V Pin=C41-2
+Removed Pin From Net: NetName=3.3V Pin=C42-2
+Removed Pin From Net: NetName=3.3V Pin=J26-1
+Removed Pin From Net: NetName=3.3V Pin=R1-1
+Removed Pin From Net: NetName=3.3V Pin=R56-1
+Removed Pin From Net: NetName=3.3V Pin=U2-6
+Removed Pin From Net: NetName=3.3V Pin=U2-7
+Removed Pin From Net: NetName=3.3V Pin=U2-8
+Removed Pin From Net: NetName=3.3V Pin=U3-28
+Removed Pin From Net: NetName=3.3V Pin=U10-2
+Removed Member From Class: ClassName=BTS7960 Member=SW2
+Added Pin To Net: NetName=+3.3V Pin=C40-1
+Added Pin To Net: NetName=+3.3V Pin=C41-2
+Added Pin To Net: NetName=+3.3V Pin=C42-2
+Added Pin To Net: NetName=+3.3V Pin=J26-1
+Added Pin To Net: NetName=+3.3V Pin=R1-1
+Added Pin To Net: NetName=+3.3V Pin=R56-1
+Added Pin To Net: NetName=+3.3V Pin=U2-6
+Added Pin To Net: NetName=+3.3V Pin=U2-7
+Added Pin To Net: NetName=+3.3V Pin=U2-8
+Added Pin To Net: NetName=+3.3V Pin=U3-28
+Added Pin To Net: NetName=+3.3V Pin=U10-2
+Added Member To Class: ClassName=BTS7960 Member=Component SW1 SW-SPST

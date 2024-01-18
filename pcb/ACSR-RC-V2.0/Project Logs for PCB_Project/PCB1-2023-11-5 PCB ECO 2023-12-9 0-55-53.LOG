@@ -1,0 +1,4 @@
+Removed Member From Class: ClassName=Arduino Nano Member=R2
+Change Component Designator: OldDesignator=R2 NewDesignator=R65
+Change Net Name : Old Net Name=NetR2_1 New Net Name=NetR6_2
+Added Member To Class: ClassName=Arduino Nano Member=Component R65 0603-47.5k¦¸¡À1£¥

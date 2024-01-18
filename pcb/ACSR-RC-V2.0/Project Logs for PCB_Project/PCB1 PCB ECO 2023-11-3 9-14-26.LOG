@@ -1,0 +1,16 @@
+Removed Pin From Net: NetName=GND Pin=U13-5
+Removed Pin From Net: NetName=GND Pin=U13-6
+Removed Pin From Net: NetName=NRST Pin=U13-11
+Added Pin To Net: NetName=BNO_BOOTN Pin=J28-41
+Added Pin To Net: NetName=BNO_BOOTN Pin=R50-1
+Added Pin To Net: NetName=BNO_BOOTN Pin=U13-4
+Added Net: Name=BNO_BOOTN
+Added Pin To Net: NetName=BNO_NRST Pin=J28-42
+Added Pin To Net: NetName=BNO_NRST Pin=U13-11
+Added Net: Name=BNO_NRST
+Added Pin To Net: NetName=BNO_P0 Pin=J28-40
+Added Pin To Net: NetName=BNO_P0 Pin=U13-6
+Added Net: Name=BNO_P0
+Added Pin To Net: NetName=BNO_P1 Pin=J28-39
+Added Pin To Net: NetName=BNO_P1 Pin=U13-5
+Added Net: Name=BNO_P1

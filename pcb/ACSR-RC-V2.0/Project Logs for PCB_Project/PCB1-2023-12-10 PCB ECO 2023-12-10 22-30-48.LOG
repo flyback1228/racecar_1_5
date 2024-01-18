@@ -1,0 +1,5 @@
+Removed Pin From Net: NetName=+3.3V Pin=P2-1
+Removed Pin From Net: NetName=GND Pin=P2-4
+Removed Member From Class: ClassName=Arduino Nano Member=P2
+Added Pin To Net: NetName=SWDIO_F103 Pin=P1-4
+Added Pin To Net: NetName=SWCLK_F103 Pin=P1-6

@@ -1,0 +1,115 @@
+Removed Pin From Net: NetName=SPEED_1 Pin=J8-1
+Removed Pin From Net: NetName=SPEED_2 Pin=J8-2
+Removed Pin From Net: NetName=SPEED_3 Pin=J8-3
+Removed Pin From Net: NetName=SPEED_4 Pin=J8-4
+Removed Pin From Net: NetName=SPEED_5 Pin=J8-5
+Removed Pin From Net: NetName=SPEED_6 Pin=J8-6
+Removed Pin From Net: NetName=SPEED_7 Pin=J8-7
+Removed Pin From Net: NetName=SPEED_8 Pin=J8-8
+Removed Pin From Net: NetName=GND Pin=J8-9
+Removed Pin From Net: NetName=VRS-OUT1 Pin=J9-1
+Removed Pin From Net: NetName=VRS-OUT2 Pin=J9-2
+Removed Pin From Net: NetName=VRS-OUT3 Pin=J9-3
+Removed Pin From Net: NetName=VRS-OUT4 Pin=J9-4
+Removed Pin From Net: NetName=GND Pin=J9-5
+Removed Pin From Net: NetName=VRS-1 Pin=R18-1
+Removed Pin From Net: NetName=VRS-3 Pin=R19-1
+Removed Pin From Net: NetName=VRS-2 Pin=R20-2
+Removed Pin From Net: NetName=VRS-4 Pin=R21-2
+Removed Member From Class: ClassName=电原理图 Member=J8
+Removed Member From Class: ClassName=电原理图 Member=J9
+Removed Member From Class: ClassName=电原理图 Member=R29
+Change Component Footprint: Designator=J31 Old Footprint=HDR1X3 New Footprint=XH2.54-3P
+Change Component Footprint: Designator=J2 Old Footprint=VH3.96-2P New Footprint=XH2.54-2P
+Change Component Footprint: Designator=J3 Old Footprint=VH3.96-2P New Footprint=XH2.54-2P
+Change Component Footprint: Designator=J4 Old Footprint=VH3.96-2P New Footprint=XH2.54-2P
+Change Component Footprint: Designator=J5 Old Footprint=VH3.96-2P New Footprint=XH2.54-2P
+Change Component Comment : Designator=J31 Old Comment=Header 3 New Comment=XH2.54-3P
+Change Component Comment : Designator=J2 Old Comment=VH3.96-2P New Comment=XH2.54-2P
+Change Component Comment : Designator=J3 Old Comment=VH3.96-2P New Comment=XH2.54-2P
+Change Component Comment : Designator=J4 Old Comment=VH3.96-2P New Comment=XH2.54-2P
+Change Component Comment : Designator=J5 Old Comment=VH3.96-2P New Comment=XH2.54-2P
+Added Component: Designator=J11(XH2.54-4P)
+Added Component: Designator=J12(XH2.54-4P)
+Added Component: Designator=J13(XH2.54-4P)
+Added Component: Designator=J14(XH2.54-4P)
+Added Component: Designator=J15(XH2.54-4P)
+Added Component: Designator=J16(XH2.54-4P)
+Added Component: Designator=J17(XH2.54-4P)
+Added Component: Designator=J18(XH2.54-4P)
+Added Component: Designator=J26(XH2.54-2P)
+Added Component: Designator=J27(XH2.54-2P)
+Added Component: Designator=J28(XH2.54-2P)
+Added Component: Designator=J29(XH2.54-2P)
+Added Component: Designator=RAD1(3224W)
+Added Component: Designator=RAD2(3224W)
+Added Component: Designator=RAD4(3224W)
+Added Component: Designator=RAD5(3224W)
+Added Pin To Net: NetName=+3.3V Pin=J11-1
+Added Pin To Net: NetName=SPEED_1 Pin=J11-2
+Added Pin To Net: NetName=SPEED_1 Pin=J11-3
+Added Pin To Net: NetName=GND Pin=J11-4
+Added Pin To Net: NetName=+3.3V Pin=J12-1
+Added Pin To Net: NetName=SPEED_2 Pin=J12-2
+Added Pin To Net: NetName=SPEED_2 Pin=J12-3
+Added Pin To Net: NetName=GND Pin=J12-4
+Added Pin To Net: NetName=+3.3V Pin=J13-1
+Added Pin To Net: NetName=SPEED_3 Pin=J13-2
+Added Pin To Net: NetName=SPEED_3 Pin=J13-3
+Added Pin To Net: NetName=GND Pin=J13-4
+Added Pin To Net: NetName=+3.3V Pin=J14-1
+Added Pin To Net: NetName=SPEED_4 Pin=J14-2
+Added Pin To Net: NetName=SPEED_4 Pin=J14-3
+Added Pin To Net: NetName=GND Pin=J14-4
+Added Pin To Net: NetName=+3.3V Pin=J15-1
+Added Pin To Net: NetName=SPEED_5 Pin=J15-2
+Added Pin To Net: NetName=SPEED_5 Pin=J15-3
+Added Pin To Net: NetName=GND Pin=J15-4
+Added Pin To Net: NetName=+3.3V Pin=J16-1
+Added Pin To Net: NetName=SPEED_6 Pin=J16-2
+Added Pin To Net: NetName=SPEED_6 Pin=J16-3
+Added Pin To Net: NetName=GND Pin=J16-4
+Added Pin To Net: NetName=+3.3V Pin=J17-1
+Added Pin To Net: NetName=SPEED_7 Pin=J17-2
+Added Pin To Net: NetName=SPEED_7 Pin=J17-3
+Added Pin To Net: NetName=GND Pin=J17-4
+Added Pin To Net: NetName=+3.3V Pin=J18-1
+Added Pin To Net: NetName=SPEED_8 Pin=J18-2
+Added Pin To Net: NetName=SPEED_8 Pin=J18-3
+Added Pin To Net: NetName=GND Pin=J18-4
+Added Pin To Net: NetName=VRS-OUT1 Pin=J26-1
+Added Pin To Net: NetName=GND Pin=J26-2
+Added Pin To Net: NetName=VRS-OUT2 Pin=J27-1
+Added Pin To Net: NetName=GND Pin=J27-2
+Added Pin To Net: NetName=VRS-OUT3 Pin=J28-1
+Added Pin To Net: NetName=GND Pin=J28-2
+Added Pin To Net: NetName=VRS-OUT4 Pin=J29-1
+Added Pin To Net: NetName=GND Pin=J29-2
+Added Pin To Net: NetName=NetR18_1 Pin=R18-1
+Added Net: Name=NetR18_1
+Added Pin To Net: NetName=NetR19_1 Pin=R19-1
+Added Net: Name=NetR19_1
+Added Pin To Net: NetName=NetR20_2 Pin=R20-2
+Added Net: Name=NetR20_2
+Added Pin To Net: NetName=NetR21_2 Pin=R21-2
+Added Net: Name=NetR21_2
+Added Member To Class: ClassName=电原理图 Member=Component J11 XH2.54-4P
+Added Member To Class: ClassName=电原理图 Member=Component J12 XH2.54-4P
+Added Member To Class: ClassName=电原理图 Member=Component J13 XH2.54-4P
+Added Member To Class: ClassName=电原理图 Member=Component J14 XH2.54-4P
+Added Member To Class: ClassName=电原理图 Member=Component J15 XH2.54-4P
+Added Member To Class: ClassName=电原理图 Member=Component J16 XH2.54-4P
+Added Member To Class: ClassName=电原理图 Member=Component J17 XH2.54-4P
+Added Member To Class: ClassName=电原理图 Member=Component J18 XH2.54-4P
+Added Member To Class: ClassName=电原理图 Member=Component J26 XH2.54-2P
+Added Member To Class: ClassName=电原理图 Member=Component J27 XH2.54-2P
+Added Member To Class: ClassName=电原理图 Member=Component J28 XH2.54-2P
+Added Member To Class: ClassName=电原理图 Member=Component J29 XH2.54-2P
+Added Member To Class: ClassName=电原理图 Member=Component R21 Res2
+Added Member To Class: ClassName=电原理图 Member=Component RAD1 200K
+Added Member To Class: ClassName=电原理图 Member=Component RAD2 200K
+Added Member To Class: ClassName=电原理图 Member=Component RAD4 200K
+Added Member To Class: ClassName=电原理图 Member=Component RAD5 200K
+Added Room: Name=Arduino Nano
+Added Room: Name=BTS7960
+Added Room: Name=电原理图

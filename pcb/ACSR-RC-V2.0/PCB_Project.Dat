@@ -1,0 +1,57 @@
+﻿Field=#~Integer~#~50|Field=Comment~String~Comment~146|Field=Description~String~Description~146|Field=Designator~String~Designator~146|Field=LibRef~String~LibRef~146|Field=Quantity~Integer~Quantity~146|ReportField=Currency~<none>|ReportField=ProductionQuantity~1|ReportField=ProjectFileName~PCB_Project.PrjPcb|ReportField=ProjectFullPath~F:\项目\锡林\新版本\PCB_Project 项目整合+ 0603-1103\PCB_Project.PrjPcb|ReportField=Title~Bill of Materials For Project [PCB_Project.PrjPcb] (No PCB Document Selected)|ReportField=TotalQuantity~195|ReportField=ReportTime~19:52:19|ReportField=ReportDate~2023/11/10|ReportField=ReportDateTime~2023/11/10 19:52:19|ReportField=OutputName~Bill of Materials|ReportField=OutputType~BOM_PartType|ReportField=GeneratorName~BOM|ReportField=GeneratorDescription~Bill of Materials|ReportField=VariantName~None|ReportField=Address1~|ReportField=Address2~|ReportField=Address3~|ReportField=Address4~|ReportField=Application_BuildNumber~|ReportField=ApprovedBy~|ReportField=Author~|ReportField=CheckedBy~|ReportField=CompanyName~|ReportField=CurrentDate~2023/11/10|ReportField=CurrentTime~19:51:58|ReportField=Date~|ReportField=DocumentFullPathAndName~F:\项目\锡林\新版本\PCB_Project 项目整合+ 0603-1103\Arduino Nano.SchDoc|ReportField=DocumentName~Arduino Nano.SchDoc|ReportField=DocumentNumber~|ReportField=DrawnBy~|ReportField=Engineer~|ReportField=ImagePath~|ReportField=ModifiedDate~2023/11/5|ReportField=Organization~|ReportField=ProjectName~PCB_Project.PrjPcb|ReportField=Revision~|ReportField=Rule~|ReportField=SheetNumber~|ReportField=SheetTotal~|ReportField=Time~|ReportField=Title~|ReportField=DataSourceFileName~PCB_Project.PrjPcb|ReportField=DataSourceFullPath~F:\项目\锡林\新版本\PCB_Project 项目整合+ 0603-1103\PCB_Project.PrjPcb
+1|0603-50V-0.1uF|贴片电容|C1, C3, C5, C7, C8, C9, C10, C19, C20, C21, C22, C23, C24, C25, C26, C27, C28, C29, C30, C31, C32, C33, C34, C35, C41, C44, C46, C47, C48, C49, C50, C51, C52, C53, C54|Cap|35
+2|CD-50V-10uF-F5(SMD)|贴片铝电解电容|C2, C4, C6|Cap Pol1|3
+3|0603-50V-47pF|贴片电容|C11, C12, C13, C14, C15, C16, C17, C18|CAP|8
+4|CD-50V-220uF-F8(SMD)|贴片铝电解电容|C36, C37, C38, C39|Cap Pol3|4
+5|CD-50V-4.7uF-F5(SMD)|贴片铝电解电容|C40, C43, C45|Cap Pol1|3
+6|0603-50V-1uF|贴片电容|C42|Cap|1
+7|0603-50V-22pF|贴片电容|C55, C56, C57, C58, C59, C60|Cap|6
+8|1N4007(SOD-123FL)|贴片二极管|D1|Diode|1
+9|Header 20X2|排针|J1|Header 20X2|1
+10|XH2.54-2P|插座|J2, J4, J5, J6|CON2|4
+11|DG7620-2P|插座|J3|CON2|1
+12|Header 8|排针|J7|Header 8|1
+13|Header 22X2|排针|J28, J29|Header 22X2|2
+14|Header 3X2|排针|J30, J31, J41|Header 3X2|3
+15|Header 3|排针|J33|Header 3|1
+16|Header 2|排针|J50, J51, J52, J55|CON2|4
+17|Header 8X2|排针|J60, J70, J71|Header 8X2|3
+18|Jumper|Jumper|JP1, JP2, JP3, JP4, JP5, JP6, JP7, JP8, JP9, JP10|Bell|10
+19|HF49FD/005-1H11|Single-Pole Single-Throw Relay|K1|Relay-SPST|1
+20|LED-φ3(翠绿)|发光二极管|LED1|LED|1
+21|LED-φ3(红)|发光二极管|LED2|LED|1
+22|LED-φ3(黄)|发光二极管|LED3|LED|1
+23|LED-φ3(蓝)|发光二极管|LED4|LED|1
+24|0603-LED-(蓝)|发光二极管|LED5|LED|1
+25|Header 4X2|排针|P1|Header 4X2|1
+26|Header 4|排针|P2|Header 4|1
+27|S9013(SOT-23)|贴片三极管|Q1|S9013|1
+28|0603-1kΩ±1％|贴片电阻|R1, R35, R36, R38, R39, R41, R42, R44, R45|Res2|9
+29|0603-100kΩ±1％|贴片电阻|R2, R69|Res2|2
+30|0603-220Ω±1％|贴片电阻|R3|Res2|1
+31|0603-5.1kΩ±1％|贴片电阻, 贴片电阻, 贴片电阻器, 贴片电阻器, 贴片电阻器, 贴片电阻器|R4, R5, R15, R16, R17, R18|Res2|6
+32|0603-50kΩ±1％|贴片电阻|R7, R8, R9, R10, R11, R12, R13, R14|Res2|8
+33|0603-10kΩ±1％|贴片电阻|R19, R20, R21, R22, R23, R24, R25, R26, R27, R28, R29, R30, R31, R32, R33, R34, R47, R48, R49, R50, R68|Res2|21
+34|0603-0Ω±1％|贴片电阻|R37, R40, R43, R46, R58, R59|Res2|6
+35|0603-3.3kΩ±1％|贴片电阻|R51, R52|Res2|2
+36|0603-4.7kΩ±1％|贴片电阻|R56, R57|Res2|2
+37|0603-51kΩ±1％|贴片电阻|R66|Res2|1
+38|3224W-50k|贴片电位器|RAD1|RPot SM|1
+39|3224W-100k|贴片电位器|RAD3, RAD4, RAD5, RAD6, RAD7, RAD8, RAD9, RAD10|RPot SM|8
+40|0603-1kΩ-2*4P|排阻|RP1, RP2|RESPACK|2
+41|0603-10kΩ-2*4P|排阻|RP3, RP4|RESPACK|2
+42|XKB8585-Z-150|开关|SW1, SW2|SW-SPST|2
+43|LM1117GS-1.2|三端稳压器|U1|78|1
+44|CP2102N-A02-GQFN24R|集成电路|U2|CP2102N-A02-GQFN24R|1
+45|PCA9685|集成电路|U3|PCA9685|1
+46|MCP6002|集成电路|U4, U5, U6, U7, U8|1458|5
+47|max860|集成电路|U9|max860|1
+48|SP0503BAHTG|集成电路|U10|SP0503BAHTG|1
+49|STM32F103C8T6|集成电路|U11|STM32F103C8T6|1
+50|SN74LVC1G32QDCKRQ1|集成电路|U12|74LS32|1
+51|BNO085|集成电路|U13|BNO080|1
+52|TYPE-C-31-M-12||U14|TYPE-C-31-M-12|1
+53|SN74AHC244DW|集成电路|U20|SN74AHC244DW|1
+54|BTN8962|集成电路|U22, U23, U24, U25|BTN7970|4
+55|32.768k|Crystal Oscillator|Y1, Y3|XTAL|2
+56|25M|Crystal Oscillator|Y2|XTAL|1

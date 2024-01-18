@@ -1,0 +1,143 @@
+Removed Pin From Net: NetName=RX7 Pin=J33-1
+Removed Pin From Net: NetName=TX7 Pin=J33-2
+Change Component Comment : Designator=R37 Old Comment=0805-0次㊣1ㄔ New Comment=0603-0次㊣1ㄔ
+Change Component Comment : Designator=R40 Old Comment=0805-0次㊣1ㄔ New Comment=0603-0次㊣1ㄔ
+Change Component Comment : Designator=R43 Old Comment=0805-0次㊣1ㄔ New Comment=0603-0次㊣1ㄔ
+Change Component Comment : Designator=R46 Old Comment=0805-0次㊣1ㄔ New Comment=0603-0次㊣1ㄔ
+Change Component Comment : Designator=R58 Old Comment=0805-0次㊣1ㄔ New Comment=0603-0次㊣1ㄔ
+Change Component Comment : Designator=R59 Old Comment=0805-0次㊣1ㄔ New Comment=0603-0次㊣1ㄔ
+Change Component Comment : Designator=R1 Old Comment=0805-1k次㊣1ㄔ New Comment=0603-1k次㊣1ㄔ
+Change Component Comment : Designator=R35 Old Comment=0805-1k次㊣1ㄔ New Comment=0603-1k次㊣1ㄔ
+Change Component Comment : Designator=R36 Old Comment=0805-1k次㊣1ㄔ New Comment=0603-1k次㊣1ㄔ
+Change Component Comment : Designator=R38 Old Comment=0805-1k次㊣1ㄔ New Comment=0603-1k次㊣1ㄔ
+Change Component Comment : Designator=R39 Old Comment=0805-1k次㊣1ㄔ New Comment=0603-1k次㊣1ㄔ
+Change Component Comment : Designator=R41 Old Comment=0805-1k次㊣1ㄔ New Comment=0603-1k次㊣1ㄔ
+Change Component Comment : Designator=R42 Old Comment=0805-1k次㊣1ㄔ New Comment=0603-1k次㊣1ㄔ
+Change Component Comment : Designator=R44 Old Comment=0805-1k次㊣1ㄔ New Comment=0603-1k次㊣1ㄔ
+Change Component Comment : Designator=R45 Old Comment=0805-1k次㊣1ㄔ New Comment=0603-1k次㊣1ㄔ
+Change Component Comment : Designator=R51 Old Comment=0805-3.3k次㊣1ㄔ New Comment=0603-3.3k次㊣1ㄔ
+Change Component Comment : Designator=R52 Old Comment=0805-3.3k次㊣1ㄔ New Comment=0603-3.3k次㊣1ㄔ
+Change Component Comment : Designator=R56 Old Comment=0805-4.7k次㊣1ㄔ New Comment=0603-4.7k次㊣1ㄔ
+Change Component Comment : Designator=R57 Old Comment=0805-4.7k次㊣1ㄔ New Comment=0603-4.7k次㊣1ㄔ
+Change Component Comment : Designator=R19 Old Comment=0805-10k次㊣1ㄔ New Comment=0603-10k次㊣1ㄔ
+Change Component Comment : Designator=R20 Old Comment=0805-10k次㊣1ㄔ New Comment=0603-10k次㊣1ㄔ
+Change Component Comment : Designator=R21 Old Comment=0805-10k次㊣1ㄔ New Comment=0603-10k次㊣1ㄔ
+Change Component Comment : Designator=R22 Old Comment=0805-10k次㊣1ㄔ New Comment=0603-10k次㊣1ㄔ
+Change Component Comment : Designator=R23 Old Comment=0805-10k次㊣1ㄔ New Comment=0603-10k次㊣1ㄔ
+Change Component Comment : Designator=R24 Old Comment=0805-10k次㊣1ㄔ New Comment=0603-10k次㊣1ㄔ
+Change Component Comment : Designator=R25 Old Comment=0805-10k次㊣1ㄔ New Comment=0603-10k次㊣1ㄔ
+Change Component Comment : Designator=R26 Old Comment=0805-10k次㊣1ㄔ New Comment=0603-10k次㊣1ㄔ
+Change Component Comment : Designator=R27 Old Comment=0805-10k次㊣1ㄔ New Comment=0603-10k次㊣1ㄔ
+Change Component Comment : Designator=R28 Old Comment=0805-10k次㊣1ㄔ New Comment=0603-10k次㊣1ㄔ
+Change Component Comment : Designator=R29 Old Comment=0805-10k次㊣1ㄔ New Comment=0603-10k次㊣1ㄔ
+Change Component Comment : Designator=R30 Old Comment=0805-10k次㊣1ㄔ New Comment=0603-10k次㊣1ㄔ
+Change Component Comment : Designator=R31 Old Comment=0805-10k次㊣1ㄔ New Comment=0603-10k次㊣1ㄔ
+Change Component Comment : Designator=R32 Old Comment=0805-10k次㊣1ㄔ New Comment=0603-10k次㊣1ㄔ
+Change Component Comment : Designator=R33 Old Comment=0805-10k次㊣1ㄔ New Comment=0603-10k次㊣1ㄔ
+Change Component Comment : Designator=R34 Old Comment=0805-10k次㊣1ㄔ New Comment=0603-10k次㊣1ㄔ
+Change Component Comment : Designator=R47 Old Comment=0805-10k次㊣1ㄔ New Comment=0603-10k次㊣1ㄔ
+Change Component Comment : Designator=R48 Old Comment=0805-10k次㊣1ㄔ New Comment=0603-10k次㊣1ㄔ
+Change Component Comment : Designator=R49 Old Comment=0805-10k次㊣1ㄔ New Comment=0603-10k次㊣1ㄔ
+Change Component Comment : Designator=R50 Old Comment=0805-10k次㊣1ㄔ New Comment=0603-10k次㊣1ㄔ
+Change Component Comment : Designator=R68 Old Comment=0805-10k次㊣1ㄔ New Comment=0603-10k次㊣1ㄔ
+Change Component Comment : Designator=C1 Old Comment=0805-50V-0.1uF New Comment=0603-50V-0.1uF
+Change Component Comment : Designator=C3 Old Comment=0805-50V-0.1uF New Comment=0603-50V-0.1uF
+Change Component Comment : Designator=C5 Old Comment=0805-50V-0.1uF New Comment=0603-50V-0.1uF
+Change Component Comment : Designator=C7 Old Comment=0805-50V-0.1uF New Comment=0603-50V-0.1uF
+Change Component Comment : Designator=C8 Old Comment=0805-50V-0.1uF New Comment=0603-50V-0.1uF
+Change Component Comment : Designator=C9 Old Comment=0805-50V-0.1uF New Comment=0603-50V-0.1uF
+Change Component Comment : Designator=C10 Old Comment=0805-50V-0.1uF New Comment=0603-50V-0.1uF
+Change Component Comment : Designator=C19 Old Comment=0805-50V-0.1uF New Comment=0603-50V-0.1uF
+Change Component Comment : Designator=C20 Old Comment=0805-50V-0.1uF New Comment=0603-50V-0.1uF
+Change Component Comment : Designator=C21 Old Comment=0805-50V-0.1uF New Comment=0603-50V-0.1uF
+Change Component Comment : Designator=C22 Old Comment=0805-50V-0.1uF New Comment=0603-50V-0.1uF
+Change Component Comment : Designator=C23 Old Comment=0805-50V-0.1uF New Comment=0603-50V-0.1uF
+Change Component Comment : Designator=C24 Old Comment=0805-50V-0.1uF New Comment=0603-50V-0.1uF
+Change Component Comment : Designator=C25 Old Comment=0805-50V-0.1uF New Comment=0603-50V-0.1uF
+Change Component Comment : Designator=C26 Old Comment=0805-50V-0.1uF New Comment=0603-50V-0.1uF
+Change Component Comment : Designator=C27 Old Comment=0805-50V-0.1uF New Comment=0603-50V-0.1uF
+Change Component Comment : Designator=C28 Old Comment=0805-50V-0.1uF New Comment=0603-50V-0.1uF
+Change Component Comment : Designator=C29 Old Comment=0805-50V-0.1uF New Comment=0603-50V-0.1uF
+Change Component Comment : Designator=C30 Old Comment=0805-50V-0.1uF New Comment=0603-50V-0.1uF
+Change Component Comment : Designator=C31 Old Comment=0805-50V-0.1uF New Comment=0603-50V-0.1uF
+Change Component Comment : Designator=C32 Old Comment=0805-50V-0.1uF New Comment=0603-50V-0.1uF
+Change Component Comment : Designator=C33 Old Comment=0805-50V-0.1uF New Comment=0603-50V-0.1uF
+Change Component Comment : Designator=C34 Old Comment=0805-50V-0.1uF New Comment=0603-50V-0.1uF
+Change Component Comment : Designator=C35 Old Comment=0805-50V-0.1uF New Comment=0603-50V-0.1uF
+Change Component Comment : Designator=C41 Old Comment=0805-50V-0.1uF New Comment=0603-50V-0.1uF
+Change Component Comment : Designator=C44 Old Comment=0805-50V-0.1uF New Comment=0603-50V-0.1uF
+Change Component Comment : Designator=C46 Old Comment=0805-50V-0.1uF New Comment=0603-50V-0.1uF
+Change Component Comment : Designator=C47 Old Comment=0805-50V-0.1uF New Comment=0603-50V-0.1uF
+Change Component Comment : Designator=C48 Old Comment=0805-50V-0.1uF New Comment=0603-50V-0.1uF
+Change Component Comment : Designator=C49 Old Comment=0805-50V-0.1uF New Comment=0603-50V-0.1uF
+Change Component Comment : Designator=C50 Old Comment=0805-50V-0.1uF New Comment=0603-50V-0.1uF
+Change Component Comment : Designator=C51 Old Comment=0805-50V-0.1uF New Comment=0603-50V-0.1uF
+Change Component Comment : Designator=C52 Old Comment=0805-50V-0.1uF New Comment=0603-50V-0.1uF
+Change Component Comment : Designator=C53 Old Comment=0805-50V-0.1uF New Comment=0603-50V-0.1uF
+Change Component Comment : Designator=C54 Old Comment=0805-50V-0.1uF New Comment=0603-50V-0.1uF
+Change Component Comment : Designator=C55 Old Comment=0805-50V-22pF New Comment=0603-50V-22pF
+Change Component Comment : Designator=C56 Old Comment=0805-50V-22pF New Comment=0603-50V-22pF
+Change Component Comment : Designator=C57 Old Comment=0805-50V-22pF New Comment=0603-50V-22pF
+Change Component Comment : Designator=C58 Old Comment=0805-50V-22pF New Comment=0603-50V-22pF
+Change Component Comment : Designator=C59 Old Comment=0805-50V-22pF New Comment=0603-50V-22pF
+Change Component Comment : Designator=C60 Old Comment=0805-50V-22pF New Comment=0603-50V-22pF
+Change Component Comment : Designator=C11 Old Comment=0805-50V-47pF New Comment=0603-50V-47pF
+Change Component Comment : Designator=C12 Old Comment=0805-50V-47pF New Comment=0603-50V-47pF
+Change Component Comment : Designator=C13 Old Comment=0805-50V-47pF New Comment=0603-50V-47pF
+Change Component Comment : Designator=C14 Old Comment=0805-50V-47pF New Comment=0603-50V-47pF
+Change Component Comment : Designator=C15 Old Comment=0805-50V-47pF New Comment=0603-50V-47pF
+Change Component Comment : Designator=C16 Old Comment=0805-50V-47pF New Comment=0603-50V-47pF
+Change Component Comment : Designator=C17 Old Comment=0805-50V-47pF New Comment=0603-50V-47pF
+Change Component Comment : Designator=C18 Old Comment=0805-50V-47pF New Comment=0603-50V-47pF
+Change Component Comment : Designator=R7 Old Comment=0805-51k次㊣1ㄔ New Comment=0603-51k次㊣1ㄔ
+Change Component Comment : Designator=R8 Old Comment=0805-51k次㊣1ㄔ New Comment=0603-51k次㊣1ㄔ
+Change Component Comment : Designator=R9 Old Comment=0805-51k次㊣1ㄔ New Comment=0603-51k次㊣1ㄔ
+Change Component Comment : Designator=R10 Old Comment=0805-51k次㊣1ㄔ New Comment=0603-51k次㊣1ㄔ
+Change Component Comment : Designator=R11 Old Comment=0805-51k次㊣1ㄔ New Comment=0603-51k次㊣1ㄔ
+Change Component Comment : Designator=R12 Old Comment=0805-51k次㊣1ㄔ New Comment=0603-51k次㊣1ㄔ
+Change Component Comment : Designator=R13 Old Comment=0805-51k次㊣1ㄔ New Comment=0603-51k次㊣1ㄔ
+Change Component Comment : Designator=R14 Old Comment=0805-51k次㊣1ㄔ New Comment=0603-51k次㊣1ㄔ
+Change Component Comment : Designator=R15 Old Comment=0805-51k次㊣1ㄔ New Comment=0603-51k次㊣1ㄔ
+Change Component Comment : Designator=R16 Old Comment=0805-51k次㊣1ㄔ New Comment=0603-51k次㊣1ㄔ
+Change Component Comment : Designator=R17 Old Comment=0805-51k次㊣1ㄔ New Comment=0603-51k次㊣1ㄔ
+Change Component Comment : Designator=R18 Old Comment=0805-51k次㊣1ㄔ New Comment=0603-51k次㊣1ㄔ
+Change Component Comment : Designator=R66 Old Comment=0805-51k次㊣1ㄔ New Comment=0603-51k次㊣1ㄔ
+Change Component Comment : Designator=R69 Old Comment=0805-100k次㊣1ㄔ New Comment=0603-100k次㊣1ㄔ
+Change Component Comment : Designator=R3 Old Comment=0805-100k次㊣1ㄔ New Comment=0603-220次㊣1ㄔ
+Change Component Comment : Designator=R2 Old Comment=0805-120k次㊣1ㄔ New Comment=0603-120k次㊣1ㄔ
+Change Component Comment : Designator=U13 Old Comment=BNO080 New Comment=BNO085
+Change Component Comment : Designator=U9 Old Comment=max660 New Comment=max860
+Change Component Comment : Designator=Q1 Old Comment=MMBT2222ALT1G(SOT-23) New Comment=S9013(SOT-23)
+Change Component Comment : Designator=SW1 Old Comment=SW-SPST New Comment=XKB8585-Z-150
+Change Component Comment : Designator=SW2 Old Comment=SW-SPST New Comment=XKB8585-Z-150
+Change Component Comment : Designator=J50 Old Comment=XH2.54-2P New Comment=Header 2
+Change Component Comment : Designator=J51 Old Comment=XH2.54-2P New Comment=Header 2
+Change Component Comment : Designator=J52 Old Comment=XH2.54-2P New Comment=Header 2
+Change Component Comment : Designator=J55 Old Comment=XH2.54-2P New Comment=Header 2
+Change Component Comment : Designator=J33 Old Comment=XH2.54-3P New Comment=Header 3
+Change Component Description : Designator=U2 Old Description= New Description=摩傖萇繚
+Change Component Description : Designator=U3 Old Description= New Description=摩傖萇繚
+Change Component Description : Designator=U11 Old Description= New Description=摩傖萇繚
+Change Component Description : Designator=U13 Old Description= New Description=摩傖萇繚
+Change Component Description : Designator=J30 Old Description=Header, 3-Pin, Dual row New Description=齬渀
+Change Component Description : Designator=J31 Old Description=Header, 3-Pin, Dual row New Description=齬渀
+Change Component Description : Designator=J41 Old Description=Header, 3-Pin, Dual row New Description=齬渀
+Change Component Description : Designator=P1 Old Description=Header, 4-Pin, Dual row New Description=齬渀
+Change Component Description : Designator=P2 Old Description=Header, 4-Pin New Description=齬渀
+Change Component Description : Designator=J60 Old Description=Header, 8-Pin, Dual row New Description=齬渀
+Change Component Description : Designator=J70 Old Description=Header, 8-Pin, Dual row New Description=齬渀
+Change Component Description : Designator=J71 Old Description=Header, 8-Pin, Dual row New Description=齬渀
+Change Component Description : Designator=J7 Old Description=Header, 8-Pin New Description=齬渀
+Change Component Description : Designator=J1 Old Description=Header, 20-Pin, Dual row New Description=齬渀
+Change Component Description : Designator=J28 Old Description=Header, 22-Pin, Dual row New Description=齬渀
+Change Component Description : Designator=J29 Old Description=Header, 22-Pin, Dual row New Description=齬渀
+Change Component Description : Designator=SW1 Old Description=Single-Pole, Single-Throw Switch New Description=羲壽
+Change Component Description : Designator=SW2 Old Description=Single-Pole, Single-Throw Switch New Description=羲壽
+Change Component Description : Designator=U10 Old Description=��傷恛揤ん New Description=摩傖萇繚
+Change Component Description : Designator=J33 Old Description=脣釱 New Description=齬渀
+Change Component Description : Designator=J50 Old Description=脣釱 New Description=齬渀
+Change Component Description : Designator=J51 Old Description=脣釱 New Description=齬渀
+Change Component Description : Designator=J52 Old Description=脣釱 New Description=齬渀
+Change Component Description : Designator=J55 Old Description=脣釱 New Description=齬渀
+Added Pin To Net: NetName=RX4 Pin=J33-1
+Added Pin To Net: NetName=TX4 Pin=J33-2

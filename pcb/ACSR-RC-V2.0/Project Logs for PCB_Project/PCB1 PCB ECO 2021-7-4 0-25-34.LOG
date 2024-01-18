@@ -1,0 +1,22 @@
+Removed Pin From Net: NetName=VCC Pin=C25-1
+Removed Pin From Net: NetName=VCC Pin=U21-20
+Added Component: Designator=F1(FUSE-CAR)
+Added Component: Designator=J6(DC-005)
+Added Component: Designator=J9(XH2.54-2P)
+Added Pin To Net: NetName=+5V Pin=C25-1
+Added Pin To Net: NetName=NetF1_1 Pin=F1-1
+Added Pin To Net: NetName=NetF1_1 Pin=F1-1
+Added Pin To Net: NetName=+12V Pin=F1-2
+Added Pin To Net: NetName=+12V Pin=F1-2
+Added Pin To Net: NetName=NetF1_1 Pin=J6-1A
+Added Pin To Net: NetName=GND Pin=J6-2A
+Added Pin To Net: NetName=GND Pin=J6-3A
+Added Pin To Net: NetName=+12V Pin=J9-1
+Added Pin To Net: NetName=GND Pin=J9-2
+Added Pin To Net: NetName=+5V Pin=U21-20
+Added Member To Class: ClassName=电原理图 Member=Component F1 Fuse 1
+Added Member To Class: ClassName=电原理图 Member=Component J6 PWR2.5
+Added Member To Class: ClassName=电原理图 Member=Component J9 XH2.54-2P
+Added Room: Name=Arduino Nano
+Added Room: Name=BTS7960
+Added Room: Name=电原理图

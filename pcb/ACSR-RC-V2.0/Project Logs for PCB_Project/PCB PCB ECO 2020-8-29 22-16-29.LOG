@@ -1,0 +1,10 @@
+Added Component: Designator=U12(DIP8)
+Added Pin To Net: NetName=VRS-OUT3 Pin=U12-1
+Added Pin To Net: NetName=VRS-3 Pin=U12-2
+Added Pin To Net: NetName=GND Pin=U12-3
+Added Pin To Net: NetName=GND Pin=U12-4
+Added Pin To Net: NetName=GND Pin=U12-5
+Added Pin To Net: NetName=VRS-4 Pin=U12-6
+Added Pin To Net: NetName=VRS-OUT4 Pin=U12-7
+Added Pin To Net: NetName=+5V Pin=U12-8
+Added Member To Class: ClassName=µÁ‘≠¿ÌÕº Member=Component U12 Component_1

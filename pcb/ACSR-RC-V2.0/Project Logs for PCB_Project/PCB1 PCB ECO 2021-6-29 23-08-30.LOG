@@ -1,0 +1,12 @@
+Removed Member From Class: ClassName=电原理图 Member=RAD5
+Added Component: Designator=RAD3(3224W)
+Added Pin To Net: NetName=VRS-2 Pin=RAD2-1
+Added Pin To Net: NetName=NetR20_2 Pin=RAD2-2
+Added Pin To Net: NetName=NetR20_2 Pin=RAD2-3
+Added Pin To Net: NetName=VRS-3 Pin=RAD3-1
+Added Pin To Net: NetName=NetR19_1 Pin=RAD3-2
+Added Pin To Net: NetName=NetR19_1 Pin=RAD3-3
+Added Pin To Net: NetName=VRS-4 Pin=RAD4-1
+Added Pin To Net: NetName=NetR21_2 Pin=RAD4-2
+Added Pin To Net: NetName=NetR21_2 Pin=RAD4-3
+Added Member To Class: ClassName=电原理图 Member=Component RAD3 200K

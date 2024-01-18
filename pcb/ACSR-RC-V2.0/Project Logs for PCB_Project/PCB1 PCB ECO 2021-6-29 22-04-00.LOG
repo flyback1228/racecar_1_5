@@ -1,0 +1,40 @@
+Removed Pin From Net: NetName=SPEED_1 Pin=J11-3
+Removed Pin From Net: NetName=SPEED_2 Pin=J12-2
+Removed Pin From Net: NetName=SPEED_2 Pin=J12-3
+Removed Pin From Net: NetName=SPEED_3 Pin=J13-2
+Removed Pin From Net: NetName=SPEED_3 Pin=J13-3
+Removed Pin From Net: NetName=SPEED_4 Pin=J14-2
+Removed Pin From Net: NetName=SPEED_4 Pin=J14-3
+Removed Pin From Net: NetName=+3.3V Pin=J15-1
+Removed Pin From Net: NetName=SPEED_5 Pin=J15-2
+Removed Pin From Net: NetName=SPEED_5 Pin=J15-3
+Removed Pin From Net: NetName=GND Pin=J15-4
+Removed Pin From Net: NetName=+3.3V Pin=J16-1
+Removed Pin From Net: NetName=SPEED_6 Pin=J16-2
+Removed Pin From Net: NetName=SPEED_6 Pin=J16-3
+Removed Pin From Net: NetName=GND Pin=J16-4
+Removed Pin From Net: NetName=+3.3V Pin=J17-1
+Removed Pin From Net: NetName=SPEED_7 Pin=J17-2
+Removed Pin From Net: NetName=SPEED_7 Pin=J17-3
+Removed Pin From Net: NetName=GND Pin=J17-4
+Removed Pin From Net: NetName=+3.3V Pin=J18-1
+Removed Pin From Net: NetName=SPEED_8 Pin=J18-2
+Removed Pin From Net: NetName=SPEED_8 Pin=J18-3
+Removed Pin From Net: NetName=GND Pin=J18-4
+Removed Member From Class: ClassName=电原理图 Member=J15
+Removed Member From Class: ClassName=电原理图 Member=J16
+Removed Member From Class: ClassName=电原理图 Member=J17
+Removed Member From Class: ClassName=电原理图 Member=J18
+Added Component: Designator=J6(DC-005)
+Added Pin To Net: NetName=GND Pin=J6-2A
+Added Pin To Net: NetName=GND Pin=J6-3A
+Added Pin To Net: NetName=SPEED_2 Pin=J11-3
+Added Pin To Net: NetName=SPEED_3 Pin=J12-2
+Added Pin To Net: NetName=SPEED_4 Pin=J12-3
+Added Pin To Net: NetName=SPEED_5 Pin=J13-2
+Added Pin To Net: NetName=SPEED_6 Pin=J13-3
+Added Pin To Net: NetName=SPEED_7 Pin=J14-2
+Added Pin To Net: NetName=SPEED_8 Pin=J14-3
+Added Pin To Net: NetName=+12V Pin=J6-1A
+Added Net: Name=+12V
+Added Member To Class: ClassName=电原理图 Member=Component J6 PWR2.5

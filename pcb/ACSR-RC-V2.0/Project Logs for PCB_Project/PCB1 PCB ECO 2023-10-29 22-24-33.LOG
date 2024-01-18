@@ -1,0 +1,4 @@
+Removed Pin From Net: NetName=FORCE04 Pin=J29-21
+Removed Pin From Net: NetName=FORCE03 Pin=J29-24
+Added Pin To Net: NetName=FORCE03 Pin=J29-21
+Added Pin To Net: NetName=FORCE04 Pin=J29-26

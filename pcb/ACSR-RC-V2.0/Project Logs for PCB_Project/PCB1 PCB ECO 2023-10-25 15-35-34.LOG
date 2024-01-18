@@ -1,0 +1,7 @@
+Added Component: Designator=K1(HF49FD)
+Added Pin To Net: NetName=BEC Pin=K1-1
+Added Pin To Net: NetName=+5V Pin=K1-4
+Added Pin To Net: NetName=NetK1_3 Pin=K1-3
+Added Pin To Net: NetName=NetK1_3 Pin=Q1-3
+Added Net: Name=NetK1_3
+Added Member To Class: ClassName=BTS7960 Member=Component K1 HF49FD/005-1H11

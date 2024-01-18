@@ -1,0 +1,16 @@
+Added Component: Designator=R?(0805)
+Added Component: Designator=R?(0805)
+Added Component: Designator=R?(0805)
+Added Component: Designator=R?(0805)
+Added Pin To Net: NetName=GND2 Pin=R?-1
+Added Pin To Net: NetName=GND2 Pin=R?-1
+Added Pin To Net: NetName=GND2 Pin=R?-1
+Added Pin To Net: NetName=GND2 Pin=R?-1
+Added Pin To Net: NetName=GND Pin=R?-2
+Added Pin To Net: NetName=GND Pin=R?-2
+Added Pin To Net: NetName=GND Pin=R?-2
+Added Pin To Net: NetName=GND Pin=R?-2
+Added Member To Class: ClassName=BTS7960 Member=Component R? Res2
+Added Member To Class: ClassName=BTS7960 Member=Component R? Res2
+Added Member To Class: ClassName=BTS7960 Member=Component R? Res2
+Added Member To Class: ClassName=BTS7960 Member=Component R? Res2

@@ -1,0 +1,9 @@
+Removed Pin From Net: NetName=BEC Pin=J17-1
+Removed Member From Class: ClassName=BTS7960 Member=J17
+Added Component: Designator=K?(MODULE4)
+Added Pin To Net: NetName=BEC Pin=K?-1
+Added Pin To Net: NetName=+5V Pin=K?-4
+Added Pin To Net: NetName=NetK?_3 Pin=K?-3
+Added Pin To Net: NetName=NetK?_3 Pin=Q1-3
+Added Net: Name=NetK?_3
+Added Member To Class: ClassName=BTS7960 Member=Component K? Relay-SPST

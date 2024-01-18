@@ -1,0 +1,38 @@
+Removed Pin From Net: NetName=+5V Pin=C2-1
+Removed Pin From Net: NetName=GND Pin=C2-2
+Removed Pin From Net: NetName=+1.5V Pin=C3-1
+Removed Pin From Net: NetName=+5V Pin=C3-2
+Removed Pin From Net: NetName=+5V Pin=C4-1
+Removed Pin From Net: NetName=+1.5V Pin=C4-2
+Removed Pin From Net: NetName=GND Pin=C14-1
+Removed Pin From Net: NetName=-1.5V Pin=C14-2
+Removed Pin From Net: NetName=GND Pin=U1-1
+Removed Pin From Net: NetName=+5V Pin=U1-2
+Removed Pin From Net: NetName=+1.5V Pin=U1-3
+Removed Member From Class: ClassName=电原理图 Member=C2
+Removed Member From Class: ClassName=电原理图 Member=C3
+Removed Member From Class: ClassName=电原理图 Member=C4
+Removed Member From Class: ClassName=电原理图 Member=C13
+Removed Member From Class: ClassName=电原理图 Member=C14
+Removed Member From Class: ClassName=电原理图 Member=U1
+Change Component Footprint: Designator=P6 Old Footprint=HDR1X5 New Footprint=VH3.96-5P
+Added Component: Designator=U11(DIP8)
+Added Component: Designator=U12(DIP-8)
+Added Pin To Net: NetName=VRS-OUT1 Pin=U11-1
+Added Pin To Net: NetName=VRS-1 Pin=U11-2
+Added Pin To Net: NetName=GND Pin=U11-3
+Added Pin To Net: NetName=GND Pin=U11-4
+Added Pin To Net: NetName=GND Pin=U11-5
+Added Pin To Net: NetName=VRS-1 Pin=U11-6
+Added Pin To Net: NetName=VRS-OUT2 Pin=U11-7
+Added Pin To Net: NetName=+5V Pin=U11-8
+Added Pin To Net: NetName=VRS-OUT3 Pin=U12-1
+Added Pin To Net: NetName=VRS-3 Pin=U12-2
+Added Pin To Net: NetName=GND Pin=U12-3
+Added Pin To Net: NetName=GND Pin=U12-4
+Added Pin To Net: NetName=GND Pin=U12-5
+Added Pin To Net: NetName=VRS-4 Pin=U12-6
+Added Pin To Net: NetName=VRS-OUT4 Pin=U12-7
+Added Pin To Net: NetName=+5V Pin=U12-8
+Added Member To Class: ClassName=电原理图 Member=Component U11 Component_1
+Added Member To Class: ClassName=电原理图 Member=Component U12 Component_1

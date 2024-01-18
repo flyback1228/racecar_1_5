@@ -1,0 +1,14 @@
+Removed Pin From Net: NetName=VRS-1 Pin=C20-2
+Removed Pin From Net: NetName=VRS-1 Pin=R7-2
+Removed Pin From Net: NetName=VRS-1 Pin=U11-6
+Added Component: Designator=R17(VR3)
+Added Component: Designator=R29(VR3)
+Added Pin To Net: NetName=VRS-2 Pin=C20-2
+Added Pin To Net: NetName=VRS-2 Pin=R7-2
+Added Pin To Net: NetName=+5V Pin=R17-1
+Added Pin To Net: NetName=GND Pin=R17-2
+Added Pin To Net: NetName=+5V Pin=R29-1
+Added Pin To Net: NetName=GND Pin=R29-2
+Added Pin To Net: NetName=VRS-2 Pin=U11-6
+Added Member To Class: ClassName=电原理图 Member=Component R17 Res Tap
+Added Member To Class: ClassName=电原理图 Member=Component R29 Res Tap

@@ -1,0 +1,29 @@
+Removed Pin From Net: NetName=NetC26_1 Pin=J21-1
+Removed Pin From Net: NetName=GND Pin=J21-2
+Removed Pin From Net: NetName=VRS-OUT1 Pin=J26-1
+Removed Pin From Net: NetName=GND Pin=J26-2
+Removed Pin From Net: NetName=VRS-OUT2 Pin=J27-1
+Removed Pin From Net: NetName=GND Pin=J27-2
+Removed Pin From Net: NetName=VRS-OUT3 Pin=J28-1
+Removed Pin From Net: NetName=GND Pin=J28-2
+Removed Pin From Net: NetName=VRS-OUT4 Pin=J29-1
+Removed Pin From Net: NetName=GND Pin=J29-2
+Removed Member From Class: ClassName=BTS7960 Member=J21
+Removed Member From Class: ClassName=电原理图 Member=J26
+Removed Member From Class: ClassName=电原理图 Member=J27
+Removed Member From Class: ClassName=电原理图 Member=J28
+Removed Member From Class: ClassName=电原理图 Member=J29
+Added Component: Designator=T1(DC12-24)
+Added Pin To Net: NetName=VRS-OUT4 Pin=U31-4
+Added Pin To Net: NetName=VRS-OUT3 Pin=U31-5
+Added Pin To Net: NetName=VRS-OUT2 Pin=U31-6
+Added Pin To Net: NetName=VRS-OUT1 Pin=U31-7
+Change Net Name : Old Net Name=NetC26_1 New Net Name=+24V
+Change Net Name : Old Net Name=VRS-OUT1 New Net Name=FORCE_1
+Change Net Name : Old Net Name=VRS-OUT2 New Net Name=FORCE_2
+Change Net Name : Old Net Name=VRS-OUT3 New Net Name=FORCE_3
+Change Net Name : Old Net Name=VRS-OUT4 New Net Name=FORCE_4
+Added Member To Class: ClassName=BTS7960 Member=Component T1 Trans
+Added Room: Name=Arduino Nano
+Added Room: Name=BTS7960
+Added Room: Name=电原理图

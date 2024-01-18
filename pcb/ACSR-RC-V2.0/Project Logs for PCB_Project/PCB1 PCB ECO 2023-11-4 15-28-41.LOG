@@ -1,0 +1,40 @@
+Removed Pin From Net: NetName=+5V Pin=J26-1
+Removed Pin From Net: NetName=GND Pin=J26-4
+Removed Pin From Net: NetName=GND Pin=J26-5
+Removed Pin From Net: NetName=GND Pin=J26-6
+Removed Member From Class: ClassName=Arduino Nano Member=J26
+Added Component: Designator=R4(0603)
+Added Component: Designator=R5(0603)
+Added Component: Designator=U14(USB-C_SMD-TYPE-C-31-M-12)
+Added Pin To Net: NetName=GND Pin=R4-1
+Added Pin To Net: NetName=GND Pin=R5-1
+Added Pin To Net: NetName=GND Pin=U14-0
+Added Pin To Net: NetName=GND Pin=U14-1
+Added Pin To Net: NetName=GND Pin=U14-2
+Added Pin To Net: NetName=GND Pin=U14-3
+Added Pin To Net: NetName=GND Pin=U14-A1
+Added Pin To Net: NetName=+5V Pin=U14-A4
+Added Pin To Net: NetName=+5V Pin=U14-A9
+Added Pin To Net: NetName=GND Pin=U14-A12
+Added Pin To Net: NetName=GND Pin=U14-B1
+Added Pin To Net: NetName=+5V Pin=U14-B4
+Added Pin To Net: NetName=GND Pin=U14-B12
+Added Pin To Net: NetName=D+ Pin=U2-3
+Added Pin To Net: NetName=D+ Pin=U10-4
+Added Pin To Net: NetName=D+ Pin=U14-A6
+Added Pin To Net: NetName=D+ Pin=U14-B6
+Added Net: Name=D+
+Added Pin To Net: NetName=D- Pin=U2-4
+Added Pin To Net: NetName=D- Pin=U10-3
+Added Pin To Net: NetName=D- Pin=U14-A7
+Added Pin To Net: NetName=D- Pin=U14-B7
+Added Net: Name=D-
+Added Pin To Net: NetName=NetR4_2 Pin=R4-2
+Added Pin To Net: NetName=NetR4_2 Pin=U14-B5
+Added Net: Name=NetR4_2
+Added Pin To Net: NetName=NetR5_2 Pin=R5-2
+Added Pin To Net: NetName=NetR5_2 Pin=U14-A5
+Added Net: Name=NetR5_2
+Added Member To Class: ClassName=Arduino Nano Member=Component R4 0603-5.1k¦¸¡À1£¥
+Added Member To Class: ClassName=Arduino Nano Member=Component R5 0603-5.1k¦¸¡À1£¥
+Added Member To Class: ClassName=Arduino Nano Member=Component U14 TYPE-C-31-M-12

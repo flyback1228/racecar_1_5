@@ -1,0 +1,78 @@
+Removed Pin From Net: NetName=GND Pin=J28-2
+Removed Pin From Net: NetName=NetR50_2 Pin=U3-1
+Removed Pin From Net: NetName=NetR52_2 Pin=U3-3
+Removed Pin From Net: NetName=NetR53_2 Pin=U3-4
+Removed Pin From Net: NetName=NetR54_2 Pin=U3-5
+Removed Pin From Net: NetName=PCA/ESC Pin=U3-7
+Removed Pin From Net: NetName=PCA/PWM0 Pin=U3-10
+Removed Pin From Net: NetName=PCA/PWM2 Pin=U3-12
+Removed Pin From Net: NetName=PCA/PWM3 Pin=U3-13
+Removed Pin From Net: NetName=GND Pin=U3-14
+Removed Member From Class: ClassName=电原理图 Member=C35
+Removed Member From Class: ClassName=电原理图 Member=C36
+Removed Member From Class: ClassName=电原理图 Member=C37
+Removed Member From Class: ClassName=电原理图 Member=C38
+Removed Member From Class: ClassName=电原理图 Member=C39
+Removed Member From Class: ClassName=BTS7960 Member=R2
+Removed Member From Class: ClassName=BTS7960 Member=R3
+Removed Member From Class: ClassName=BTS7960 Member=R17
+Removed Member From Class: ClassName=Arduino Nano Member=R36
+Removed Member From Class: ClassName=电原理图 Member=R36
+Removed Member From Class: ClassName=电原理图 Member=R37
+Removed Member From Class: ClassName=电原理图 Member=R39
+Removed Member From Class: ClassName=电原理图 Member=R40
+Removed Member From Class: ClassName=电原理图 Member=R41
+Removed Member From Class: ClassName=电原理图 Member=R43
+Removed Member From Class: ClassName=电原理图 Member=R45
+Removed Member From Class: ClassName=电原理图 Member=R46
+Removed Member From Class: ClassName=电原理图 Member=U3
+Removed Member From Class: ClassName=电原理图 Member=U10
+Added Pin To Net: NetName=+5V Pin=J28-2
+Added Pin To Net: NetName=GND Pin=U3-1
+Added Pin To Net: NetName=NetR50_2 Pin=U3-1
+Added Pin To Net: NetName=NetR51_2 Pin=U3-2
+Added Pin To Net: NetName=NetR52_2 Pin=U3-3
+Added Pin To Net: NetName=NetU3_3 Pin=U3-3
+Added Pin To Net: NetName=+3.3V Pin=U3-4
+Added Pin To Net: NetName=NetR53_2 Pin=U3-4
+Added Pin To Net: NetName=NetR54_2 Pin=U3-5
+Added Pin To Net: NetName=NetU3_5 Pin=U3-5
+Added Pin To Net: NetName=PCA/SERVO Pin=U3-6
+Added Pin To Net: NetName=NetU3_7 Pin=U3-7
+Added Pin To Net: NetName=PCA/ESC Pin=U3-7
+Added Pin To Net: NetName=GND Pin=U3-10
+Added Pin To Net: NetName=PCA/PWM0 Pin=U3-10
+Added Pin To Net: NetName=PCA/PWM1 Pin=U3-11
+Added Pin To Net: NetName=NetU3_12 Pin=U3-12
+Added Pin To Net: NetName=PCA/PWM2 Pin=U3-12
+Added Pin To Net: NetName=+3.3V Pin=U3-13
+Added Pin To Net: NetName=PCA/PWM3 Pin=U3-13
+Added Pin To Net: NetName=GND Pin=U3-14
+Added Pin To Net: NetName=NetU3_14 Pin=U3-14
+Added Member To Class: ClassName=电原理图 Member=Component C15 0805-50V-47pF
+Added Member To Class: ClassName=电原理图 Member=Component C16 0805-50V-47pF
+Added Member To Class: ClassName=电原理图 Member=Component C18 0805-50V-47pF
+Added Member To Class: ClassName=电原理图 Member=Component C20 0805-50V-0.1uF
+Added Member To Class: ClassName=电原理图 Member=Component C25 0805-50V-0.1uF
+Added Member To Class: ClassName=电原理图 Member=Component C26 0805-50V-0.1uF
+Added Member To Class: ClassName=电原理图 Member=Component C27 0805-50V-0.1uF
+Added Member To Class: ClassName=电原理图 Member=Component C28 0805-50V-0.1uF
+Added Member To Class: ClassName=电原理图 Member=Component C29 0805-50V-0.1uF
+Added Member To Class: ClassName=BTS7960 Member=Component J3 XH2.54-2P
+Added Member To Class: ClassName=电原理图 Member=Component LED1 LED-φ3(翠绿)
+Added Member To Class: ClassName=电原理图 Member=Component R2 0805-120kΩ±1％
+Added Member To Class: ClassName=电原理图 Member=Component R3 0805-100kΩ±1％
+Added Member To Class: ClassName=电原理图 Member=Component R5 0805-120kΩ±1％
+Added Member To Class: ClassName=电原理图 Member=Component R17 0805-51kΩ±1％
+Added Member To Class: ClassName=电原理图 Member=Component R18 0805-51kΩ±1％
+Added Member To Class: ClassName=电原理图 Member=Component R20 0805-10kΩ±1％
+Added Member To Class: ClassName=电原理图 Member=Component R25 0805-10kΩ±1％
+Added Member To Class: ClassName=电原理图 Member=Component R30 0805-10kΩ±1％
+Added Member To Class: ClassName=Arduino Nano Member=Component R31 0805-4.7kΩ±1％
+Added Member To Class: ClassName=电原理图 Member=Component R31 0805-10kΩ±1％
+Added Member To Class: ClassName=电原理图 Member=Component R32 0805-10kΩ±1％
+Added Member To Class: ClassName=电原理图 Member=Component R33 0805-10kΩ±1％
+Added Member To Class: ClassName=电原理图 Member=Component R34 0805-10kΩ±1％
+Added Member To Class: ClassName=BTS7960 Member=Component R36 0805-1kΩ±1％
+Added Member To Class: ClassName=电原理图 Member=Component RAD1 3224W-51k
+Added Member To Class: ClassName=电原理图 Member=Component RAD2 3224W-51k

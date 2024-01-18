@@ -1,0 +1,5 @@
+Removed Pin From Net: NetName=LED_RED Pin=J29-38
+Removed Member From Class: ClassName=电原理图 Member=R65
+Added Pin To Net: NetName=LED_RED Pin=J28-13
+Added Member To Class: ClassName=Arduino Nano Member=Component C40 CD-50V-4.7uF-F5(SMD)
+Added Member To Class: ClassName=电原理图 Member=Component R2 0603-100kΩ±1％

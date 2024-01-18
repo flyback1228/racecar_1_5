@@ -1,0 +1,45 @@
+Removed Pin From Net: NetName=+3.3V Pin=R1-1
+Removed Pin From Net: NetName=NetJP7_2 Pin=R1-2
+Removed Pin From Net: NetName=GND Pin=R50-1
+Removed Pin From Net: NetName=GND Pin=R51-1
+Removed Pin From Net: NetName=GND Pin=R52-1
+Removed Pin From Net: NetName=GND Pin=R53-1
+Removed Pin From Net: NetName=GND Pin=R54-1
+Removed Pin From Net: NetName=GND Pin=R55-1
+Removed Member From Class: ClassName=Arduino Nano Member=R1
+Removed Member From Class: ClassName=Arduino Nano Member=R50
+Removed Member From Class: ClassName=Arduino Nano Member=R51
+Removed Member From Class: ClassName=Arduino Nano Member=R52
+Removed Member From Class: ClassName=Arduino Nano Member=R53
+Removed Member From Class: ClassName=Arduino Nano Member=R54
+Removed Member From Class: ClassName=Arduino Nano Member=R55
+Added Component: Designator=RP3(RP8F)
+Added Component: Designator=RP4(RP8F)
+Added Pin To Net: NetName=+3.3V Pin=RP3-1
+Added Pin To Net: NetName=GND Pin=RP3-3
+Added Pin To Net: NetName=GND Pin=RP3-4
+Added Pin To Net: NetName=NetJP7_2 Pin=RP3-8
+Added Pin To Net: NetName=GND Pin=RP4-1
+Added Pin To Net: NetName=GND Pin=RP4-2
+Added Pin To Net: NetName=GND Pin=RP4-3
+Added Pin To Net: NetName=GND Pin=RP4-4
+Added Pin To Net: NetName=NetRP3_5 Pin=RP3-5
+Added Pin To Net: NetName=NetRP3_5 Pin=U3-2
+Added Net: Name=NetRP3_5
+Added Pin To Net: NetName=NetRP3_6 Pin=RP3-6
+Added Pin To Net: NetName=NetRP3_6 Pin=U3-1
+Added Net: Name=NetRP3_6
+Added Pin To Net: NetName=NetRP4_5 Pin=RP4-5
+Added Pin To Net: NetName=NetRP4_5 Pin=U3-24
+Added Net: Name=NetRP4_5
+Added Pin To Net: NetName=NetRP4_6 Pin=RP4-6
+Added Pin To Net: NetName=NetRP4_6 Pin=U3-5
+Added Net: Name=NetRP4_6
+Added Pin To Net: NetName=NetRP4_7 Pin=RP4-7
+Added Pin To Net: NetName=NetRP4_7 Pin=U3-4
+Added Net: Name=NetRP4_7
+Added Pin To Net: NetName=NetRP4_8 Pin=RP4-8
+Added Pin To Net: NetName=NetRP4_8 Pin=U3-3
+Added Net: Name=NetRP4_8
+Added Member To Class: ClassName=Arduino Nano Member=Component RP3 0603-10k¦¸-2*4P
+Added Member To Class: ClassName=Arduino Nano Member=Component RP4 0603-10k¦¸-2*4P

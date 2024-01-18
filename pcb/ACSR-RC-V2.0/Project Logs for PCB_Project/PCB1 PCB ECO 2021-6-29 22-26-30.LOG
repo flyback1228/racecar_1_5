@@ -1,0 +1,21 @@
+Removed Pin From Net: NetName=+3.3V Pin=J10-1
+Removed Pin From Net: NetName=+3.3V Pin=J10-2
+Removed Pin From Net: NetName=GND Pin=J10-3
+Removed Pin From Net: NetName=GND Pin=J10-4
+Removed Pin From Net: NetName=AS5600_2_SDA Pin=J10-5
+Removed Pin From Net: NetName=AS5600_1_SDA Pin=J10-6
+Removed Pin From Net: NetName=AS5600_2_SCL Pin=J10-7
+Removed Pin From Net: NetName=AS5600_1_SCL Pin=J10-8
+Removed Member From Class: ClassName=电原理图 Member=J10
+Added Component: Designator=J15(XH2.54-4P)
+Added Component: Designator=J16(XH2.54-4P)
+Added Pin To Net: NetName=+3.3V Pin=J15-1
+Added Pin To Net: NetName=AS5600_1_SDA Pin=J15-2
+Added Pin To Net: NetName=AS5600_1_SCL Pin=J15-3
+Added Pin To Net: NetName=GND Pin=J15-4
+Added Pin To Net: NetName=+3.3V Pin=J16-1
+Added Pin To Net: NetName=AS5600_2_SDA Pin=J16-2
+Added Pin To Net: NetName=AS5600_2_SCL Pin=J16-3
+Added Pin To Net: NetName=GND Pin=J16-4
+Added Member To Class: ClassName=电原理图 Member=Component J15 XH2.54-4P
+Added Member To Class: ClassName=电原理图 Member=Component J16 XH2.54-4P

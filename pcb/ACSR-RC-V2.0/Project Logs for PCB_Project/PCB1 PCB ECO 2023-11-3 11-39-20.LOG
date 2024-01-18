@@ -1,0 +1,2 @@
+Removed Pin From Net: NetName=+VREF Pin=J29-16
+Added Pin To Net: NetName=+3.3V Pin=J29-16

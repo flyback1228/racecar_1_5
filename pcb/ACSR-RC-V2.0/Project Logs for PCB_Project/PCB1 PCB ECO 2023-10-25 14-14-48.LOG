@@ -1,0 +1,44 @@
+Removed Pin From Net: NetName=GND Pin=R60-1
+Removed Pin From Net: NetName=PWM0 Pin=R60-2
+Removed Pin From Net: NetName=GND Pin=R61-1
+Removed Pin From Net: NetName=+3.3V Pin=R61-2
+Removed Pin From Net: NetName=GND Pin=R62-1
+Removed Pin From Net: NetName=PWM1 Pin=R62-2
+Removed Pin From Net: NetName=GND Pin=R63-1
+Removed Pin From Net: NetName=+3.3V Pin=R63-2
+Removed Pin From Net: NetName=GND Pin=R64-1
+Removed Pin From Net: NetName=PWM2 Pin=R64-2
+Removed Pin From Net: NetName=GND Pin=R65-1
+Removed Pin From Net: NetName=+3.3V Pin=R65-2
+Removed Pin From Net: NetName=GND Pin=R66-1
+Removed Pin From Net: NetName=PWM3 Pin=R66-2
+Removed Pin From Net: NetName=GND Pin=R67-1
+Removed Pin From Net: NetName=+3.3V Pin=R67-2
+Removed Member From Class: ClassName=BTS7960 Member=R60
+Removed Member From Class: ClassName=BTS7960 Member=R61
+Removed Member From Class: ClassName=BTS7960 Member=R62
+Removed Member From Class: ClassName=BTS7960 Member=R63
+Removed Member From Class: ClassName=BTS7960 Member=R64
+Removed Member From Class: ClassName=BTS7960 Member=R65
+Removed Member From Class: ClassName=BTS7960 Member=R66
+Removed Member From Class: ClassName=BTS7960 Member=R67
+Added Component: Designator=RP1(RP8F)
+Added Component: Designator=RP2(RP8F)
+Added Pin To Net: NetName=GND Pin=RP1-1
+Added Pin To Net: NetName=GND Pin=RP1-2
+Added Pin To Net: NetName=GND Pin=RP1-3
+Added Pin To Net: NetName=GND Pin=RP1-4
+Added Pin To Net: NetName=+3.3V Pin=RP1-5
+Added Pin To Net: NetName=PWM1 Pin=RP1-6
+Added Pin To Net: NetName=+3.3V Pin=RP1-7
+Added Pin To Net: NetName=PWM0 Pin=RP1-8
+Added Pin To Net: NetName=GND Pin=RP2-1
+Added Pin To Net: NetName=GND Pin=RP2-2
+Added Pin To Net: NetName=GND Pin=RP2-3
+Added Pin To Net: NetName=GND Pin=RP2-4
+Added Pin To Net: NetName=+3.3V Pin=RP2-5
+Added Pin To Net: NetName=PWM3 Pin=RP2-6
+Added Pin To Net: NetName=+3.3V Pin=RP2-7
+Added Pin To Net: NetName=PWM2 Pin=RP2-8
+Added Member To Class: ClassName=BTS7960 Member=Component RP1 0603-1k¦¸-2*4P
+Added Member To Class: ClassName=BTS7960 Member=Component RP2 0603-1k¦¸-2*4P

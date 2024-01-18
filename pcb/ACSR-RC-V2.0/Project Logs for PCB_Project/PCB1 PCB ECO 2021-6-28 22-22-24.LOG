@@ -1,0 +1,12 @@
+Removed Pin From Net: NetName=VCC Pin=J20-1
+Removed Pin From Net: NetName=GND Pin=J20-2
+Removed Pin From Net: NetName=VCC Pin=J20-3
+Removed Pin From Net: NetName=GND Pin=J20-4
+Removed Pin From Net: NetName=R1_PWM Pin=J20-5
+Removed Pin From Net: NetName=R2_PWM Pin=J20-6
+Removed Pin From Net: NetName=R3_PWM Pin=J20-7
+Removed Pin From Net: NetName=R4_PWM Pin=J20-8
+Removed Member From Class: ClassName=BTS7960 Member=J20
+Removed Member From Class: ClassName=电原理图 Member=R29
+Added Pin To Net: NetName=TXD Pin=U31-16
+Added Member To Class: ClassName=电原理图 Member=Component R21 Res2

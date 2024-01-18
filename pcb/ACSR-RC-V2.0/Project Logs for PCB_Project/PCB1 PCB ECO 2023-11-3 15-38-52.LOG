@@ -1,0 +1,10 @@
+Removed Pin From Net: NetName=+3.3V Pin=C42-2
+Removed Pin From Net: NetName=+3.3V Pin=J26-1
+Removed Pin From Net: NetName=+3.3V Pin=U2-7
+Removed Pin From Net: NetName=+3.3V Pin=U2-8
+Removed Pin From Net: NetName=+3.3V Pin=U10-2
+Added Pin To Net: NetName=+5V Pin=C42-2
+Added Pin To Net: NetName=+5V Pin=J26-1
+Added Pin To Net: NetName=+5V Pin=U2-7
+Added Pin To Net: NetName=+5V Pin=U2-8
+Added Pin To Net: NetName=+5V Pin=U10-2

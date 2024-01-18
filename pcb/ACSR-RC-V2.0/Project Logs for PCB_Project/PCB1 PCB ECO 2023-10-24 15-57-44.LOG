@@ -1,0 +1,166 @@
+Removed Pin From Net: NetName=GND Pin=RP1-1
+Removed Pin From Net: NetName=GND Pin=RP1-2
+Removed Pin From Net: NetName=GND Pin=RP1-3
+Removed Pin From Net: NetName=GND Pin=RP1-4
+Removed Pin From Net: NetName=+3.3V Pin=RP1-5
+Removed Pin From Net: NetName=PWM1 Pin=RP1-6
+Removed Pin From Net: NetName=+3.3V Pin=RP1-7
+Removed Pin From Net: NetName=PWM0 Pin=RP1-8
+Removed Pin From Net: NetName=GND Pin=RP2-1
+Removed Pin From Net: NetName=GND Pin=RP2-2
+Removed Pin From Net: NetName=GND Pin=RP2-3
+Removed Pin From Net: NetName=GND Pin=RP2-4
+Removed Pin From Net: NetName=+3.3V Pin=RP2-5
+Removed Pin From Net: NetName=PWM3 Pin=RP2-6
+Removed Pin From Net: NetName=+3.3V Pin=RP2-7
+Removed Pin From Net: NetName=PWM2 Pin=RP2-8
+Removed Pin From Net: NetName=NetR50_2 Pin=U3-1
+Removed Pin From Net: NetName=NetR51_2 Pin=U3-2
+Removed Pin From Net: NetName=NetR53_2 Pin=U3-4
+Removed Pin From Net: NetName=PCA/SERVO Pin=U3-6
+Removed Pin From Net: NetName=PCA/ESC Pin=U3-7
+Removed Pin From Net: NetName=PCA/PWM0 Pin=U3-10
+Removed Pin From Net: NetName=PCA/PWM1 Pin=U3-11
+Removed Pin From Net: NetName=PCA/PWM2 Pin=U3-12
+Removed Pin From Net: NetName=PCA/PWM3 Pin=U3-13
+Removed Pin From Net: NetName=GND Pin=U9-1
+Removed Pin From Net: NetName=+1.2V Pin=U9-7
+Removed Member From Class: ClassName=Arduino Nano Member=R31
+Removed Member From Class: ClassName=BTS7960 Member=RP1
+Removed Member From Class: ClassName=BTS7960 Member=RP2
+Change Component Footprint: Designator=JP1 Old Footprint=PIN2 New Footprint=HDR1X3
+Change Component Footprint: Designator=JP2 Old Footprint=PIN2 New Footprint=HDR1X3
+Change Component Footprint: Designator=JP3 Old Footprint=PIN2 New Footprint=HDR1X3
+Change Component Footprint: Designator=JP4 Old Footprint=PIN2 New Footprint=HDR1X3
+Change Component Footprint: Designator=JP5 Old Footprint=PIN2 New Footprint=HDR1X3
+Change Component Footprint: Designator=JP6 Old Footprint=PIN2 New Footprint=HDR1X3
+Change Component Footprint: Designator=JP7 Old Footprint=PIN2 New Footprint=HDR1X3
+Change Component Footprint: Designator=JP8 Old Footprint=PIN2 New Footprint=HDR1X3
+Change Component Footprint: Designator=JP9 Old Footprint=PIN2 New Footprint=HDR1X3
+Change Component Footprint: Designator=JP10 Old Footprint=PIN2 New Footprint=HDR1X3
+Change Component Footprint: Designator=JP11 Old Footprint=PIN2 New Footprint=HDR1X3
+Change Component Comment : Designator=LED2 Old Comment=LED-φ3(翠绿) New Comment=LED-φ3(红)
+Change Component Comment : Designator=LED4 Old Comment=LED-φ3(翠绿) New Comment=LED-φ3(蓝)
+Change Component Comment : Designator=LED3 Old Comment=LED-φ3(翠绿) New Comment=LED-φ3(黄)
+Change Component Comment : Designator=U1 Old Comment=LM1117-1.5 New Comment=LM1117-1.2
+Change Component Designator: OldDesignator=R31 NewDesignator=R57
+Change Component Designator: OldDesignator=U3 NewDesignator=U20
+Added Component: Designator=J33(XH2.54-3P)
+Added Component: Designator=R58(0805)
+Added Component: Designator=R59(0805)
+Added Component: Designator=R60(0805)
+Added Component: Designator=R61(0805)
+Added Component: Designator=R62(0805)
+Added Component: Designator=R63(0805)
+Added Component: Designator=R64(0805)
+Added Component: Designator=R65(0805)
+Added Component: Designator=R66(0805)
+Added Component: Designator=R67(0805)
+Added Component: Designator=R68(0805)
+Added Component: Designator=U2(QFN24)
+Added Component: Designator=U3(TSSOP-28)
+Added Pin To Net: NetName=RX7 Pin=J33-1
+Added Pin To Net: NetName=TX7 Pin=J33-2
+Added Pin To Net: NetName=GND Pin=J33-3
+Added Pin To Net: NetName=STM32_PWM0 Pin=JP1-3
+Added Pin To Net: NetName=STM32_PWM1 Pin=JP2-3
+Added Pin To Net: NetName=STM32_PWM2 Pin=JP3-3
+Added Pin To Net: NetName=STM32_PWM3 Pin=JP4-3
+Added Pin To Net: NetName=PCA/ESC Pin=JP5-3
+Added Pin To Net: NetName=PCA/SERVO Pin=JP6-3
+Added Pin To Net: NetName=PB4/OE Pin=JP7-3
+Added Pin To Net: NetName=STM32_SCL Pin=JP8-3
+Added Pin To Net: NetName=STM32_SDA Pin=JP9-3
+Added Pin To Net: NetName=-0.75V Pin=JP10-3
+Added Pin To Net: NetName=+0.75V Pin=JP11-3
+Added Pin To Net: NetName=GND Pin=R58-1
+Added Pin To Net: NetName=+1.2V Pin=R59-2
+Added Pin To Net: NetName=GND Pin=R60-1
+Added Pin To Net: NetName=PWM0 Pin=R60-2
+Added Pin To Net: NetName=GND Pin=R61-1
+Added Pin To Net: NetName=+3.3V Pin=R61-2
+Added Pin To Net: NetName=GND Pin=R62-1
+Added Pin To Net: NetName=PWM1 Pin=R62-2
+Added Pin To Net: NetName=GND Pin=R63-1
+Added Pin To Net: NetName=+3.3V Pin=R63-2
+Added Pin To Net: NetName=GND Pin=R64-1
+Added Pin To Net: NetName=PWM2 Pin=R64-2
+Added Pin To Net: NetName=GND Pin=R65-1
+Added Pin To Net: NetName=+3.3V Pin=R65-2
+Added Pin To Net: NetName=GND Pin=R66-1
+Added Pin To Net: NetName=PWM3 Pin=R66-2
+Added Pin To Net: NetName=GND Pin=R67-1
+Added Pin To Net: NetName=+3.3V Pin=R67-2
+Added Pin To Net: NetName=GND Pin=R68-1
+Added Pin To Net: NetName=GND Pin=U2-2
+Added Pin To Net: NetName=NetJ26_3 Pin=U2-3
+Added Pin To Net: NetName=NetJ26_2 Pin=U2-4
+Added Pin To Net: NetName=3.3V Pin=U2-6
+Added Pin To Net: NetName=3.3V Pin=U2-7
+Added Pin To Net: NetName=3.3V Pin=U2-8
+Added Pin To Net: NetName=NetR56_2 Pin=U2-9
+Added Pin To Net: NetName=TX7 Pin=U2-20
+Added Pin To Net: NetName=RX7 Pin=U2-21
+Added Pin To Net: NetName=NetR50_2 Pin=U3-1
+Added Pin To Net: NetName=NetR51_2 Pin=U3-2
+Added Pin To Net: NetName=NetR52_2 Pin=U3-3
+Added Pin To Net: NetName=NetR53_2 Pin=U3-4
+Added Pin To Net: NetName=NetR54_2 Pin=U3-5
+Added Pin To Net: NetName=PCA/SERVO Pin=U3-6
+Added Pin To Net: NetName=PCA/ESC Pin=U3-7
+Added Pin To Net: NetName=PCA/PWM0 Pin=U3-10
+Added Pin To Net: NetName=PCA/PWM1 Pin=U3-11
+Added Pin To Net: NetName=PCA/PWM2 Pin=U3-12
+Added Pin To Net: NetName=PCA/PWM3 Pin=U3-13
+Added Pin To Net: NetName=GND Pin=U3-14
+Added Pin To Net: NetName=NetJP7_2 Pin=U3-23
+Added Pin To Net: NetName=NetR55_2 Pin=U3-24
+Added Pin To Net: NetName=GND Pin=U3-25
+Added Pin To Net: NetName=NetJP8_2 Pin=U3-26
+Added Pin To Net: NetName=NetJP9_2 Pin=U3-27
+Added Pin To Net: NetName=3.3V Pin=U3-28
+Added Pin To Net: NetName=GND Pin=U20-1
+Added Pin To Net: NetName=PWM0 Pin=U20-2
+Added Pin To Net: NetName=+3.3V Pin=U20-4
+Added Pin To Net: NetName=PWM1 Pin=U20-6
+Added Pin To Net: NetName=GND Pin=U20-10
+Added Pin To Net: NetName=PWM2 Pin=U20-11
+Added Pin To Net: NetName=+3.3V Pin=U20-13
+Change Net Name : Old Net Name=NetU3_3 New Net Name=NetU20_3
+Change Net Name : Old Net Name=NetU3_5 New Net Name=NetU20_5
+Change Net Name : Old Net Name=NetU3_9 New Net Name=NetU20_9
+Change Net Name : Old Net Name=NetU3_14 New Net Name=NetU20_14
+Change Net Name : Old Net Name=NetU3_16 New Net Name=NetU20_16
+Change Net Name : Old Net Name=NetU3_18 New Net Name=NetU20_18
+Added Pin To Net: NetName=NetR58_2 Pin=R58-2
+Added Pin To Net: NetName=NetR58_2 Pin=U9-1
+Added Net: Name=NetR58_2
+Added Pin To Net: NetName=NetR59_1 Pin=R59-1
+Added Pin To Net: NetName=NetR59_1 Pin=U9-7
+Added Net: Name=NetR59_1
+Added Pin To Net: NetName=NetR68_2 Pin=R68-2
+Added Pin To Net: NetName=NetR68_2 Pin=U2-15
+Added Net: Name=NetR68_2
+Added Pin To Net: NetName=NetU20_7 Pin=U20-7
+Added Pin To Net: NetName=NetU20_7 Pin=U24-3
+Added Net: Name=NetU20_7
+Added Pin To Net: NetName=NetU20_12 Pin=U20-12
+Added Pin To Net: NetName=NetU20_12 Pin=U23-3
+Added Net: Name=NetU20_12
+Added Member To Class: ClassName=Arduino Nano Member=Component J33 XH2.54-3P
+Added Member To Class: ClassName=Arduino Nano Member=Component R57 0805-4.7kΩ±1％
+Added Member To Class: ClassName=电原理图 Member=Component R58 0805-0Ω±1％
+Added Member To Class: ClassName=电原理图 Member=Component R59 0805-0Ω±1％
+Added Member To Class: ClassName=BTS7960 Member=Component R60 0805-1kΩ±1％
+Added Member To Class: ClassName=BTS7960 Member=Component R61 0805-1kΩ±1％
+Added Member To Class: ClassName=BTS7960 Member=Component R62 0805-1kΩ±1％
+Added Member To Class: ClassName=BTS7960 Member=Component R63 0805-1kΩ±1％
+Added Member To Class: ClassName=BTS7960 Member=Component R64 0805-1kΩ±1％
+Added Member To Class: ClassName=BTS7960 Member=Component R65 0805-1kΩ±1％
+Added Member To Class: ClassName=BTS7960 Member=Component R66 0805-1kΩ±1％
+Added Member To Class: ClassName=BTS7960 Member=Component R67 0805-1kΩ±1％
+Added Member To Class: ClassName=Arduino Nano Member=Component R68 0805-10kΩ±1％
+Added Member To Class: ClassName=Arduino Nano Member=Component U2 CP2102N-A02-GQFN24R
+Added Room: Name=Arduino Nano
+Added Room: Name=BTS7960
+Added Room: Name=电原理图

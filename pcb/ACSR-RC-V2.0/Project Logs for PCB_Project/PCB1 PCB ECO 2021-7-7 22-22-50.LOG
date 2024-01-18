@@ -1,0 +1,7 @@
+Change Component Designator: OldDesignator=R? NewDesignator=R2
+Change Component Designator: OldDesignator=R? NewDesignator=R3
+Change Component Designator: OldDesignator=R? NewDesignator=R17
+Change Component Designator: OldDesignator=R? NewDesignator=R34
+Added Member To Class: ClassName=BTS7960 Member=Component R2 Res2
+Added Member To Class: ClassName=BTS7960 Member=Component R3 Res2
+Added Member To Class: ClassName=BTS7960 Member=Component R17 Res2

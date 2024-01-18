@@ -1,0 +1,25 @@
+Removed Pin From Net: NetName=BTN7970_OUTPUT_0 Pin=J80-1
+Removed Pin From Net: NetName=GND2 Pin=J80-2
+Removed Pin From Net: NetName=BTN7970_OUTPUT_1 Pin=J80-3
+Removed Pin From Net: NetName=GND2 Pin=J80-4
+Removed Pin From Net: NetName=BTN7970_OUTPUT_2 Pin=J80-5
+Removed Pin From Net: NetName=GND2 Pin=J80-6
+Removed Pin From Net: NetName=BTN7970_OUTPUT_3 Pin=J80-7
+Removed Pin From Net: NetName=GND2 Pin=J80-8
+Removed Member From Class: ClassName=BTS7960 Member=J80
+Added Component: Designator=J?(XH2.54-2P)
+Added Component: Designator=J?(XH2.54-2P)
+Added Component: Designator=J?(XH2.54-2P)
+Added Component: Designator=J?(XH2.54-2P)
+Added Pin To Net: NetName=BTN7970_OUTPUT_0 Pin=J?-1
+Added Pin To Net: NetName=BTN7970_OUTPUT_1 Pin=J?-1
+Added Pin To Net: NetName=BTN7970_OUTPUT_2 Pin=J?-1
+Added Pin To Net: NetName=BTN7970_OUTPUT_3 Pin=J?-1
+Added Pin To Net: NetName=GND2 Pin=J?-2
+Added Pin To Net: NetName=GND2 Pin=J?-2
+Added Pin To Net: NetName=GND2 Pin=J?-2
+Added Pin To Net: NetName=GND2 Pin=J?-2
+Added Member To Class: ClassName=BTS7960 Member=Component J? XH2.54-2P
+Added Member To Class: ClassName=BTS7960 Member=Component J? XH2.54-2P
+Added Member To Class: ClassName=BTS7960 Member=Component J? XH2.54-2P
+Added Member To Class: ClassName=BTS7960 Member=Component J? XH2.54-2P

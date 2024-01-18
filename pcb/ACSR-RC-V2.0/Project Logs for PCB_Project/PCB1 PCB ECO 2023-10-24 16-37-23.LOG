@@ -1,0 +1,5 @@
+Removed Member From Class: ClassName=电原理图 Member=R57
+Removed Member From Class: ClassName=Arduino Nano Member=U20
+Change Component Footprint: Designator=U10 Old Footprint=SOT223 New Footprint=SOT143-4
+Added Member To Class: ClassName=电原理图 Member=Component R31 0805-10kΩ±1％
+Added Member To Class: ClassName=Arduino Nano Member=Component U3 PCA9685

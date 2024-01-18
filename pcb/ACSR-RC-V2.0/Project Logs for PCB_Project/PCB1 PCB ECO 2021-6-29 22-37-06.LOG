@@ -1,0 +1,9 @@
+Removed Pin From Net: NetName=+12V Pin=J6-1A
+Added Component: Designator=F1(FUSE-CAR)
+Added Pin To Net: NetName=+12V Pin=F1-2
+Added Pin To Net: NetName=+12V Pin=F1-2
+Added Pin To Net: NetName=NetF1_1 Pin=F1-1
+Added Pin To Net: NetName=NetF1_1 Pin=F1-1
+Added Pin To Net: NetName=NetF1_1 Pin=J6-1A
+Added Net: Name=NetF1_1
+Added Member To Class: ClassName=µÁ‘≠¿ÌÕº Member=Component F1 Fuse 1
