@@ -57,6 +57,9 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define BNO_INT_Pin GPIO_PIN_7
+#define BNO_INT_GPIO_Port GPIOE
+#define BNO_INT_EXTI_IRQn EXTI9_5_IRQn
 #define BNO_NRST_Pin GPIO_PIN_14
 #define BNO_NRST_GPIO_Port GPIOB
 #define BNO_BOOTN_Pin GPIO_PIN_15
@@ -67,6 +70,10 @@ void Error_Handler(void);
 #define BNO_P1_GPIO_Port GPIOD
 #define LED_BLUE_Pin GPIO_PIN_3
 #define LED_BLUE_GPIO_Port GPIOD
+#define LED_YELLOW_Pin GPIO_PIN_5
+#define LED_YELLOW_GPIO_Port GPIOD
+#define LED_RED_Pin GPIO_PIN_6
+#define LED_RED_GPIO_Port GPIOD
 
 /* USER CODE BEGIN Private defines */
 

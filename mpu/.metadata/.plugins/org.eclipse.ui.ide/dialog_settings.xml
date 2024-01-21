@@ -9,6 +9,8 @@
 		<item key="SmartImportRootWizardPage.STORE_NESTED_PROJECTS" value="true"/>
 		<item key="SmartImportRootWizardPage.STORE_CONFIGURE_NATURES" value="true"/>
 		<list key="org.eclipse.ui.internal.wizards.datatransfer.SmartImportRootWizardPage.knownSources">
+			<item value="/home/acsr2004/racecar_1_5/mpu/h750_bno_test"/>
+			<item value="/home/acsr2004/racecar_1_5/mpu"/>
 			<item value="/media/acsr2004/2C6AC0386AC00116/Users/acsr/STM32CubeIDE/workspace_1.13.2/qspi_test"/>
 			<item value="/media/acsr2004/2C6AC0386AC00116/Users/acsr/STM32CubeIDE/workspace_1.13.2/ceu6_test"/>
 		</list>

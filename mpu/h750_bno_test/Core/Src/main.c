@@ -21,7 +21,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "stdio.h""
+#include "stdio.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -44,7 +44,7 @@
 I2C_HandleTypeDef hi2c1;
 I2C_HandleTypeDef hi2c2;
 
-UART_HandleTypeDef hlpuart1;
+UART_HandleTypeDef huart7;
 
 /* USER CODE BEGIN PV */
 
@@ -55,8 +55,8 @@ void SystemClock_Config(void);
 void PeriphCommonClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_I2C1_Init(void);
+static void MX_UART7_Init(void);
 static void MX_I2C2_Init(void);
-static void MX_LPUART1_UART_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -67,12 +67,24 @@ void BNO085_setup(){
 	HAL_GPIO_WritePin(BNO_P0_GPIO_Port, BNO_P0_Pin, GPIO_PIN_RESET);
 	HAL_GPIO_WritePin(BNO_P1_GPIO_Port, BNO_P1_Pin, GPIO_PIN_RESET);
 	HAL_GPIO_WritePin(BNO_BOOTN_GPIO_Port, BNO_BOOTN_Pin, GPIO_PIN_SET);
+	HAL_Delay(100);
 
 	HAL_GPIO_WritePin(BNO_NRST_GPIO_Port,BNO_NRST_Pin,GPIO_PIN_SET);
-	HAL_Delay(1);
+	HAL_Delay(100);
 	HAL_GPIO_WritePin(BNO_NRST_GPIO_Port,BNO_NRST_Pin,GPIO_PIN_RESET);
-	HAL_Delay(1);
+	HAL_Delay(50);
 	HAL_GPIO_WritePin(BNO_NRST_GPIO_Port,BNO_NRST_Pin,GPIO_PIN_SET);
+	HAL_Delay(1000);
+
+	HAL_GPIO_WritePin(BNO_NRST_GPIO_Port,BNO_NRST_Pin,GPIO_PIN_SET);
+	HAL_Delay(100);
+	HAL_GPIO_WritePin(BNO_NRST_GPIO_Port,BNO_NRST_Pin,GPIO_PIN_RESET);
+	HAL_Delay(50);
+	HAL_GPIO_WritePin(BNO_NRST_GPIO_Port,BNO_NRST_Pin,GPIO_PIN_SET);
+	HAL_Delay(100);
+
+
+
 
 }
 
@@ -93,22 +105,22 @@ void test_i2c(){
     uint8_t i2c_start_msg1[] = "I2C Scanning:\n";
 
 	char buffer[25] = {0};
-	HAL_UART_Transmit(&hlpuart1, i2c_start_msg1, sizeof(i2c_start_msg1)-1, 10);
+	HAL_UART_Transmit(&huart7, i2c_start_msg1, sizeof(i2c_start_msg1)-1, 10);
 
 	if(length==2){
 		sprintf(buffer, "\tI2C1 Address:0x%02X,0x%02X\n", address[0],address[1]);
-		HAL_UART_Transmit(&hlpuart1, (uint8_t*)buffer, 24, 10);
+		HAL_UART_Transmit(&huart7, (uint8_t*)buffer, 24, 10);
 	}else if(length==1){
 		sprintf(buffer, "\tI2C1 Address:0x%02X\n", address[0]);
-		HAL_UART_Transmit(&hlpuart1, (uint8_t*)buffer, 19, 10);
+		HAL_UART_Transmit(&huart7, (uint8_t*)buffer, 19, 10);
 	}else if(length==0){
-		HAL_UART_Transmit(&hlpuart1, (uint8_t*)"\tNo Device Found In I2C1\n", 25, 10);
+		HAL_UART_Transmit(&huart7, (uint8_t*)"\tNo Device Found In I2C1\n", 25, 10);
 	}
 
     length=0;
-    for(i=1; i<128; i++)
+    for(i=1; i<255; i++)
 	{
-		ret = HAL_I2C_IsDeviceReady(&hi2c2, (uint16_t)(i<<1), 3, 5);
+		ret = HAL_I2C_IsDeviceReady(&hi2c2, (uint16_t)(i), 3, 5);
 		if(ret == HAL_OK)
 		{
 			address[length++]=i;
@@ -116,14 +128,23 @@ void test_i2c(){
 	}
     if(length==2){
 		sprintf(buffer, "\tI2C2 Address:0x%02X,0x%02X\n", address[0],address[1]);
-		HAL_UART_Transmit(&hlpuart1, (uint8_t*)buffer, 24, 10);
+		HAL_UART_Transmit(&huart7, (uint8_t*)buffer, 24, 10);
 	}else if(length==1){
 		sprintf(buffer, "\tI2C2 Address:0x%02X\n", address[0]);
-		HAL_UART_Transmit(&hlpuart1, (uint8_t*)buffer, 19, 10);
+		HAL_UART_Transmit(&huart7, (uint8_t*)buffer, 19, 10);
 	}else if(length==0){
-		HAL_UART_Transmit(&hlpuart1, (uint8_t*)"\tNo Device Found In I2C2\n", 25, 10);
+		HAL_UART_Transmit(&huart7, (uint8_t*)"\tNo Device Found In I2C2\n", 25, 10);
 	}
 
+}
+
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+  if(GPIO_Pin == BNO_INT_Pin)
+  {
+    /* Toggle LED1 */
+	  HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
+  }
 }
 
 
@@ -161,10 +182,11 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_I2C1_Init();
+  MX_UART7_Init();
   MX_I2C2_Init();
-  MX_LPUART1_UART_Init();
   /* USER CODE BEGIN 2 */
   BNO085_setup();
+  HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_SET);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -362,50 +384,50 @@ static void MX_I2C2_Init(void)
 }
 
 /**
-  * @brief LPUART1 Initialization Function
+  * @brief UART7 Initialization Function
   * @param None
   * @retval None
   */
-static void MX_LPUART1_UART_Init(void)
+static void MX_UART7_Init(void)
 {
 
-  /* USER CODE BEGIN LPUART1_Init 0 */
+  /* USER CODE BEGIN UART7_Init 0 */
 
-  /* USER CODE END LPUART1_Init 0 */
+  /* USER CODE END UART7_Init 0 */
 
-  /* USER CODE BEGIN LPUART1_Init 1 */
+  /* USER CODE BEGIN UART7_Init 1 */
 
-  /* USER CODE END LPUART1_Init 1 */
-  hlpuart1.Instance = LPUART1;
-  hlpuart1.Init.BaudRate = 115200;
-  hlpuart1.Init.WordLength = UART_WORDLENGTH_8B;
-  hlpuart1.Init.StopBits = UART_STOPBITS_1;
-  hlpuart1.Init.Parity = UART_PARITY_NONE;
-  hlpuart1.Init.Mode = UART_MODE_TX_RX;
-  hlpuart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
-  hlpuart1.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
-  hlpuart1.Init.ClockPrescaler = UART_PRESCALER_DIV1;
-  hlpuart1.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
-  hlpuart1.FifoMode = UART_FIFOMODE_DISABLE;
-  if (HAL_UART_Init(&hlpuart1) != HAL_OK)
+  /* USER CODE END UART7_Init 1 */
+  huart7.Instance = UART7;
+  huart7.Init.BaudRate = 115200;
+  huart7.Init.WordLength = UART_WORDLENGTH_8B;
+  huart7.Init.StopBits = UART_STOPBITS_1;
+  huart7.Init.Parity = UART_PARITY_NONE;
+  huart7.Init.Mode = UART_MODE_TX_RX;
+  huart7.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart7.Init.OverSampling = UART_OVERSAMPLING_16;
+  huart7.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
+  huart7.Init.ClockPrescaler = UART_PRESCALER_DIV1;
+  huart7.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
+  if (HAL_UART_Init(&huart7) != HAL_OK)
   {
     Error_Handler();
   }
-  if (HAL_UARTEx_SetTxFifoThreshold(&hlpuart1, UART_TXFIFO_THRESHOLD_1_8) != HAL_OK)
+  if (HAL_UARTEx_SetTxFifoThreshold(&huart7, UART_TXFIFO_THRESHOLD_1_8) != HAL_OK)
   {
     Error_Handler();
   }
-  if (HAL_UARTEx_SetRxFifoThreshold(&hlpuart1, UART_RXFIFO_THRESHOLD_1_8) != HAL_OK)
+  if (HAL_UARTEx_SetRxFifoThreshold(&huart7, UART_RXFIFO_THRESHOLD_1_8) != HAL_OK)
   {
     Error_Handler();
   }
-  if (HAL_UARTEx_DisableFifoMode(&hlpuart1) != HAL_OK)
+  if (HAL_UARTEx_DisableFifoMode(&huart7) != HAL_OK)
   {
     Error_Handler();
   }
-  /* USER CODE BEGIN LPUART1_Init 2 */
+  /* USER CODE BEGIN UART7_Init 2 */
 
-  /* USER CODE END LPUART1_Init 2 */
+  /* USER CODE END UART7_Init 2 */
 
 }
 
@@ -423,6 +445,7 @@ static void MX_GPIO_Init(void)
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOH_CLK_ENABLE();
+  __HAL_RCC_GPIOE_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
   __HAL_RCC_GPIOD_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
@@ -431,7 +454,14 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOB, BNO_NRST_Pin|BNO_BOOTN_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOD, BNO_P1_Pin|LED_BLUE_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOD, BNO_P0_Pin|BNO_P1_Pin|LED_BLUE_Pin|LED_YELLOW_Pin
+                          |LED_RED_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin : BNO_INT_Pin */
+  GPIO_InitStruct.Pin = BNO_INT_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(BNO_INT_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : BNO_NRST_Pin BNO_BOOTN_Pin */
   GPIO_InitStruct.Pin = BNO_NRST_Pin|BNO_BOOTN_Pin;
@@ -440,18 +470,23 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : BNO_P0_Pin */
-  GPIO_InitStruct.Pin = BNO_P0_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(BNO_P0_GPIO_Port, &GPIO_InitStruct);
+  /*Configure GPIO pins : BNO_P0_Pin BNO_P1_Pin */
+  GPIO_InitStruct.Pin = BNO_P0_Pin|BNO_P1_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : BNO_P1_Pin LED_BLUE_Pin */
-  GPIO_InitStruct.Pin = BNO_P1_Pin|LED_BLUE_Pin;
+  /*Configure GPIO pins : LED_BLUE_Pin LED_YELLOW_Pin LED_RED_Pin */
+  GPIO_InitStruct.Pin = LED_BLUE_Pin|LED_YELLOW_Pin|LED_RED_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+
+  /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(EXTI9_5_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
 
 /* USER CODE BEGIN MX_GPIO_Init_2 */
 /* USER CODE END MX_GPIO_Init_2 */

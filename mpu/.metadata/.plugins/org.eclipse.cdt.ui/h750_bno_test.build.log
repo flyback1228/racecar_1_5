@@ -1,21 +1,17 @@
-19:36:25 **** Incremental Build of configuration Debug for project h750_bno_test ****
+13:26:33 **** Incremental Build of configuration Debug for project h750_bno_test ****
 make -j8 all 
 arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m7 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32H750xx -c -I../Core/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
-../Core/Src/main.c:24:19: warning: missing terminating " character
-   24 | #include "stdio.h""
-      |                   ^
-../Core/Src/main.c:24:19: warning: extra tokens at end of #include directive
-arm-none-eabi-gcc -o "h750_bno_test.elf" @"objects.list"   -mcpu=cortex-m7 -T"/home/acsr2004/Documents/racecar_1_5/mpu/h750_bno_test/STM32H750VBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="h750_bno_test.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+arm-none-eabi-gcc -o "h750_bno_test.elf" @"objects.list"   -mcpu=cortex-m7 -T"/home/acsr2004/racecar_1_5/mpu/h750_bno_test/STM32H750VBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="h750_bno_test.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 Finished building target: h750_bno_test.elf
  
 arm-none-eabi-size   h750_bno_test.elf 
 arm-none-eabi-objdump -h -S  h750_bno_test.elf  > "h750_bno_test.list"
    text	   data	    bss	    dec	    hex	filename
-  26448	    104	   2216	  28768	   7060	h750_bno_test.elf
+  26864	    104	   2216	  29184	   7200	h750_bno_test.elf
 Finished building: default.size.stdout
  
 Finished building: h750_bno_test.list
  
 
-19:36:26 Build Finished. 0 errors, 2 warnings. (took 761ms)
+13:26:34 Build Finished. 0 errors, 0 warnings. (took 776ms)
 

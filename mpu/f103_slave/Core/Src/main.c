@@ -21,9 +21,14 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "st7735.h"
+//#include "st7735.h"
+#include "ILI9341_STM32_Driver.h"
+#include "ILI9341_GFX.h"
+
+
 #include "fonts.h"
 #include "utility.h"
+
 #include <stdio.h>
 /* USER CODE END Includes */
 
@@ -212,8 +217,13 @@ int main(void)
   HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_SET);
   HAL_GPIO_WritePin(LCD_LED_GPIO_Port, LCD_LED_Pin, GPIO_PIN_SET);
   DWT_Init();
-  ST7735_Init();
-  ST7735_FillScreen(ST7735_BLACK);
+  //ST7735_Init();
+  //ST7735_FillScreen(ST7735_BLACK);
+  ILI9341_Init();
+  ILI9341_Fill_Screen(WHITE);
+  ILI9341_Set_Rotation(SCREEN_HORIZONTAL_2);
+  //ILI9341_Draw_Text("FPS TEST, 40 loop 2 screens", 10, 10, BLACK, 2, WHITE);
+  ILI9341_Write_Text("FPS TEST, 40 loop 2 screens", 10, 10, &Font_11x18, BLACK, WHITE);
   HAL_TIM_Base_Start_IT(&htim1);
   /* USER CODE END 2 */
 
@@ -227,6 +237,7 @@ int main(void)
 	}
     HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
 
+    /*
     ST7735_WriteString(0, 0, "Frequence", Font_11x18, ST7735_RED, ST7735_BLACK);
     char str[3];
     for(uint8_t i=0;i<8;++i){
@@ -236,7 +247,7 @@ int main(void)
     for(uint8_t i=0;i<8;++i){
 		sprintf(str,"%03d", speed_on_single_pin[2*i+2]);
 		ST7735_WriteString(64+5, 18+i*10, str, Font_7x10, ST7735_GREEN, ST7735_BLACK);
-    }
+    }*/
 
     uint32_t h = millis();
     while(h-t<500){
@@ -458,10 +469,20 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, LCD_LED_Pin|LCD_CS_Pin|LCD_RST_Pin|LCD_DC_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(LEDB12_GPIO_Port, LEDB12_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin : LED_Pin */
+  GPIO_InitStruct.Pin = LED_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(LED_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : LCD_LED_Pin LCD_CS_Pin LCD_RST_Pin LCD_DC_Pin */
   GPIO_InitStruct.Pin = LCD_LED_Pin|LCD_CS_Pin|LCD_RST_Pin|LCD_DC_Pin;
@@ -482,12 +503,12 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : LED_Pin */
-  GPIO_InitStruct.Pin = LED_Pin;
+  /*Configure GPIO pin : LEDB12_Pin */
+  GPIO_InitStruct.Pin = LEDB12_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(LED_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(LEDB12_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : S12_Pin */
   GPIO_InitStruct.Pin = S12_Pin;

@@ -60,8 +60,8 @@ all: main-build
 main-build: h750_bno_test.elf secondary-outputs
 
 # Tool invocations
-h750_bno_test.elf h750_bno_test.map: $(OBJS) $(USER_OBJS) /home/acsr2004/Documents/racecar_1_5/mpu/h750_bno_test/STM32H750VBTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "h750_bno_test.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m7 -T"/home/acsr2004/Documents/racecar_1_5/mpu/h750_bno_test/STM32H750VBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="h750_bno_test.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+h750_bno_test.elf h750_bno_test.map: $(OBJS) $(USER_OBJS) /home/acsr2004/racecar_1_5/mpu/h750_bno_test/STM32H750VBTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "h750_bno_test.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m7 -T"/home/acsr2004/racecar_1_5/mpu/h750_bno_test/STM32H750VBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="h750_bno_test.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
