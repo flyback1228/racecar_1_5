@@ -22,6 +22,9 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "stdio.h"
+#include "BNO08x_I2C/BNO08x_I2C.h"
+#include "utility.h"
+//#include "Adafruit_BNO08x.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -47,7 +50,14 @@ I2C_HandleTypeDef hi2c2;
 UART_HandleTypeDef huart7;
 
 /* USER CODE BEGIN PV */
+uint8_t uart_data[19];
+uint8_t bno_header[4]; //Each packet has a header of 4 bytes
+uint8_t bno_data[1024];
 
+//sh2_SensorValue_t sensorValue;
+//Adafruit_BNO08x  bno08x;
+
+BNO08x bno;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -59,34 +69,59 @@ static void MX_UART7_Init(void);
 static void MX_I2C2_Init(void);
 /* USER CODE BEGIN PFP */
 
+#ifdef __GNUC__
+#define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
+#else
+#define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
+#endif
+
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-void BNO085_setup(){
-	HAL_GPIO_WritePin(BNO_P0_GPIO_Port, BNO_P0_Pin, GPIO_PIN_RESET);
-	HAL_GPIO_WritePin(BNO_P1_GPIO_Port, BNO_P1_Pin, GPIO_PIN_RESET);
-	HAL_GPIO_WritePin(BNO_BOOTN_GPIO_Port, BNO_BOOTN_Pin, GPIO_PIN_SET);
-	HAL_Delay(100);
-
-	HAL_GPIO_WritePin(BNO_NRST_GPIO_Port,BNO_NRST_Pin,GPIO_PIN_SET);
-	HAL_Delay(100);
-	HAL_GPIO_WritePin(BNO_NRST_GPIO_Port,BNO_NRST_Pin,GPIO_PIN_RESET);
-	HAL_Delay(50);
-	HAL_GPIO_WritePin(BNO_NRST_GPIO_Port,BNO_NRST_Pin,GPIO_PIN_SET);
-	HAL_Delay(1000);
-
-	HAL_GPIO_WritePin(BNO_NRST_GPIO_Port,BNO_NRST_Pin,GPIO_PIN_SET);
-	HAL_Delay(100);
-	HAL_GPIO_WritePin(BNO_NRST_GPIO_Port,BNO_NRST_Pin,GPIO_PIN_RESET);
-	HAL_Delay(50);
-	HAL_GPIO_WritePin(BNO_NRST_GPIO_Port,BNO_NRST_Pin,GPIO_PIN_SET);
-	HAL_Delay(100);
+PUTCHAR_PROTOTYPE
+{
+  HAL_UART_Transmit(&huart7, (uint8_t *)&ch, 1, HAL_MAX_DELAY);
+  return ch;
+}
 
 
 
+uint8_t BNO085_setup(){
+
+	bno.hi2c2 = &hi2c2;
+
+	bno.rst_port = BNO_NRST_GPIO_Port;
+	bno.rst_pin = BNO_NRST_Pin;
+
+	bno.p0_port = BNO_P0_GPIO_Port;
+	bno.p0_pin = BNO_P0_Pin;
+
+	bno.p1_port = BNO_P1_GPIO_Port;
+	bno.p1_pin = BNO_P1_Pin;
+
+	bno.int_port = BNO_INT_GPIO_Port;
+	bno.int_pin = BNO_INT_Pin;
+
+	bno.bootn_port=BNO_BOOTN_GPIO_Port;
+	bno.bootn_pin = BNO_BOOTN_Pin;
+
+	bno08x_hardware_reset(&bno);
+
+	if(!bno08x_initialization(&bno)){
+		printf("BNO initialization failed\n");
+		return 0;
+	}
+
+	bno08x_wait_for_data(&bno);
+	if(bno08x_enable_gyro(&bno,50)!=HAL_OK){
+		return 0;
+	}
+	printf("Accelerometer enabled\nOutput in form x, y, z, in m/s^2\n");
+	return 1;
 
 }
+
 
 void test_i2c(){
 
@@ -118,9 +153,9 @@ void test_i2c(){
 	}
 
     length=0;
-    for(i=1; i<255; i++)
+    for(i=1; i<128; i++)
 	{
-		ret = HAL_I2C_IsDeviceReady(&hi2c2, (uint16_t)(i), 3, 5);
+		ret = HAL_I2C_IsDeviceReady(&hi2c2, (uint16_t)(i<<1), 3, 5);
 		if(ret == HAL_OK)
 		{
 			address[length++]=i;
@@ -138,14 +173,16 @@ void test_i2c(){
 
 }
 
+
+
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
   if(GPIO_Pin == BNO_INT_Pin)
   {
-    /* Toggle LED1 */
 	  HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
   }
 }
+
 
 
 /* USER CODE END 0 */
@@ -185,17 +222,47 @@ int main(void)
   MX_UART7_Init();
   MX_I2C2_Init();
   /* USER CODE BEGIN 2 */
-  BNO085_setup();
-  HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_SET);
+  DWT_Init();
+  //BNO085_setup();
+
+  //HAL_Delay(200);
+  //prodid prodids[2];
+  //bno08x_get_prodid(&bno, prodids);
+
+  HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, GPIO_PIN_RESET);
+
+   HAL_Delay(100);
+  //HAL_UART_Receive_IT(&huart3, uart_data, 19);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  float acc[3];
   while (1)
   {
-	  test_i2c();
+
+
+
+
 	  HAL_GPIO_TogglePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin);
-	  HAL_Delay(500);
+	  HAL_Delay(1000);
+	  test_i2c();
+
+	  /*
+
+	  if(bno08x_receive_packet(&bno)>0){
+		  if(bno.data[2+4] == CHANNEL_REPORTS && bno.data[0+4] == SHTP_REPORT_BASE_TIMESTAMP){
+			  bno08x_parse_report(&bno);
+
+			  bno08x_get_acc(&bno, acc);
+			  printf("%0.2f,%0.2f,%0.2f\n",acc[0],acc[1],acc[2]);
+		  }
+	  }else{
+		  bno085x_get_errors(&bno);
+		  bno085x_print_errors(&bno);
+	  }*/
+
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -351,7 +418,7 @@ static void MX_I2C2_Init(void)
 
   /* USER CODE END I2C2_Init 1 */
   hi2c2.Instance = I2C2;
-  hi2c2.Init.Timing = 0x00404C74;
+  hi2c2.Init.Timing = 0x00100822;
   hi2c2.Init.OwnAddress1 = 0;
   hi2c2.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
   hi2c2.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
@@ -459,7 +526,7 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pin : BNO_INT_Pin */
   GPIO_InitStruct.Pin = BNO_INT_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(BNO_INT_GPIO_Port, &GPIO_InitStruct);
 
@@ -483,10 +550,6 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
-
-  /* EXTI interrupt init*/
-  HAL_NVIC_SetPriority(EXTI9_5_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
 
 /* USER CODE BEGIN MX_GPIO_Init_2 */
 /* USER CODE END MX_GPIO_Init_2 */

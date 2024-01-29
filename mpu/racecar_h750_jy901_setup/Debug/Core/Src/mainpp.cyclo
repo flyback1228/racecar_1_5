@@ -1,0 +1,7 @@
+../Core/Inc/utility.h:16:20:void DWT_Init()	1
+../Core/Src/mainpp.cpp:24:6:void HAL_UART_RxCpltCallback(UART_HandleTypeDef*)	5
+../Core/Src/mainpp.cpp:45:6:void HAL_UART_ErrorCallback(UART_HandleTypeDef*)	2
+../Core/Src/mainpp.cpp:64:6:void setup()	3
+../Core/Src/mainpp.cpp:91:6:void loop()	1
+../Core/Src/mainpp.cpp:100:1:void __static_initialization_and_destruction_0(int, int)	3
+../Core/Src/mainpp.cpp:100:1:cpp)	1

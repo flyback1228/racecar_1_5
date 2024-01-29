@@ -1,0 +1,16 @@
+../Core/Inc/utility.h:29:24:micros	4	static
+../Core/Src/Adafruit_BNO08x.c:64:1:Adafruit_BNO08x_construct	16	static
+../Core/Src/Adafruit_BNO08x.c:79:9:Adafruit_BNO08x_begin_I2C	16	static
+../Core/Src/Adafruit_BNO08x.c:104:9:Adafruit_BNO08x_init	24	static
+../Core/Src/Adafruit_BNO08x.c:132:6:Adafruit_BNO08x_hardwareReset	16	static
+../Core/Src/Adafruit_BNO08x.c:139:9:Adafruit_BNO08x_wasReset	24	static
+../Core/Src/Adafruit_BNO08x.c:153:9:Adafruit_BNO08x_getSensorEvent	16	static
+../Core/Src/Adafruit_BNO08x.c:176:9:Adafruit_BNO08x_enableReport	32	static
+../Core/Src/Adafruit_BNO08x.c:201:12:i2chal_open	32	static
+../Core/Src/Adafruit_BNO08x.c:223:13:i2chal_close	16	static
+../Core/Src/Adafruit_BNO08x.c:227:12:i2chal_read	48	static
+../Core/Src/Adafruit_BNO08x.c:266:12:i2chal_write	32	static
+../Core/Src/Adafruit_BNO08x.c:280:13:hal_hardwareReset	8	static
+../Core/Src/Adafruit_BNO08x.c:293:17:hal_getTimeUs	16	static
+../Core/Src/Adafruit_BNO08x.c:299:13:hal_callback	16	static
+../Core/Src/Adafruit_BNO08x.c:308:13:sensorHandler	24	static

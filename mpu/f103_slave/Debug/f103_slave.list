@@ -29,23 +29,23 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
  12 .comment      00000043  00000000  00000000  00020045  2**0
                   CONTENTS, READONLY
- 13 .debug_info   0000f39d  00000000  00000000  00020088  2**0
+ 13 .debug_info   0000f3f1  00000000  00000000  00020088  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 14 .debug_abbrev 00002361  00000000  00000000  0002f425  2**0
+ 14 .debug_abbrev 0000231e  00000000  00000000  0002f479  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 15 .debug_aranges 00000f18  00000000  00000000  00031788  2**3
+ 15 .debug_aranges 00000f18  00000000  00000000  00031798  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 16 .debug_rnglists 00000bd9  00000000  00000000  000326a0  2**0
+ 16 .debug_rnglists 00000bd9  00000000  00000000  000326b0  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_macro  000183c0  00000000  00000000  00033279  2**0
+ 17 .debug_macro  000183c0  00000000  00000000  00033289  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_line   00010018  00000000  00000000  0004b639  2**0
+ 18 .debug_line   00010015  00000000  00000000  0004b649  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .debug_str    0008c7fd  00000000  00000000  0005b651  2**0
+ 19 .debug_str    0008c80e  00000000  00000000  0005b65e  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 20 .debug_frame  00003f40  00000000  00000000  000e7e50  2**2
+ 20 .debug_frame  00003f40  00000000  00000000  000e7e6c  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 21 .debug_line_str 00000058  00000000  00000000  000ebd90  2**0
+ 21 .debug_line_str 00000058  00000000  00000000  000ebdac  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -79,9 +79,9 @@ Disassembly of section .text:
  8000148:	08003fb8 	.word	0x08003fb8
 
 0800014c <ILI9341_Write_Char>:
+	ILI9341_Draw_Rectangle(MIN(x0,x1), MIN(y0,y1), abs((int)x1-(int)x0), abs((int)y1-(int)y0), colour);
+}
 
-
-}*/
 
 void ILI9341_Write_Char(char ch, uint16_t x, uint16_t y, FontDef* font, uint16_t colour, uint16_t background_colour)
 {
@@ -95,8 +95,6 @@ void ILI9341_Write_Char(char ch, uint16_t x, uint16_t y, FontDef* font, uint16_t
  800015a:	81bb      	strh	r3, [r7, #12]
  800015c:	4613      	mov	r3, r2
  800015e:	817b      	strh	r3, [r7, #10]
-
-
     uint32_t i, b, j;
 	for(i = 0; i < font->height; i++) {
  8000160:	2300      	movs	r3, #0
@@ -191,9 +189,6 @@ void ILI9341_Write_Char(char ch, uint16_t x, uint16_t y, FontDef* font, uint16_t
  8000200:	bd80      	pop	{r7, pc}
 
 08000202 <ILI9341_Write_Text>:
-        X += CHAR_WIDTH*Size;
-    }
-}*/
 
 void ILI9341_Write_Text(const char* text, uint16_t x, uint16_t y, FontDef* font_def,  uint16_t color, uint16_t background_color)
 {

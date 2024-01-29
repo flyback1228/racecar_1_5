@@ -58,6 +58,7 @@ UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
+FontDef Font_5x5 = {5,5,95*5,Font5x5};
 FontDef Font_7x10 = {7,10,95*10,Font7x10};
 FontDef Font_11x18 = {11,18,95*18,Font11x18};
 FontDef Font_16x26 = {16,26,95*26,Font16x26};
@@ -236,18 +237,6 @@ int main(void)
 		increment_count[i]++;
 	}
     HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
-
-    /*
-    ST7735_WriteString(0, 0, "Frequence", Font_11x18, ST7735_RED, ST7735_BLACK);
-    char str[3];
-    for(uint8_t i=0;i<8;++i){
-		sprintf(str,"%03d", speed_on_single_pin[2*i+1]);
-		ST7735_WriteString(5, 18+i*10, str, Font_7x10, ST7735_GREEN, ST7735_BLACK);
-    }
-    for(uint8_t i=0;i<8;++i){
-		sprintf(str,"%03d", speed_on_single_pin[2*i+2]);
-		ST7735_WriteString(64+5, 18+i*10, str, Font_7x10, ST7735_GREEN, ST7735_BLACK);
-    }*/
 
     uint32_t h = millis();
     while(h-t<500){

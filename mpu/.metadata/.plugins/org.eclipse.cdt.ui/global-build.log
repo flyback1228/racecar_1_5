@@ -1,112 +1,347 @@
-18:21:48 **** Build of configuration Debug for project racecar_pcb_test ****
+18:59:20 **** Incremental Build of configuration Debug for project racecar ****
 make -j8 all 
-arm-none-eabi-gcc "../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal.c" -mcpu=cortex-m7 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32H750xx -c -I../Core/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal.d" -MT"Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal.o" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -o "Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal.o"
-arm-none-eabi-gcc "../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_adc.c" -mcpu=cortex-m7 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32H750xx -c -I../Core/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_adc.d" -MT"Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_adc.o" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -o "Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_adc.o"
-arm-none-eabi-gcc "../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_adc_ex.c" -mcpu=cortex-m7 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32H750xx -c -I../Core/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_adc_ex.d" -MT"Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_adc_ex.o" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -o "Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_adc_ex.o"
-arm-none-eabi-gcc "../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_cortex.c" -mcpu=cortex-m7 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32H750xx -c -I../Core/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_cortex.d" -MT"Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_cortex.o" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -o "Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_cortex.o"
-arm-none-eabi-gcc "../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_dma.c" -mcpu=cortex-m7 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32H750xx -c -I../Core/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_dma.d" -MT"Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_dma.o" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -o "Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_dma.o"
-arm-none-eabi-gcc "../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_dma_ex.c" -mcpu=cortex-m7 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32H750xx -c -I../Core/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_dma_ex.d" -MT"Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_dma_ex.o" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -o "Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_dma_ex.o"
-arm-none-eabi-gcc "../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_exti.c" -mcpu=cortex-m7 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32H750xx -c -I../Core/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_exti.d" -MT"Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_exti.o" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -o "Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_exti.o"
-arm-none-eabi-gcc "../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_flash.c" -mcpu=cortex-m7 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32H750xx -c -I../Core/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_flash.d" -MT"Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_flash.o" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -o "Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_flash.o"
-arm-none-eabi-gcc "../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_flash_ex.c" -mcpu=cortex-m7 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32H750xx -c -I../Core/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_flash_ex.d" -MT"Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_flash_ex.o" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -o "Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_flash_ex.o"
-arm-none-eabi-gcc "../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_gpio.c" -mcpu=cortex-m7 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32H750xx -c -I../Core/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_gpio.d" -MT"Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_gpio.o" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -o "Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_gpio.o"
-arm-none-eabi-gcc "../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_hsem.c" -mcpu=cortex-m7 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32H750xx -c -I../Core/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_hsem.d" -MT"Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_hsem.o" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -o "Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_hsem.o"
-arm-none-eabi-gcc "../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_i2c.c" -mcpu=cortex-m7 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32H750xx -c -I../Core/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_i2c.d" -MT"Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_i2c.o" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -o "Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_i2c.o"
-arm-none-eabi-gcc "../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_i2c_ex.c" -mcpu=cortex-m7 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32H750xx -c -I../Core/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_i2c_ex.d" -MT"Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_i2c_ex.o" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -o "Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_i2c_ex.o"
-arm-none-eabi-gcc "../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_mdma.c" -mcpu=cortex-m7 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32H750xx -c -I../Core/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_mdma.d" -MT"Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_mdma.o" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -o "Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_mdma.o"
-arm-none-eabi-gcc "../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pwr.c" -mcpu=cortex-m7 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32H750xx -c -I../Core/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pwr.d" -MT"Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pwr.o" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -o "Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pwr.o"
-arm-none-eabi-gcc "../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pwr_ex.c" -mcpu=cortex-m7 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32H750xx -c -I../Core/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pwr_ex.d" -MT"Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pwr_ex.o" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -o "Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pwr_ex.o"
-arm-none-eabi-gcc "../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rcc.c" -mcpu=cortex-m7 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32H750xx -c -I../Core/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rcc.d" -MT"Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rcc.o" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -o "Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rcc.o"
-arm-none-eabi-gcc "../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rcc_ex.c" -mcpu=cortex-m7 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32H750xx -c -I../Core/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rcc_ex.d" -MT"Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rcc_ex.o" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -o "Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rcc_ex.o"
-arm-none-eabi-gcc "../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim.c" -mcpu=cortex-m7 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32H750xx -c -I../Core/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim.d" -MT"Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim.o" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -o "Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim.o"
-arm-none-eabi-gcc "../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim_ex.c" -mcpu=cortex-m7 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32H750xx -c -I../Core/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim_ex.d" -MT"Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim_ex.o" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -o "Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim_ex.o"
-arm-none-eabi-gcc "../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart.c" -mcpu=cortex-m7 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32H750xx -c -I../Core/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart.d" -MT"Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart.o" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -o "Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart.o"
-arm-none-eabi-gcc "../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart_ex.c" -mcpu=cortex-m7 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32H750xx -c -I../Core/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart_ex.d" -MT"Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart_ex.o" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -o "Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart_ex.o"
-arm-none-eabi-gcc -mcpu=cortex-m7 -g3 -DDEBUG -c -x assembler-with-cpp -MMD -MP -MF"Core/Startup/startup_stm32h750vbtx.d" -MT"Core/Startup/startup_stm32h750vbtx.o" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -o "Core/Startup/startup_stm32h750vbtx.o" "../Core/Startup/startup_stm32h750vbtx.s"
-arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m7 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32H750xx -c -I../Core/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
 arm-none-eabi-g++ "../Core/Src/mainpp.cpp" -mcpu=cortex-m7 -std=gnu++14 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32H750xx -c -I../Core/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -fno-use-cxa-atexit -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/mainpp.d" -MT"Core/Src/mainpp.o" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -o "Core/Src/mainpp.o"
-../Core/Src/main.c: In function 'main':
-../Core/Src/main.c:135:3: warning: implicit declaration of function 'setup' [-Wimplicit-function-declaration]
-  135 |   setup();
-      |   ^~~~~
-../Core/Src/main.c:143:11: warning: implicit declaration of function 'loop' [-Wimplicit-function-declaration]
-  143 |           loop();
-      |           ^~~~
-arm-none-eabi-gcc "../Core/Src/stm32h7xx_hal_msp.c" -mcpu=cortex-m7 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32H750xx -c -I../Core/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/stm32h7xx_hal_msp.d" -MT"Core/Src/stm32h7xx_hal_msp.o" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -o "Core/Src/stm32h7xx_hal_msp.o"
-arm-none-eabi-gcc "../Core/Src/stm32h7xx_it.c" -mcpu=cortex-m7 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32H750xx -c -I../Core/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/stm32h7xx_it.d" -MT"Core/Src/stm32h7xx_it.o" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -o "Core/Src/stm32h7xx_it.o"
-../Core/Src/mainpp.cpp: In function 'void input_test()':
-../Core/Src/mainpp.cpp:261:83: warning: format '%u' expects argument of type 'unsigned int', but argument 4 has type 'long unsigned int' [-Wformat=]
-  261 |                 sprintf(str,"Input Mode: Auto, Frequency: %lu Hz, ESC DutyCycle: %u%%, SERVO DutyCycle: %lu%%\n",1000000/arr,esc_cnt*100/arr,servo_cnt*100/arr);
-      |                                                                                  ~^                                          ~~~~~~~~~~~~~~~
-      |                                                                                   |                                                     |
-      |                                                                                   unsigned int                                          long unsigned int
-      |                                                                                  %lu
-../Core/Src/mainpp.cpp:263:85: warning: format '%u' expects argument of type 'unsigned int', but argument 4 has type 'long unsigned int' [-Wformat=]
-  263 |                 sprintf(str,"Input Mode: Manual, Frequency: %lu Hz, ESC DutyCycle: %u%%, SERVO DutyCycle: %lu%%\n",1000000/arr,esc_cnt*100/arr,servo_cnt*100/arr);
-      |                                                                                    ~^                                          ~~~~~~~~~~~~~~~
-      |                                                                                     |                                                     |
-      |                                                                                     unsigned int                                          long unsigned int
-      |                                                                                    %lu
-arm-none-eabi-gcc "../Core/Src/syscalls.c" -mcpu=cortex-m7 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32H750xx -c -I../Core/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/syscalls.d" -MT"Core/Src/syscalls.o" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -o "Core/Src/syscalls.o"
-arm-none-eabi-gcc "../Core/Src/sysmem.c" -mcpu=cortex-m7 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32H750xx -c -I../Core/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/sysmem.d" -MT"Core/Src/sysmem.o" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -o "Core/Src/sysmem.o"
-arm-none-eabi-gcc "../Core/Src/system_stm32h7xx.c" -mcpu=cortex-m7 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32H750xx -c -I../Core/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/system_stm32h7xx.d" -MT"Core/Src/system_stm32h7xx.o" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -o "Core/Src/system_stm32h7xx.o"
-arm-none-eabi-g++ -o "racecar_pcb_test.elf" @"objects.list"   -mcpu=cortex-m7 -T"/home/acsr2004/racecar_1_5/mpu/racecar_pcb_test/STM32H750VBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="racecar_pcb_test.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
-Finished building target: racecar_pcb_test.elf
- 
-arm-none-eabi-size   racecar_pcb_test.elf 
-arm-none-eabi-objdump -h -S  racecar_pcb_test.elf  > "racecar_pcb_test.list"
-   text	   data	    bss	    dec	    hex	filename
-  77372	    484	   3540	  81396	  13df4	racecar_pcb_test.elf
-Finished building: default.size.stdout
- 
-Finished building: racecar_pcb_test.list
- 
-18:21:53 **** Incremental Build of configuration Debug for project racecar_pcb_test ****
-make -j8 all 
-arm-none-eabi-size   racecar_pcb_test.elf 
-   text	   data	    bss	    dec	    hex	filename
-  77372	    484	   3540	  81396	  13df4	racecar_pcb_test.elf
-Finished building: default.size.stdout
- 
-18:22:55 **** Incremental Build of configuration Debug for project racecar_pcb_test ****
-make -j8 all 
-arm-none-eabi-size   racecar_pcb_test.elf 
-   text	   data	    bss	    dec	    hex	filename
-  77372	    484	   3540	  81396	  13df4	racecar_pcb_test.elf
-Finished building: default.size.stdout
- 
-18:23:06 **** Incremental Build of configuration Debug for project racecar_pcb_test ****
-make -j8 all 
-arm-none-eabi-size   racecar_pcb_test.elf 
-   text	   data	    bss	    dec	    hex	filename
-  77372	    484	   3540	  81396	  13df4	racecar_pcb_test.elf
-Finished building: default.size.stdout
- 
-18:23:27 **** Incremental Build of configuration Debug for project racecar_pcb_test ****
-make -j8 all 
-arm-none-eabi-size   racecar_pcb_test.elf 
-   text	   data	    bss	    dec	    hex	filename
-  77372	    484	   3540	  81396	  13df4	racecar_pcb_test.elf
-Finished building: default.size.stdout
- 
-18:23:42 **** Incremental Build of configuration Debug for project racecar_pcb_test ****
-make -j8 all 
-arm-none-eabi-size   racecar_pcb_test.elf 
-   text	   data	    bss	    dec	    hex	filename
-  77372	    484	   3540	  81396	  13df4	racecar_pcb_test.elf
-Finished building: default.size.stdout
- 
-18:24:07 **** Incremental Build of configuration Debug for project racecar_pcb_test ****
-make -j8 all 
-arm-none-eabi-size   racecar_pcb_test.elf 
-   text	   data	    bss	    dec	    hex	filename
-  77372	    484	   3540	  81396	  13df4	racecar_pcb_test.elf
-Finished building: default.size.stdout
- 
-18:24:54 **** Incremental Build of configuration Debug for project racecar_pcb_test ****
-make -j8 all 
-arm-none-eabi-size   racecar_pcb_test.elf 
-   text	   data	    bss	    dec	    hex	filename
-  77372	    484	   3540	  81396	  13df4	racecar_pcb_test.elf
-Finished building: default.size.stdout
- 
+In file included from ../Core/Inc/ros.h:39,
+                 from ../Core/Src/mainpp.cpp:9:
+../Core/Inc/STM32Hardware.h: In member function 'void STM32Hardware::write(uint8_t*, int)':
+../Core/Inc/STM32Hardware.h:117:22: warning: comparison of integer expressions of different signedness: 'int' and 'long unsigned int' [-Wsign-compare]
+  117 |       int n_tail = n <= tbuflen - twind ? n : tbuflen - twind;
+      |                    ~~^~~~~~~~~~~~~~~~~~
+In file included from ../Core/Inc/std_msgs/Float32MultiArray.h:8,
+                 from ../Core/Src/mainpp.cpp:10:
+../Core/Inc/std_msgs/MultiArrayLayout.h: In member function 'virtual int std_msgs::MultiArrayLayout::deserialize(unsigned char*)':
+../Core/Inc/std_msgs/MultiArrayLayout.h:57:60: warning: 'void* realloc(void*, size_t)' moving an object of non-trivially copyable type 'std_msgs::MultiArrayLayout::_dim_type' {aka 'class std_msgs::MultiArrayDimension'}; use 'new' and 'delete' instead [-Wclass-memaccess]
+   57 |         this->dim = (std_msgs::MultiArrayDimension*)realloc(this->dim, dim_lengthT * sizeof(std_msgs::MultiArrayDimension));
+      |                                                     ~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from ../Core/Inc/std_msgs/MultiArrayLayout.h:8,
+                 from ../Core/Inc/std_msgs/Float32MultiArray.h:8,
+                 from ../Core/Src/mainpp.cpp:10:
+../Core/Inc/std_msgs/MultiArrayDimension.h:12:9: note: 'std_msgs::MultiArrayLayout::_dim_type' {aka 'class std_msgs::MultiArrayDimension'} declared here
+   12 |   class MultiArrayDimension : public ros::Msg
+      |         ^~~~~~~~~~~~~~~~~~~
+In file included from ../Core/Inc/std_msgs/Float32MultiArray.h:8,
+                 from ../Core/Src/mainpp.cpp:10:
+../Core/Inc/std_msgs/MultiArrayLayout.h:61:15: warning: 'void* memcpy(void*, const void*, size_t)' writing to an object of type 'std_msgs::MultiArrayLayout::_dim_type' {aka 'class std_msgs::MultiArrayDimension'} with no trivial copy-assignment; use copy-assignment or copy-initialization instead [-Wclass-memaccess]
+   61 |         memcpy( &(this->dim[i]), &(this->st_dim), sizeof(std_msgs::MultiArrayDimension));
+      |         ~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from ../Core/Inc/std_msgs/MultiArrayLayout.h:8,
+                 from ../Core/Inc/std_msgs/Float32MultiArray.h:8,
+                 from ../Core/Src/mainpp.cpp:10:
+../Core/Inc/std_msgs/MultiArrayDimension.h:12:9: note: 'std_msgs::MultiArrayLayout::_dim_type' {aka 'class std_msgs::MultiArrayDimension'} declared here
+   12 |   class MultiArrayDimension : public ros::Msg
+      |         ^~~~~~~~~~~~~~~~~~~
+../Core/Src/mainpp.cpp: At global scope:
+../Core/Src/mainpp.cpp:22:8: error: 'TIM_HandleTypeDef' does not name a type; did you mean 'MDMA_HandleTypeDef'?
+   22 | extern TIM_HandleTypeDef htim2;
+      |        ^~~~~~~~~~~~~~~~~
+      |        MDMA_HandleTypeDef
+../Core/Src/mainpp.cpp:23:8: error: 'TIM_HandleTypeDef' does not name a type; did you mean 'MDMA_HandleTypeDef'?
+   23 | extern TIM_HandleTypeDef htim3;
+      |        ^~~~~~~~~~~~~~~~~
+      |        MDMA_HandleTypeDef
+../Core/Src/mainpp.cpp:24:8: error: 'TIM_HandleTypeDef' does not name a type; did you mean 'MDMA_HandleTypeDef'?
+   24 | extern TIM_HandleTypeDef htim5;
+      |        ^~~~~~~~~~~~~~~~~
+      |        MDMA_HandleTypeDef
+../Core/Src/mainpp.cpp:25:8: error: 'TIM_HandleTypeDef' does not name a type; did you mean 'MDMA_HandleTypeDef'?
+   25 | extern TIM_HandleTypeDef htim16;
+      |        ^~~~~~~~~~~~~~~~~
+      |        MDMA_HandleTypeDef
+../Core/Src/mainpp.cpp:26:8: error: 'TIM_HandleTypeDef' does not name a type; did you mean 'MDMA_HandleTypeDef'?
+   26 | extern TIM_HandleTypeDef htim7;
+      |        ^~~~~~~~~~~~~~~~~
+      |        MDMA_HandleTypeDef
+../Core/Src/mainpp.cpp:27:8: error: 'TIM_HandleTypeDef' does not name a type; did you mean 'MDMA_HandleTypeDef'?
+   27 | extern TIM_HandleTypeDef htim15;
+      |        ^~~~~~~~~~~~~~~~~
+      |        MDMA_HandleTypeDef
+../Core/Src/mainpp.cpp:46:8: error: 'ADC_HandleTypeDef' does not name a type; did you mean 'I2C_HandleTypeDef'?
+   46 | extern ADC_HandleTypeDef hadc1;
+      |        ^~~~~~~~~~~~~~~~~
+      |        I2C_HandleTypeDef
+../Core/Src/mainpp.cpp: In function 'void HAL_UART_RxCpltCallback(UART_HandleTypeDef*)':
+../Core/Src/mainpp.cpp:185:25: error: 'jy901' was not declared in this scope
+  185 |                         jy901.parseData(jy901_data);
+      |                         ^~~~~
+../Core/Src/mainpp.cpp: In function 'void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef*, uint16_t)':
+../Core/Src/mainpp.cpp:217:33: error: 'QSPI_W25Q64JV_Write' was not declared in this scope
+  217 |                                 QSPI_W25Q64JV_Write((uint8_t*)(&parameters),0x0,sizeof(ParameterTypeDef));
+      |                                 ^~~~~~~~~~~~~~~~~~~
+../Core/Src/mainpp.cpp: At global scope:
+../Core/Src/mainpp.cpp:241:6: error: variable or field 'HAL_TIM_IC_CaptureCallback' declared void
+  241 | void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim){
+      |      ^~~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/mainpp.cpp:241:33: error: 'TIM_HandleTypeDef' was not declared in this scope; did you mean 'MDMA_HandleTypeDef'?
+  241 | void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim){
+      |                                 ^~~~~~~~~~~~~~~~~
+      |                                 MDMA_HandleTypeDef
+../Core/Src/mainpp.cpp:241:52: error: 'htim' was not declared in this scope
+  241 | void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim){
+      |                                                    ^~~~
+../Core/Src/mainpp.cpp:277:6: error: variable or field 'HAL_TIM_PWM_PulseFinishedCallback' declared void
+  277 | void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim){
+      |      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/mainpp.cpp:277:40: error: 'TIM_HandleTypeDef' was not declared in this scope; did you mean 'MDMA_HandleTypeDef'?
+  277 | void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim){
+      |                                        ^~~~~~~~~~~~~~~~~
+      |                                        MDMA_HandleTypeDef
+../Core/Src/mainpp.cpp:277:59: error: 'htim' was not declared in this scope
+  277 | void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim){
+      |                                                           ^~~~
+../Core/Src/mainpp.cpp:285:6: error: variable or field 'HAL_TIM_PeriodElapsedCallback' declared void
+  285 | void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
+      |      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/mainpp.cpp:285:36: error: 'TIM_HandleTypeDef' was not declared in this scope; did you mean 'MDMA_HandleTypeDef'?
+  285 | void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
+      |                                    ^~~~~~~~~~~~~~~~~
+      |                                    MDMA_HandleTypeDef
+../Core/Src/mainpp.cpp:285:55: error: 'htim' was not declared in this scope
+  285 | void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
+      |                                                       ^~~~
+../Core/Src/mainpp.cpp:337:6: error: variable or field 'HAL_TIM_ErrorCallback' declared void
+  337 | void HAL_TIM_ErrorCallback(TIM_HandleTypeDef *htim){
+      |      ^~~~~~~~~~~~~~~~~~~~~
+../Core/Src/mainpp.cpp:337:28: error: 'TIM_HandleTypeDef' was not declared in this scope; did you mean 'MDMA_HandleTypeDef'?
+  337 | void HAL_TIM_ErrorCallback(TIM_HandleTypeDef *htim){
+      |                            ^~~~~~~~~~~~~~~~~
+      |                            MDMA_HandleTypeDef
+../Core/Src/mainpp.cpp:337:47: error: 'htim' was not declared in this scope
+  337 | void HAL_TIM_ErrorCallback(TIM_HandleTypeDef *htim){
+      |                                               ^~~~
+../Core/Src/mainpp.cpp: In function 'void HAL_GPIO_EXTI_Callback(uint16_t)':
+../Core/Src/mainpp.cpp:355:45: error: 'htim5' was not declared in this scope
+  355 |                         HAL_TIM_IC_Stop_IT(&htim5, TIM_CHANNEL_1);
+      |                                             ^~~~~
+../Core/Src/mainpp.cpp:355:52: error: 'TIM_CHANNEL_1' was not declared in this scope; did you mean 'DAC2_CHANNEL_1'?
+  355 |                         HAL_TIM_IC_Stop_IT(&htim5, TIM_CHANNEL_1);
+      |                                                    ^~~~~~~~~~~~~
+      |                                                    DAC2_CHANNEL_1
+../Core/Src/mainpp.cpp:355:25: error: 'HAL_TIM_IC_Stop_IT' was not declared in this scope
+  355 |                         HAL_TIM_IC_Stop_IT(&htim5, TIM_CHANNEL_1);
+      |                         ^~~~~~~~~~~~~~~~~~
+../Core/Src/mainpp.cpp:356:49: error: 'TIM_CHANNEL_2' was not declared in this scope; did you mean 'DAC1_CHANNEL_2'?
+  356 |                         HAL_TIM_IC_Stop(&htim5, TIM_CHANNEL_2);
+      |                                                 ^~~~~~~~~~~~~
+      |                                                 DAC1_CHANNEL_2
+../Core/Src/mainpp.cpp:356:25: error: 'HAL_TIM_IC_Stop' was not declared in this scope
+  356 |                         HAL_TIM_IC_Stop(&htim5, TIM_CHANNEL_2);
+      |                         ^~~~~~~~~~~~~~~
+../Core/Src/mainpp.cpp:357:45: error: 'htim15' was not declared in this scope
+  357 |                         HAL_TIM_IC_Stop_IT(&htim15, TIM_CHANNEL_1);
+      |                                             ^~~~~~
+../Core/Src/mainpp.cpp:360:43: error: 'htim3' was not declared in this scope
+  360 |                         HAL_TIM_PWM_Stop(&htim3, TIM_CHANNEL_1);
+      |                                           ^~~~~
+../Core/Src/mainpp.cpp:360:25: error: 'HAL_TIM_PWM_Stop' was not declared in this scope
+  360 |                         HAL_TIM_PWM_Stop(&htim3, TIM_CHANNEL_1);
+      |                         ^~~~~~~~~~~~~~~~
+../Core/Src/mainpp.cpp:363:46: error: 'htim5' was not declared in this scope
+  363 |                         HAL_TIM_IC_Start_IT(&htim5, TIM_CHANNEL_1);
+      |                                              ^~~~~
+../Core/Src/mainpp.cpp:363:53: error: 'TIM_CHANNEL_1' was not declared in this scope; did you mean 'DAC2_CHANNEL_1'?
+  363 |                         HAL_TIM_IC_Start_IT(&htim5, TIM_CHANNEL_1);
+      |                                                     ^~~~~~~~~~~~~
+      |                                                     DAC2_CHANNEL_1
+../Core/Src/mainpp.cpp:363:25: error: 'HAL_TIM_IC_Start_IT' was not declared in this scope; did you mean 'HAL_MDMA_Start_IT'?
+  363 |                         HAL_TIM_IC_Start_IT(&htim5, TIM_CHANNEL_1);
+      |                         ^~~~~~~~~~~~~~~~~~~
+      |                         HAL_MDMA_Start_IT
+../Core/Src/mainpp.cpp:364:50: error: 'TIM_CHANNEL_2' was not declared in this scope; did you mean 'DAC1_CHANNEL_2'?
+  364 |                         HAL_TIM_IC_Start(&htim5, TIM_CHANNEL_2);
+      |                                                  ^~~~~~~~~~~~~
+      |                                                  DAC1_CHANNEL_2
+../Core/Src/mainpp.cpp:364:25: error: 'HAL_TIM_IC_Start' was not declared in this scope; did you mean 'HAL_MDMA_Start'?
+  364 |                         HAL_TIM_IC_Start(&htim5, TIM_CHANNEL_2);
+      |                         ^~~~~~~~~~~~~~~~
+      |                         HAL_MDMA_Start
+../Core/Src/mainpp.cpp:365:46: error: 'htim15' was not declared in this scope
+  365 |                         HAL_TIM_IC_Start_IT(&htim15, TIM_CHANNEL_1);
+      |                                              ^~~~~~
+../Core/Src/mainpp.cpp:368:44: error: 'htim3' was not declared in this scope
+  368 |                         HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
+      |                                            ^~~~~
+../Core/Src/mainpp.cpp:368:25: error: 'HAL_TIM_PWM_Start' was not declared in this scope; did you mean 'HAL_MDMA_Start'?
+  368 |                         HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
+      |                         ^~~~~~~~~~~~~~~~~
+      |                         HAL_MDMA_Start
+../Core/Src/mainpp.cpp: In function 'void steering_callback(const std_msgs::Float32&)':
+../Core/Src/mainpp.cpp:393:40: error: 'htim3' was not declared in this scope
+  393 |                 __HAL_TIM_SET_COMPARE(&htim3,TIM_CHANNEL_1,pre_steering_pulse);
+      |                                        ^~~~~
+../Core/Src/mainpp.cpp:393:46: error: 'TIM_CHANNEL_1' was not declared in this scope; did you mean 'DAC2_CHANNEL_1'?
+  393 |                 __HAL_TIM_SET_COMPARE(&htim3,TIM_CHANNEL_1,pre_steering_pulse);
+      |                                              ^~~~~~~~~~~~~
+      |                                              DAC2_CHANNEL_1
+../Core/Src/mainpp.cpp:393:17: error: '__HAL_TIM_SET_COMPARE' was not declared in this scope
+  393 |                 __HAL_TIM_SET_COMPARE(&htim3,TIM_CHANNEL_1,pre_steering_pulse);
+      |                 ^~~~~~~~~~~~~~~~~~~~~
+../Core/Src/mainpp.cpp: In function 'void brake_callback(const std_msgs::Float32MultiArray&)':
+../Core/Src/mainpp.cpp:402:40: error: 'htim2' was not declared in this scope
+  402 |                 __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1,c);
+      |                                        ^~~~~
+../Core/Src/mainpp.cpp:402:47: error: 'TIM_CHANNEL_1' was not declared in this scope; did you mean 'DAC2_CHANNEL_1'?
+  402 |                 __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1,c);
+      |                                               ^~~~~~~~~~~~~
+      |                                               DAC2_CHANNEL_1
+../Core/Src/mainpp.cpp:402:17: error: '__HAL_TIM_SET_COMPARE' was not declared in this scope
+  402 |                 __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1,c);
+      |                 ^~~~~~~~~~~~~~~~~~~~~
+../Core/Src/mainpp.cpp:407:40: error: 'htim2' was not declared in this scope
+  407 |                 __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2,c);
+      |                                        ^~~~~
+../Core/Src/mainpp.cpp:407:47: error: 'TIM_CHANNEL_2' was not declared in this scope; did you mean 'DAC1_CHANNEL_2'?
+  407 |                 __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2,c);
+      |                                               ^~~~~~~~~~~~~
+      |                                               DAC1_CHANNEL_2
+../Core/Src/mainpp.cpp:407:17: error: '__HAL_TIM_SET_COMPARE' was not declared in this scope
+  407 |                 __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2,c);
+      |                 ^~~~~~~~~~~~~~~~~~~~~
+../Core/Src/mainpp.cpp:412:40: error: 'htim2' was not declared in this scope
+  412 |                 __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3,c);
+      |                                        ^~~~~
+../Core/Src/mainpp.cpp:412:47: error: 'TIM_CHANNEL_3' was not declared in this scope
+  412 |                 __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3,c);
+      |                                               ^~~~~~~~~~~~~
+../Core/Src/mainpp.cpp:412:17: error: '__HAL_TIM_SET_COMPARE' was not declared in this scope
+  412 |                 __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3,c);
+      |                 ^~~~~~~~~~~~~~~~~~~~~
+../Core/Src/mainpp.cpp:417:40: error: 'htim2' was not declared in this scope
+  417 |                 __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_4,c);
+      |                                        ^~~~~
+../Core/Src/mainpp.cpp:417:47: error: 'TIM_CHANNEL_4' was not declared in this scope
+  417 |                 __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_4,c);
+      |                                               ^~~~~~~~~~~~~
+../Core/Src/mainpp.cpp:417:17: error: '__HAL_TIM_SET_COMPARE' was not declared in this scope
+  417 |                 __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_4,c);
+      |                 ^~~~~~~~~~~~~~~~~~~~~
+../Core/Src/mainpp.cpp: In function 'void input_mode_callback(const std_msgs::Bool&)':
+../Core/Src/mainpp.cpp:422:27: error: 'Manual_Output_GPIO_Port' was not declared in this scope
+  422 |         HAL_GPIO_WritePin(Manual_Output_GPIO_Port, Manual_Output_Pin, (GPIO_PinState)msg.data);
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/mainpp.cpp:422:52: error: 'Manual_Output_Pin' was not declared in this scope
+  422 |         HAL_GPIO_WritePin(Manual_Output_GPIO_Port, Manual_Output_Pin, (GPIO_PinState)msg.data);
+      |                                                    ^~~~~~~~~~~~~~~~~
+../Core/Src/mainpp.cpp: In function 'void adc_setup()':
+../Core/Src/mainpp.cpp:426:28: error: 'hadc1' was not declared in this scope
+  426 |         HAL_ADC_Start_DMA(&hadc1,(uint32_t*)force_raw,8);
+      |                            ^~~~~
+../Core/Src/mainpp.cpp:426:9: error: 'HAL_ADC_Start_DMA' was not declared in this scope
+  426 |         HAL_ADC_Start_DMA(&hadc1,(uint32_t*)force_raw,8);
+      |         ^~~~~~~~~~~~~~~~~
+../Core/Src/mainpp.cpp: In function 'void timer_setup()':
+../Core/Src/mainpp.cpp:439:35: error: 'htim16' was not declared in this scope
+  439 |         __HAL_TIM_SET_AUTORELOAD(&htim16,uint32_t(10000/parameters.publish_frequency-1));
+      |                                   ^~~~~~
+../Core/Src/mainpp.cpp:439:9: error: '__HAL_TIM_SET_AUTORELOAD' was not declared in this scope
+  439 |         __HAL_TIM_SET_AUTORELOAD(&htim16,uint32_t(10000/parameters.publish_frequency-1));
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/mainpp.cpp:440:9: error: 'HAL_TIM_Base_Start_IT' was not declared in this scope; did you mean 'HAL_MDMA_Start_IT'?
+  440 |         HAL_TIM_Base_Start_IT(&htim16);
+      |         ^~~~~~~~~~~~~~~~~~~~~
+      |         HAL_MDMA_Start_IT
+../Core/Src/mainpp.cpp:443:35: error: 'htim7' was not declared in this scope
+  443 |         __HAL_TIM_SET_AUTORELOAD(&htim7,uint32_t(10000/parameters.pid_frequency-1));
+      |                                   ^~~~~
+../Core/Src/mainpp.cpp:447:35: error: 'htim3' was not declared in this scope
+  447 |         __HAL_TIM_SET_AUTORELOAD(&htim3,uint32_t(1000000/parameters.steering_esc_pwm_frequency-1));
+      |                                   ^~~~~
+../Core/Src/mainpp.cpp:448:39: error: 'TIM_CHANNEL_1' was not declared in this scope; did you mean 'DAC2_CHANNEL_1'?
+  448 |         __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1,parameters.steering_offset);
+      |                                       ^~~~~~~~~~~~~
+      |                                       DAC2_CHANNEL_1
+../Core/Src/mainpp.cpp:448:9: error: '__HAL_TIM_SET_COMPARE' was not declared in this scope
+  448 |         __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1,parameters.steering_offset);
+      |         ^~~~~~~~~~~~~~~~~~~~~
+../Core/Src/mainpp.cpp:449:39: error: 'TIM_CHANNEL_2' was not declared in this scope; did you mean 'DAC1_CHANNEL_2'?
+  449 |         __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2,parameters.esc_offset);
+      |                                       ^~~~~~~~~~~~~
+      |                                       DAC1_CHANNEL_2
+../Core/Src/mainpp.cpp:450:9: error: 'HAL_TIM_PWM_Start' was not declared in this scope; did you mean 'HAL_MDMA_Start'?
+  450 |         HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
+      |         ^~~~~~~~~~~~~~~~~
+      |         HAL_MDMA_Start
+../Core/Src/mainpp.cpp:455:35: error: 'htim2' was not declared in this scope
+  455 |         __HAL_TIM_SET_AUTORELOAD(&htim2,tim2_arr);
+      |                                   ^~~~~
+../Core/Src/mainpp.cpp:458:39: error: 'TIM_CHANNEL_3' was not declared in this scope
+  458 |         __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3,0);
+      |                                       ^~~~~~~~~~~~~
+../Core/Src/mainpp.cpp:459:39: error: 'TIM_CHANNEL_4' was not declared in this scope
+  459 |         __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_4,0);
+      |                                       ^~~~~~~~~~~~~
+../Core/Src/mainpp.cpp: In function 'void gpio_setup()':
+../Core/Src/mainpp.cpp:491:27: error: 'Manual_Output_GPIO_Port' was not declared in this scope
+  491 |         HAL_GPIO_WritePin(Manual_Output_GPIO_Port, Manual_Output_Pin, GPIO_PIN_SET);
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/mainpp.cpp:491:52: error: 'Manual_Output_Pin' was not declared in this scope
+  491 |         HAL_GPIO_WritePin(Manual_Output_GPIO_Port, Manual_Output_Pin, GPIO_PIN_SET);
+      |                                                    ^~~~~~~~~~~~~~~~~
+../Core/Src/mainpp.cpp: In function 'void read_parameters()':
+../Core/Src/mainpp.cpp:502:9: error: 'QSPI_W25Q64JV_Init' was not declared in this scope
+  502 |         QSPI_W25Q64JV_Init();
+      |         ^~~~~~~~~~~~~~~~~~
+../Core/Src/mainpp.cpp:503:9: error: 'QSPI_W25Q64JV_Reset' was not declared in this scope
+  503 |         QSPI_W25Q64JV_Reset();
+      |         ^~~~~~~~~~~~~~~~~~~
+../Core/Src/mainpp.cpp:506:13: error: 'QSPI_OK' was not declared in this scope; did you mean 'GPIOK'?
+  506 |         if (QSPI_OK != QSPI_W25Q64JV_DeviceID(id)) {
+      |             ^~~~~~~
+      |             GPIOK
+../Core/Src/mainpp.cpp:506:24: error: 'QSPI_W25Q64JV_DeviceID' was not declared in this scope
+  506 |         if (QSPI_OK != QSPI_W25Q64JV_DeviceID(id)) {
+      |                        ^~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/mainpp.cpp:514:9: error: 'QSPI_W25Q64JV_Read' was not declared in this scope
+  514 |         QSPI_W25Q64JV_Read((uint8_t*)header, 0x00, 4);
+      |         ^~~~~~~~~~~~~~~~~~
+../Core/Src/mainpp.cpp: In function 'void setup()':
+../Core/Src/mainpp.cpp:577:24: error: 'htim5' was not declared in this scope
+  577 |   HAL_TIM_IC_Start_IT(&htim5, TIM_CHANNEL_1);
+      |                        ^~~~~
+../Core/Src/mainpp.cpp:577:31: error: 'TIM_CHANNEL_1' was not declared in this scope; did you mean 'DAC2_CHANNEL_1'?
+  577 |   HAL_TIM_IC_Start_IT(&htim5, TIM_CHANNEL_1);
+      |                               ^~~~~~~~~~~~~
+      |                               DAC2_CHANNEL_1
+../Core/Src/mainpp.cpp:577:3: error: 'HAL_TIM_IC_Start_IT' was not declared in this scope; did you mean 'HAL_MDMA_Start_IT'?
+  577 |   HAL_TIM_IC_Start_IT(&htim5, TIM_CHANNEL_1);
+      |   ^~~~~~~~~~~~~~~~~~~
+      |   HAL_MDMA_Start_IT
+../Core/Src/mainpp.cpp:578:28: error: 'TIM_CHANNEL_2' was not declared in this scope; did you mean 'DAC1_CHANNEL_2'?
+  578 |   HAL_TIM_IC_Start(&htim5, TIM_CHANNEL_2);
+      |                            ^~~~~~~~~~~~~
+      |                            DAC1_CHANNEL_2
+../Core/Src/mainpp.cpp:578:3: error: 'HAL_TIM_IC_Start' was not declared in this scope; did you mean 'HAL_MDMA_Start'?
+  578 |   HAL_TIM_IC_Start(&htim5, TIM_CHANNEL_2);
+      |   ^~~~~~~~~~~~~~~~
+      |   HAL_MDMA_Start
+../Core/Src/mainpp.cpp:580:24: error: 'htim15' was not declared in this scope
+  580 |   HAL_TIM_IC_Start_IT(&htim15, TIM_CHANNEL_1);
+      |                        ^~~~~~
+../Core/Src/mainpp.cpp:585:21: error: 'ONBOARD_LED_GPIO_Port' was not declared in this scope; did you mean 'LED_RED_GPIO_Port'?
+  585 |   HAL_GPIO_WritePin(ONBOARD_LED_GPIO_Port, ONBOARD_LED_Pin, GPIO_PIN_SET);
+      |                     ^~~~~~~~~~~~~~~~~~~~~
+      |                     LED_RED_GPIO_Port
+../Core/Src/mainpp.cpp:585:44: error: 'ONBOARD_LED_Pin' was not declared in this scope
+  585 |   HAL_GPIO_WritePin(ONBOARD_LED_GPIO_Port, ONBOARD_LED_Pin, GPIO_PIN_SET);
+      |                                            ^~~~~~~~~~~~~~~
+../Core/Src/mainpp.cpp:554:12: warning: unused variable 'inc' [-Wunused-variable]
+  554 |   uint16_t inc = TIM4->ARR/38;
+      |            ^~~
+../Core/Src/mainpp.cpp:569:12: warning: unused variable 'clock' [-Wunused-variable]
+  569 |   uint32_t clock = HAL_RCC_GetPCLK1Freq();
+      |            ^~~~~
+../Core/Src/mainpp.cpp: In function 'void loop()':
+../Core/Src/mainpp.cpp:595:39: error: 'Manual_Input_GPIO_Port' was not declared in this scope
+  595 |         auto state = HAL_GPIO_ReadPin(Manual_Input_GPIO_Port, Manual_Input_Pin);
+      |                                       ^~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/mainpp.cpp:595:63: error: 'Manual_Input_Pin' was not declared in this scope
+  595 |         auto state = HAL_GPIO_ReadPin(Manual_Input_GPIO_Port, Manual_Input_Pin);
+      |                                                               ^~~~~~~~~~~~~~~~
+../Core/Src/mainpp.cpp:607:36: error: 'ONBOARD_LED_GPIO_Port' was not declared in this scope; did you mean 'LED_RED_GPIO_Port'?
+  607 |                 HAL_GPIO_TogglePin(ONBOARD_LED_GPIO_Port, ONBOARD_LED_Pin);
+      |                                    ^~~~~~~~~~~~~~~~~~~~~
+      |                                    LED_RED_GPIO_Port
+../Core/Src/mainpp.cpp:607:59: error: 'ONBOARD_LED_Pin' was not declared in this scope
+  607 |                 HAL_GPIO_TogglePin(ONBOARD_LED_GPIO_Port, ONBOARD_LED_Pin);
+      |                                                           ^~~~~~~~~~~~~~~
+make: *** [Core/Src/subdir.mk:47: Core/Src/mainpp.o] Error 1
+"make -j8 all" terminated with exit code 2. Build might be incomplete.

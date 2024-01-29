@@ -1,0 +1,16 @@
+../Core/Inc/BNO08x_I2C/BNO08x_I2C.c:18:9:bno08x_hardware_reset	16	static
+../Core/Inc/BNO08x_I2C/BNO08x_I2C.c:46:9:bno08x_data_ready	24	static
+../Core/Inc/BNO08x_I2C/BNO08x_I2C.c:51:9:bno08x_wait_for_data	24	static
+../Core/Inc/BNO08x_I2C/BNO08x_I2C.c:62:9:bno08x_receive_packet	64	dynamic
+../Core/Inc/BNO08x_I2C/BNO08x_I2C.c:97:9:bno08x_initialization	56	static
+../Core/Inc/BNO08x_I2C/BNO08x_I2C.c:168:19:bno08x_send_packet	72	dynamic
+../Core/Inc/BNO08x_I2C/BNO08x_I2C.c:185:19:bno08x_set_feature_command	48	static
+../Core/Inc/BNO08x_I2C/BNO08x_I2C.c:212:19:bno08x_enable_accelerometer	16	static
+../Core/Inc/BNO08x_I2C/BNO08x_I2C.c:217:19:bno08x_enable_gyro	16	static
+../Core/Inc/BNO08x_I2C/BNO08x_I2C.c:222:19:bno08x_enable_rotation_vector	16	static
+../Core/Inc/BNO08x_I2C/BNO08x_I2C.c:226:6:bno08x_parse_report	32	static
+../Core/Inc/BNO08x_I2C/BNO08x_I2C.c:313:7:q_to_float	24	static
+../Core/Inc/BNO08x_I2C/BNO08x_I2C.c:321:6:bno08x_get_acc	24	static
+../Core/Inc/BNO08x_I2C/BNO08x_I2C.c:328:6:bno08x_get_prodid	24	static
+../Core/Inc/BNO08x_I2C/BNO08x_I2C.c:399:9:bno085x_get_errors	24	static
+../Core/Inc/BNO08x_I2C/BNO08x_I2C.c:430:6:bno085x_print_errors	24	static

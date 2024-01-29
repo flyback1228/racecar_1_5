@@ -1,10 +1,17 @@
-18:24:54 **** Incremental Build of configuration Debug for project racecar_pcb_test ****
+11:51:33 **** Incremental Build of configuration Debug for project racecar_pcb_test ****
 make -j8 all 
-arm-none-eabi-size   racecar_pcb_test.elf 
-   text	   data	    bss	    dec	    hex	filename
-  77372	    484	   3540	  81396	  13df4	racecar_pcb_test.elf
-Finished building: default.size.stdout
- 
+arm-none-eabi-gcc "../Core/Src/system_stm32h7xx.c" -mcpu=cortex-m7 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32H750xx -c -I../Core/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/system_stm32h7xx.d" -MT"Core/Src/system_stm32h7xx.o" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -o "Core/Src/system_stm32h7xx.o"
+../Core/Src/system_stm32h7xx.c: In function 'SystemInit':
+../Core/Src/system_stm32h7xx.c:301:1: error: 's' undeclared (first use in this function)
+  301 | s}
+      | ^
+../Core/Src/system_stm32h7xx.c:301:1: note: each undeclared identifier is reported only once for each function it appears in
+../Core/Src/system_stm32h7xx.c:301:2: error: expected ';' before '}' token
+  301 | s}
+      |  ^
+      |  ;
+make: *** [Core/Src/subdir.mk:41: Core/Src/system_stm32h7xx.o] Error 1
+"make -j8 all" terminated with exit code 2. Build might be incomplete.
 
-18:24:54 Build Finished. 0 errors, 0 warnings. (took 424ms)
+11:51:33 Build Failed. 3 errors, 0 warnings. (took 527ms)
 

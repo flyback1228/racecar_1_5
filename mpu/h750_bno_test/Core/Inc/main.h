@@ -59,7 +59,6 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define BNO_INT_Pin GPIO_PIN_7
 #define BNO_INT_GPIO_Port GPIOE
-#define BNO_INT_EXTI_IRQn EXTI9_5_IRQn
 #define BNO_NRST_Pin GPIO_PIN_14
 #define BNO_NRST_GPIO_Port GPIOB
 #define BNO_BOOTN_Pin GPIO_PIN_15

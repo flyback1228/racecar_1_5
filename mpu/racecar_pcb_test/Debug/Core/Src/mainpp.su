@@ -11,5 +11,5 @@
 ../Core/Src/mainpp.cpp:226:6:void input_test()	240	static
 ../Core/Src/mainpp.cpp:272:6:void force_test()	200	static
 ../Core/Src/mainpp.cpp:285:6:void BNO085_setup()	8	static
-../Core/Src/mainpp.cpp:298:6:void setup()	8	static
-../Core/Src/mainpp.cpp:347:6:void loop()	8	static
+../Core/Src/mainpp.cpp:299:6:void setup()	8	static
+../Core/Src/mainpp.cpp:348:6:void loop()	8	static
