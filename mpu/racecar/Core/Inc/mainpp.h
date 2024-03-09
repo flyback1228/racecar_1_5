@@ -55,18 +55,18 @@ typedef struct{
 
 
 //pid mode
-typedef enum
-{
-	PID_MODE_AUTOMATIC = 0,
-	PID_MODE_MANUAL    = 1
-
-}PIDMode_TypeDef;
+//typedef enum
+//{
+//	PID_MODE_AUTOMATIC = 0,
+//	PID_MODE_MANUAL    = 1
+//
+//}PIDMode_TypeDef;
 
 //input mode, can be set via external switch or software
 typedef enum
 {
-	Input_MODE_SOFTWARE    = 0,
-	Input_MODE_CONTROLLER = 1
+	INPUT_MODE_SOFTWARE    = 0,
+	INPUT_MODE_CONTROLLER = 1
 }InputMode_TypeDef;
 
 //

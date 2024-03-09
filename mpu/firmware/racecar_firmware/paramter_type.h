@@ -6,6 +6,7 @@
 
 #include <QString>
 #include <QMetaType>
+#include <QDataStream>
 
 struct ParameterTypeDef{
     char header[4]={'a','c','s','r'};

@@ -1,10 +1,10 @@
-11:51:27 **** Incremental Build of configuration Debug for project f103_slave ****
+18:20:02 **** Incremental Build of configuration Debug for project f103_slave ****
 make -j8 all 
 arm-none-eabi-size   f103_slave.elf 
    text	   data	    bss	    dec	    hex	filename
-  19828	     36	   2996	  22860	   594c	f103_slave.elf
+  22756	     36	   2964	  25756	   649c	f103_slave.elf
 Finished building: default.size.stdout
  
 
-11:51:27 Build Finished. 0 errors, 0 warnings. (took 479ms)
+18:20:02 Build Finished. 0 errors, 0 warnings. (took 436ms)
 

@@ -3,6 +3,7 @@
 #include <QSerialPortInfo>
 #include <QMessageBox>
 #include <QFileDialog>
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow),timer_(new QTimer(this))

@@ -49,6 +49,8 @@ extern "C" {
 
 /* USER CODE END EM */
 
+void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
+
 /* Exported functions prototypes ---------------------------------------------*/
 void Error_Handler(void);
 
@@ -59,12 +61,35 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define ONBOARD_LED_Pin GPIO_PIN_3
 #define ONBOARD_LED_GPIO_Port GPIOE
+#define F06_Pin GPIO_PIN_0
+#define F06_GPIO_Port GPIOC
+#define F07_Pin GPIO_PIN_1
+#define F07_GPIO_Port GPIOC
+#define F03_Pin GPIO_PIN_4
+#define F03_GPIO_Port GPIOA
+#define F00_Pin GPIO_PIN_6
+#define F00_GPIO_Port GPIOA
+#define F01_Pin GPIO_PIN_4
+#define F01_GPIO_Port GPIOC
+#define F04_Pin GPIO_PIN_5
+#define F04_GPIO_Port GPIOC
+#define F05_Pin GPIO_PIN_0
+#define F05_GPIO_Port GPIOB
+#define F02_Pin GPIO_PIN_1
+#define F02_GPIO_Port GPIOB
+#define PID_MODE_INPUT_Pin GPIO_PIN_9
+#define PID_MODE_INPUT_GPIO_Port GPIOE
+#define PID_MODE_INPUT_EXTI_IRQn EXTI9_5_IRQn
 #define LED_BLUE_Pin GPIO_PIN_3
 #define LED_BLUE_GPIO_Port GPIOD
 #define LED_YELLOW_Pin GPIO_PIN_5
 #define LED_YELLOW_GPIO_Port GPIOD
 #define LED_RED_Pin GPIO_PIN_6
 #define LED_RED_GPIO_Port GPIOD
+#define Manual_Output_Pin GPIO_PIN_5
+#define Manual_Output_GPIO_Port GPIOB
+#define Manual_Input_Pin GPIO_PIN_7
+#define Manual_Input_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 

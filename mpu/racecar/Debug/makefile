@@ -12,6 +12,8 @@ RM := rm -rf
 -include Drivers/STM32H7xx_HAL_Driver/Src/subdir.mk
 -include Core/Startup/subdir.mk
 -include Core/Src/subdir.mk
+-include Core/Inc/w25q64jv/subdir.mk
+-include Core/Inc/pid/subdir.mk
 -include Core/Inc/jy901/subdir.mk
 -include objects.mk
 
@@ -77,7 +79,7 @@ main-build: racecar.elf secondary-outputs
 
 # Tool invocations
 racecar.elf racecar.map: $(OBJS) $(USER_OBJS) /home/acsr2004/racecar_1_5/mpu/racecar/STM32H750VBTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-g++ -o "racecar.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m7 -T"/home/acsr2004/racecar_1_5/mpu/racecar/STM32H750VBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="racecar.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+	arm-none-eabi-g++ -o "racecar.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m7 -T"/home/acsr2004/racecar_1_5/mpu/racecar/STM32H750VBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="racecar.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

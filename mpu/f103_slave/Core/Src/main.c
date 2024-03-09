@@ -41,7 +41,7 @@
 /* USER CODE BEGIN PD */
 #define SPEED_BUFFER_SIZE 16
 #define SPEED_PIN_COUNT 16
-#define SPEED_MAX_INCREMENT 5
+#define SPEED_MAX_INCREMENT 2
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -65,10 +65,11 @@ FontDef Font_16x26 = {16,26,95*26,Font16x26};
 
 uint8_t pulse_pointer[SPEED_PIN_COUNT]={0};
 uint8_t increment_count[SPEED_PIN_COUNT]={0};
-uint32_t speed_on_single_pin[SPEED_PIN_COUNT+1];
+uint8_t speed_on_single_pin[SPEED_PIN_COUNT*2+4];
 uint32_t pulse[SPEED_PIN_COUNT][SPEED_BUFFER_SIZE];
 
-const uint32_t acsr = ('A'<<24) | ('C'<<16) | ('S'<<8) | 'R';
+//const uint32_t acsr = ('A'<<24) | ('C'<<16) | ('S'<<8) | 'R';
+//uint8_t speed_send[4+sizeof(float)*SPEED_PIN_COUNT];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -157,15 +158,21 @@ void calcVelocity(){
 
 	for(uint8_t i=0;i<SPEED_PIN_COUNT;++i){
 		if(increment_count[i]>=SPEED_MAX_INCREMENT){
-			speed_on_single_pin[i+1]=0;
+			speed_on_single_pin[2*i+4]=0;
+			speed_on_single_pin[2*i+1+4]=0;
 			continue;
 		}
 		uint32_t s=pulse[i][(pulse_pointer[i]+SPEED_BUFFER_SIZE-1)%SPEED_BUFFER_SIZE]-pulse[i][pulse_pointer[i]];
 		if(s==0){
-			speed_on_single_pin[i+1]=0;
+			speed_on_single_pin[2*i+4]=0;
+			speed_on_single_pin[2*i+1+4]=0;
 		}
 		else{
-			speed_on_single_pin[i+1] = (SPEED_BUFFER_SIZE-1)*1000000U/s;
+			float speed = (SPEED_BUFFER_SIZE-1)*1000000.0/s;
+			uint8_t speed_int = (uint8_t)speed;
+			uint8_t speed_decimal = (uint8_t)((speed-speed_int)*100.0);
+			speed_on_single_pin[2*i+4]=speed_int;
+			speed_on_single_pin[2*i+1+4]=speed_decimal;
 		}
 	}
 }
@@ -174,7 +181,10 @@ void calcVelocity(){
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 	calcVelocity();
 //	HAL_UART_Transmit(&huart1, (uint8_t*)"hello", 5);
-	HAL_UART_Transmit(&huart1, (uint8_t*)speed_on_single_pin, sizeof(uint32_t)*(SPEED_PIN_COUNT+1),10);
+
+	//HAL_UART_Transmit(&huart2, (uint8_t*)(&acsr), sizeof(uint32_t)*SPEED_PIN_COUNT,10);
+	//memcpy(&(speed_send[4]),speed_on_single_pin,sizeof(float)*(SPEED_PIN_COUNT));
+	HAL_UART_Transmit(&huart2, speed_on_single_pin, SPEED_PIN_COUNT*2+4,10);
 
 //	__NOP();
 }
@@ -214,7 +224,12 @@ int main(void)
   MX_TIM1_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-  speed_on_single_pin[0]=acsr;
+  //speed_on_single_pin[0]=acsr;
+  speed_on_single_pin[0]='A';
+  speed_on_single_pin[1]='C';
+  speed_on_single_pin[2]='S';
+  speed_on_single_pin[3]='R';
+
   HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_SET);
   HAL_GPIO_WritePin(LCD_LED_GPIO_Port, LCD_LED_Pin, GPIO_PIN_SET);
   DWT_Init();
@@ -480,15 +495,19 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : S00_Pin S01_Pin S02_Pin S10_Pin
-                           S11_Pin S13_Pin S14_Pin S15_Pin
-                           S03_Pin S04_Pin S05_Pin S06_Pin
-                           S07_Pin S08_Pin S09_Pin */
-  GPIO_InitStruct.Pin = S00_Pin|S01_Pin|S02_Pin|S10_Pin
-                          |S11_Pin|S13_Pin|S14_Pin|S15_Pin
-                          |S03_Pin|S04_Pin|S05_Pin|S06_Pin
-                          |S07_Pin|S08_Pin|S09_Pin;
+  /*Configure GPIO pins : S00_Pin S02_Pin S10_Pin S14_Pin
+                           S04_Pin S06_Pin S08_Pin */
+  GPIO_InitStruct.Pin = S00_Pin|S02_Pin|S10_Pin|S14_Pin
+                          |S04_Pin|S06_Pin|S08_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : S01_Pin S11_Pin S13_Pin S15_Pin
+                           S03_Pin S05_Pin S07_Pin S09_Pin */
+  GPIO_InitStruct.Pin = S01_Pin|S11_Pin|S13_Pin|S15_Pin
+                          |S03_Pin|S05_Pin|S07_Pin|S09_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 

@@ -11,20 +11,34 @@
 #include <std_msgs/Float32.h>
 #include <std_msgs/Bool.h>
 
-#include <vesc_msgs/VescState.h>
+
 #include "main.h"
 #include "stm32h7xx_hal_rcc.h"
 //#include "w25q64jv.h"
 #include "string.h"
 #include <cstdio>
-//#include <pid.h>
 
+#include "jy901/JY901_Serial.h"
+#include "w25q64jv/w25q64jv.h"
+#include "utility.h"
+#include "pid/pid.h"
+
+//watch dog
+extern IWDG_HandleTypeDef hiwdg1;
+
+//pwm for brakes, 4 channels in total
 extern TIM_HandleTypeDef htim2;
+
+//pwm for esc and servo, ch1 for servo, ch2 for esc
 extern TIM_HandleTypeDef htim3;
+
+//pwm input caputure, for servo
 extern TIM_HandleTypeDef htim5;
-extern TIM_HandleTypeDef htim16;
-extern TIM_HandleTypeDef htim7;
+//pwm input caputure, for esc
 extern TIM_HandleTypeDef htim15;
+
+//ros publish timer
+extern TIM_HandleTypeDef htim16;
 
 //communicate with ESC
 extern UART_HandleTypeDef hlpuart1;
@@ -43,6 +57,7 @@ extern UART_HandleTypeDef huart8;
 
 extern DMA_HandleTypeDef hdma_uart7_rx;
 
+//force sensor adc
 extern ADC_HandleTypeDef hadc1;
 
 #define huart_ros huart4
@@ -51,52 +66,61 @@ extern ADC_HandleTypeDef hadc1;
 #define huart_usb huart7
 #define huart_imu huart8
 
-
 ros::NodeHandle nh;
 
-//esc message and publisher
-vesc_msgs::VescState vesc_state;
-ros::Publisher vesc_pub("vesc_sensor", &vesc_state);
+//sensor data message published by ros
+std_msgs::Float32MultiArray sensor_msg;
+ros::Publisher ros_pub("stm32_sensor", &sensor_msg);
 
-//force message and publisher
-std_msgs::Float32MultiArray forces;
-ros::Publisher force_pub("forces", &forces);
-
-//wheel speed message and publisher
-std_msgs::Float32MultiArray wheel_speed;
-ros::Publisher wheel_speed_pub("forces", &wheel_speed);
-
-
+//esc senso data
 ESC_SensorTypeDef esc_sensor;
 uint8_t esc_receive[ESC_DATA_SIZE];
 
+const uint8_t wheel_speed_size=SPEED_PIN_COUNT;
+const uint8_t force_size = 8;
+const uint8_t vesc_size = 5;
+const uint8_t imu_size = 9;
 
-const uint32_t acsr = ('A'<<24) | ('C'<<16) | ('S'<<8) | 'R';//speed head
-uint32_t speed_receive[SPEED_PIN_COUNT+1];//speed data from STM32F103, the first element is acsr
-uint32_t speed[SPEED_PIN_COUNT];//speed frequency
+//speed data from STM32F103, the first four elements are "acsr"
+uint8_t speed_receive[2*SPEED_PIN_COUNT+4];
+//speed, represent by frequency
+float speed[SPEED_PIN_COUNT];
 
-uint8_t pwm_generator_indicator,pre_pwm_generator_indicator;
+//uint8_t pwm_generator_indicator,pre_pwm_generator_indicator;
 uint8_t is_frequency_set;
-uint16_t force_raw[8];
+uint32_t force_raw[8];
 
+//PIDMode_TypeDef
 PIDMode_TypeDef pid_mode = PID_MODE_MANUAL;
+
 uint8_t pid_its;
-
-uint8_t usb_buf[100];
-
 float esc_duty_cycle_set;
 float speed_set;
-
 float duty_cycle_output;
-//bool input_mode;
 
-uint32_t tim2_arr;
+//usb buffer to store the received data from usb port
+uint8_t usb_buf[100];
 
-uint32_t pre_steering_pulse=0;
-uint32_t pre_esc_pulse=0;
+//input mode, by code or by transmitter, can be set by ros topic or by button on the control board
+InputMode_TypeDef input_mode = INPUT_MODE_SOFTWARE;
+
+//auto reload value for timer, those values are initialized after reading the parameters
+uint32_t brake_arr;
+uint32_t esc_servo_arr;
+
+//last data, to compare with the received data.
+int32_t pre_servo_ccr=0;
+int32_t pre_esc_ccr=0;
 uint32_t pre_brake[]={0,0,0,0};
 
-uint8_t jy901_data[22];
+
+uint32_t servo_duty = 0;
+uint32_t esc_duty = 0;
+uint32_t input_freq;
+
+uint8_t jy901_data_length = 11;
+uint8_t jy901_data[11];
+CJY901 jy901(&huart8);
 
 ParameterTypeDef parameters ={
 		.header={'a','c','s','r'},
@@ -107,7 +131,7 @@ ParameterTypeDef parameters ={
 		.pid_frequency = 10,
 		.steering_esc_pwm_frequency = 64.5,
 		.steering_offset=1500,
-		.steering_ratio=1.0/1000,
+		.steering_ratio=100.0,
 		.steering_max = 17.0*3.14159/180,
 		.steering_min = -17.0*3.14159/180,
 
@@ -115,16 +139,16 @@ ParameterTypeDef parameters ={
 		.esc_max = 1750,
 		.esc_min = 1250,
 
-		.tailer={'b','4','0','1'}
+		.brake_pwm_frequency=100,
 
+		.tailer={'b','4','0','1'}
 };
 
 //uint8_t publish_frequency = 20;
 //uint8_t pid_frequency = 10;
 
 
-
-
+//read esc data from ble
 HAL_StatusTypeDef read_ble_data(uint8_t* data){
 	static uint8_t start_index = 0;
 	for(uint8_t i=start_index;i<start_index+ESC_DATA_SIZE;++i){
@@ -152,27 +176,29 @@ HAL_StatusTypeDef read_ble_data(uint8_t* data){
 	return HAL_OK;
 }
 
-HAL_StatusTypeDef read_speed_data(uint32_t* data){
+//read speed data from f103
+//the first data are "acsr", then the fifth is the integer part of speed1, and the sixth is the decimal part of speed1..
+HAL_StatusTypeDef read_speed_data(uint8_t* data){
 	uint8_t i;
-	for(i = 0;i<SPEED_PIN_COUNT+1;++i){
-		if(data[i]==acsr)break;
+	for(i = 0;i<2*SPEED_PIN_COUNT;++i){
+		if(data[i]=='A' && data[i+1]=='C'&& data[i+2]=='S'&& data[i+3]=='R')break;
 	}
-	if(i==SPEED_PIN_COUNT+1)return HAL_ERROR;
+	if(i==2*SPEED_PIN_COUNT)return HAL_ERROR;
 
-	memcpy(speed,&data[i+1],(SPEED_PIN_COUNT-i)*sizeof(uint32_t));
-	if(i){
-		memcpy(&speed[SPEED_PIN_COUNT-i],data,i*sizeof(uint32_t));
+	for(int j=0;j<SPEED_PIN_COUNT;++j){
+		speed[j] = data[(2*j+i+4)%(2*SPEED_PIN_COUNT+4)]+data[(2*j+1+i+4)%(2*SPEED_PIN_COUNT+4)]/100.0;
 	}
 	return HAL_OK;
 }
 
+//ros structure required
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart){
 	if(huart==&huart4){
 		nh.getHardware()->flush();
 	}
-
 }
 
+//uart data receive callback
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
 	if(huart->Instance==huart4.Instance){
 		nh.getHardware()->reset_rbuf();
@@ -181,21 +207,22 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
 	}else if(huart->Instance==huart_f103.Instance){
 		read_speed_data(speed_receive);
 	}else if(huart->Instance==huart_imu.Instance){
-		if(jy901_data[0]==0x55){
+		if(jy901_data[0]==0x55 && jy901_data_length==11){
 			jy901.parseData(jy901_data);
+			HAL_UART_Receive_DMA(&huart8, jy901_data, jy901_data_length);
+
+		}else if(jy901_data_length!=11){
+			//jy901.parseData(jy901_data);
+			jy901_data_length = 11;
+			HAL_UART_Receive_DMA(&huart8, jy901_data, jy901_data_length);
 		}else{
-			__HAL_UART_DISABLE_IT(&huart8, UART_IT_RXFF);
-			uint8_t temp;
-			HAL_UART_Receive(&huart8, &temp, 1, 10);
-			while(temp!=0x55){
-				HAL_StatusTypeDef state = HAL_UART_Receive(&huart8, &temp, 1, 10);
-				if(state!=HAL_OK)break;
+			uint8_t i = 0;
+			for(;i<11;++i){
+				if(jy901_data[i]==0x55)break;
 			}
-			for(uint8_t i=0;i<10;++i){
-				HAL_UART_Receive(&huart8, &temp, 1, 10);
-			}
-			__HAL_UART_ENABLE_IT(&huart8, UART_IT_RXFF);
-			HAL_UART_Receive_DMA(&huart8, jy901_data, 11);
+
+			jy901_data_length = i;
+			HAL_UART_Receive_DMA(&huart8, jy901_data, jy901_data_length);
 		}
 	}
 }
@@ -208,99 +235,111 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size){
 		}else if(usb_buf[0]=='a' && usb_buf[1]=='c' && usb_buf[2]=='s' && usb_buf[3]=='r'){
 			uint32_t i = sizeof(ParameterTypeDef)-4;
 			if(usb_buf[i]!='b' || usb_buf[i+1]!='4'|| usb_buf[i+2]!='0'|| usb_buf[i+3]!='1'){
-				uint8_t data[]= "Receive Wrong Data\n";
-				HAL_UART_Transmit(&huart7,data, sizeof(data), 10);
+				printf("Receive Wrong Data\n");
 			}else{
 				memcpy(&parameters,usb_buf,sizeof(ParameterTypeDef));
-				uint8_t data[]= "Write the Configuration Complete!\n";
-				HAL_UART_Transmit(&huart7,data, sizeof(data), 10);
+				printf("Write the Configuration Complete!\n");
 				QSPI_W25Q64JV_Write((uint8_t*)(&parameters),0x0,sizeof(ParameterTypeDef));
 
 			}
 
 		}else{
-			uint8_t data[]= "Receive Wrong Data\n";
-			HAL_UART_Transmit(&huart7,data, sizeof(data), 10);
+			printf("Receive Wrong Data\n");
+			//HAL_UART_Transmit(&huart7,data, sizeof(data), 10);
 		}
 		HAL_UARTEx_ReceiveToIdle_DMA(&huart7, (uint8_t *) usb_buf, 100);
 		__HAL_DMA_DISABLE_IT(&hdma_uart7_rx, DMA_IT_HT);
 	}
 }
 
+
 void HAL_UART_ErrorCallback(UART_HandleTypeDef *UartHandle) {
     if(UartHandle->Instance==huart_esc.Instance) {
     	HAL_UART_Receive_DMA(&huart_esc, esc_receive, ESC_DATA_SIZE);
     }else if(UartHandle->Instance==huart_f103.Instance) {
-    	HAL_UART_Receive_DMA(&huart_f103, (uint8_t*)speed_receive, sizeof(uint32_t)*(SPEED_PIN_COUNT+1));
+    	HAL_UART_Receive_DMA(&huart_f103, (uint8_t*)speed_receive, 2*SPEED_PIN_COUNT+1);
     }
     else if(UartHandle->Instance==huart_imu.Instance) {
-		HAL_UART_Receive_DMA(&huart_imu, (uint8_t*)speed_receive, 11);
+		HAL_UART_Receive_DMA(&huart_imu, (uint8_t*)jy901_data, 11);
+	}else if(UartHandle->Instance==UART7){
+		HAL_UARTEx_ReceiveToIdle_DMA(&huart7, (uint8_t *) usb_buf, 100);
+		__HAL_DMA_DISABLE_IT(&hdma_uart7_rx, DMA_IT_HT);
 	}
 }
 
+//pwm input capture callback
 void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim){
 
-//	if(!pwm_generator_indicator)return;
-//
-//	int32_t temp_freq;
-//	if(htim->Instance==TIM5 && htim->Channel == HAL_TIM_ACTIVE_CHANNEL_1){
-//
-//		temp_freq = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_1);
-//		servo_duty = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_2);
-//
-//		__HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_1,servo_duty);
-//		__HAL_TIM_SetCounter(htim,0);
-//
-//		HAL_TIM_IC_Start_IT(&htim5, TIM_CHANNEL_1);
-//		HAL_TIM_IC_Start(&htim5, TIM_CHANNEL_2);
-//
-//	}else if(htim->Instance==TIM15 && htim->Channel == HAL_TIM_ACTIVE_CHANNEL_1){
-//
-//		temp_freq = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_1);
-//		esc_duty = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_2);
-//
-//		__HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_2,esc_duty);
-//		__HAL_TIM_SetCounter(htim,0);
-//
-//		HAL_TIM_IC_Start_IT(&htim15, TIM_CHANNEL_1);
-//		HAL_TIM_IC_Start(&htim15, TIM_CHANNEL_2);
-//
-//	}
-//	if(freq<1000 || abs(temp_freq-freq)>50){
-//		freq=temp_freq;
-//		__HAL_TIM_SET_AUTORELOAD(&htim3,temp_freq);
-//	}
+	if(input_mode == INPUT_MODE_SOFTWARE)return;
+
+	uint32_t temp_freq;
+	if(htim->Instance==TIM5 && htim->Channel == HAL_TIM_ACTIVE_CHANNEL_1){
+		temp_freq = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_1);
+		uint32_t temp_servo_duty = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_2);
+		int32_t diff = temp_servo_duty - servo_duty;
+		if(abs(diff) > 2){
+			__HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_1,temp_servo_duty);
+			servo_duty = temp_servo_duty;
+		}
+
+		__HAL_TIM_SetCounter(htim,0);
+		HAL_TIM_IC_Start_IT(&htim5, TIM_CHANNEL_1);
+		HAL_TIM_IC_Start(&htim5, TIM_CHANNEL_2);
+
+	}else if(htim->Instance==TIM15 && htim->Channel == HAL_TIM_ACTIVE_CHANNEL_1){
+
+		temp_freq = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_1);
+		uint32_t temp_esc_duty = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_2);
+		int32_t diff = temp_esc_duty - esc_duty;
+		if(abs(diff) >2){
+			__HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_2,temp_esc_duty);
+			esc_duty = temp_esc_duty;
+		}
+
+		__HAL_TIM_SetCounter(htim,0);
+
+		HAL_TIM_IC_Start_IT(&htim15, TIM_CHANNEL_1);
+		HAL_TIM_IC_Start(&htim15, TIM_CHANNEL_2);
+
+	}
+	int32_t diff = temp_freq-input_freq;
+	if(input_freq<1000 || abs(diff)>50){
+		input_freq=temp_freq;
+		__HAL_TIM_SET_AUTORELOAD(&htim3,temp_freq);
+		esc_servo_arr = 1000000/input_freq-1;
+	}
 
 
 }
 
-void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim){
-//	if(htim->Instance==TIM3){
-//		__HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_1,servo_duty);
-//		__HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_2,esc_duty);
-//
-//	}
-}
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 
-	if(htim->Instance==TIM6){
-		vesc_state.duty_cycle = esc_sensor.throttle/100.0;
-		vesc_state.voltage_input = esc_sensor.voltage;
-		vesc_state.current_input = esc_sensor.current;
-		vesc_state.temperature_pcb = esc_sensor.temperature;
-		vesc_state.speed = esc_sensor.rpm;
-
-		vesc_pub.publish(&vesc_state);
-		wheel_speed_pub.publish(&wheel_speed);
-
-		for(uint8_t i=0;i<8;++i){
-			forces.data[i]=(float)force_raw[i]*3.3/0xFFFF;
+	//ros publish
+	if(htim->Instance==TIM16){
+		memcpy(&sensor_msg.data[0],speed,wheel_speed_size*sizeof(float));
+		for(uint8_t i=0;i<force_size;++i){
+			sensor_msg.data[wheel_speed_size+i]=(float)force_raw[i]*3.3/0xFFFF;
 		}
-		force_pub.publish(&forces);
+		sensor_msg.data[wheel_speed_size+force_size]=esc_sensor.throttle/100.0;
+		sensor_msg.data[wheel_speed_size+force_size + 1] = esc_sensor.voltage;
+		sensor_msg.data[wheel_speed_size+force_size + 2] = esc_sensor.current;
+		sensor_msg.data[wheel_speed_size+force_size + 3] = (float)esc_sensor.temperature;
+		sensor_msg.data[wheel_speed_size+force_size + 4] = (float)esc_sensor.rpm;
 
+		sensor_msg.data[wheel_speed_size + force_size + vesc_size + 0] = jy901.getAccX();
+		sensor_msg.data[wheel_speed_size + force_size + vesc_size + 1] = jy901.getAccY();
+		sensor_msg.data[wheel_speed_size + force_size + vesc_size + 2] = jy901.getAccZ();
+		sensor_msg.data[wheel_speed_size + force_size + vesc_size + 3] = jy901.getGyroX();
+		sensor_msg.data[wheel_speed_size + force_size + vesc_size + 4] = jy901.getGyroY();
+		sensor_msg.data[wheel_speed_size + force_size + vesc_size + 5] = jy901.getGyroZ();
+		sensor_msg.data[wheel_speed_size + force_size + vesc_size + 6] = jy901.getRoll();
+		sensor_msg.data[wheel_speed_size + force_size + vesc_size + 7] = jy901.getPitch();
+		sensor_msg.data[wheel_speed_size + force_size + vesc_size + 8] = jy901.getYaw();
+
+		ros_pub.publish(&sensor_msg);
 		nh.spinOnce();
-	}else if(htim->Instance==TIM7){
+	}/*else if(htim->Instance==TIM7){
 		//no esc topic received
 		if(pid_its++>10){
 			pid_its=10;
@@ -319,99 +358,70 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 			//apply pid
 		}
 
-	}
+	}*/
 
-//	HAL_TIM_IC_Start_DMA(htim, Channel, pData, Length)
-//	if(htim->Instance==TIM5){
-//		HAL_TIM_IC_Start_IT(&htim5, TIM_CHANNEL_1);
-//		HAL_TIM_IC_Start(&htim5, TIM_CHANNEL_2);
-//	}
-//	if(htim->Instance==TIM15){
-//		HAL_TIM_IC_Start_IT(&htim15, TIM_CHANNEL_1);
-//		HAL_TIM_IC_Start(&htim15, TIM_CHANNEL_2);
-//	}
 }
-
 
 
 void HAL_TIM_ErrorCallback(TIM_HandleTypeDef *htim){
-	/*
-	if(htim->Instance==TIM5){
+
+	if(htim->Instance==TIM16){
+		HAL_TIM_Base_Start_IT(&htim16);
+	}
+
+	else if(htim->Instance==TIM5){
+		__HAL_TIM_SetCounter(htim,0);
 		HAL_TIM_IC_Start_IT(&htim5, TIM_CHANNEL_1);
 		HAL_TIM_IC_Start(&htim5, TIM_CHANNEL_2);
 	}
-	if(htim->Instance==TIM15){
+	else if(htim->Instance==TIM15){
+		__HAL_TIM_SetCounter(htim,0);
 		HAL_TIM_IC_Start_IT(&htim15, TIM_CHANNEL_1);
 		HAL_TIM_IC_Start(&htim15, TIM_CHANNEL_2);
-	}*/
-}
-
-void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
-	switch(GPIO_Pin){
-	case GPIO_PIN_5:
-		pwm_generator_indicator = !pwm_generator_indicator;
-		if(!pwm_generator_indicator){
-//			freq=0;
-			HAL_TIM_IC_Stop_IT(&htim5, TIM_CHANNEL_1);
-			HAL_TIM_IC_Stop(&htim5, TIM_CHANNEL_2);
-			HAL_TIM_IC_Stop_IT(&htim15, TIM_CHANNEL_1);
-			HAL_TIM_IC_Stop(&htim15, TIM_CHANNEL_2);
-
-			HAL_TIM_PWM_Stop(&htim3, TIM_CHANNEL_1);
-			HAL_TIM_PWM_Stop(&htim3, TIM_CHANNEL_2);
-		}else{
-			HAL_TIM_IC_Start_IT(&htim5, TIM_CHANNEL_1);
-			HAL_TIM_IC_Start(&htim5, TIM_CHANNEL_2);
-			HAL_TIM_IC_Start_IT(&htim15, TIM_CHANNEL_1);
-			HAL_TIM_IC_Start(&htim15, TIM_CHANNEL_2);
-
-			HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
-			HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
-		}
-		break;
-	default:
-		break;
 	}
 }
 
 void speed_callback(const std_msgs::Float32& msg){
-	pid_mode = PID_MODE_AUTOMATIC;
+	if(input_mode == INPUT_MODE_CONTROLLER || pid_mode == PID_MODE_MANUAL)return;
 	pid_its=0;
 	speed_set=msg.data;
 }
 
 void duty_cycle_callback(const std_msgs::Float32& msg){
-	pid_mode=PID_MODE_MANUAL;
-	pid_its=0;
-	esc_duty_cycle_set = msg.data;
+	if(input_mode == INPUT_MODE_CONTROLLER || pid_mode == PID_MODE_AUTOMATIC)return;
+	int32_t esc_count = msg.data * esc_servo_arr;
+	if(abs(esc_count - pre_esc_ccr)>5){
+		pre_esc_ccr = esc_count;
+		__HAL_TIM_SET_COMPARE(&htim3,TIM_CHANNEL_2,esc_count);
+	}
 }
 
 void steering_callback(const std_msgs::Float32& msg){
-	uint32_t steering_pulse = parameters.steering_ratio*(msg.data-parameters.steering_offset);
-	if(steering_pulse != pre_steering_pulse){
-		pre_steering_pulse = steering_pulse;
-		__HAL_TIM_SET_COMPARE(&htim3,TIM_CHANNEL_1,pre_steering_pulse);
+	if(input_mode == INPUT_MODE_CONTROLLER)return;
+	int32_t steering_pulse = parameters.steering_ratio*msg.data + parameters.steering_offset;
+	if(abs(steering_pulse - pre_servo_ccr)>5){
+		pre_servo_ccr = steering_pulse;
+		__HAL_TIM_SET_COMPARE(&htim3,TIM_CHANNEL_1,steering_pulse);
 	}
-
 }
 
 void brake_callback(const std_msgs::Float32MultiArray& msg){
-	uint32_t c = msg.data[0]*tim2_arr;
+	uint32_t c = msg.data[0]*brake_arr;
 	if(c!=pre_brake[0]){
 		pre_brake[0]=c;
 		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1,c);
 	}
-	c = msg.data[1]*tim2_arr;
+	c = msg.data[1]*brake_arr;
 	if(c!=pre_brake[1]){
 		pre_brake[1]=c;
 		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2,c);
 	}
-	c = msg.data[2]*tim2_arr;
+	c = msg.data[2]*brake_arr;
 	if(c!=pre_brake[2]){
 		pre_brake[2]=c;
 		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3,c);
 	}
-	c = msg.data[3]*tim2_arr;
+	c = msg.data[3]*brake_arr;
 	if(c!=pre_brake[3]){
 		pre_brake[3]=c;
 		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_4,c);
@@ -420,6 +430,27 @@ void brake_callback(const std_msgs::Float32MultiArray& msg){
 
 void input_mode_callback(const std_msgs::Bool& msg){
 	HAL_GPIO_WritePin(Manual_Output_GPIO_Port, Manual_Output_Pin, (GPIO_PinState)msg.data);
+
+}
+
+void pid_mode_callback(const std_msgs::Bool& msg){
+	if(msg.data != (bool)pid_mode){
+		pid_mode = (PIDMode_TypeDef)msg.data;
+		HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, (GPIO_PinState)msg.data);
+	}
+}
+
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+  if(GPIO_Pin == GPIO_PIN_9) {
+	  auto state = HAL_GPIO_ReadPin(PID_MODE_INPUT_GPIO_Port, PID_MODE_INPUT_Pin);
+	  if(state==GPIO_PIN_SET){
+		  pid_mode = PID_MODE_AUTOMATIC;
+	  }else{
+		  pid_mode = PID_MODE_MANUAL;
+	  }
+	  HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, state);
+  }
 }
 
 void adc_setup(){
@@ -428,39 +459,62 @@ void adc_setup(){
 
 void uart_setup(){
 	HAL_UART_Receive_DMA(&huart_esc, esc_receive, ESC_DATA_SIZE);
-	HAL_UART_Receive_DMA(&huart_f103, (uint8_t*)speed_receive, sizeof(uint32_t)*(SPEED_PIN_COUNT+1));
+	HAL_UART_Receive_DMA(&huart_f103, (uint8_t*)speed_receive, 2*SPEED_PIN_COUNT+4);
+	HAL_UART_Receive_DMA(&huart8, jy901_data, 11);
 
 	HAL_UARTEx_ReceiveToIdle_DMA(&huart7, usb_buf, 100);
 	__HAL_DMA_DISABLE_IT(&hdma_uart7_rx, DMA_IT_HT);
 }
 
 void timer_setup(){
-	//set tim6 ARR value based on topic publish frequency and start tim6
-	__HAL_TIM_SET_AUTORELOAD(&htim16,uint32_t(10000/parameters.publish_frequency-1));
-	HAL_TIM_Base_Start_IT(&htim16);
+	//set ros publish frequency
+	uint32_t fe = uint32_t(10000/parameters.publish_frequency-1);
+	//set tim16 ARR value based on topic publish frequency and start tim16, 10000 = 100M/(9999+1), where 9999 is the prescale of timer16
+	__HAL_TIM_SET_AUTORELOAD(&htim16,fe);
 
+
+	/*
 	//set tim7 ARR value based on PID calculation frequency and start tim7
 	__HAL_TIM_SET_AUTORELOAD(&htim7,uint32_t(10000/parameters.pid_frequency-1));
-	HAL_TIM_Base_Start_IT(&htim7);
+	HAL_TIM_Base_Start_IT(&htim7);*/
 
 	//start esc and steering servo pwm output
-	__HAL_TIM_SET_AUTORELOAD(&htim3,uint32_t(1000000/parameters.steering_esc_pwm_frequency-1));
+	input_freq = parameters.steering_esc_pwm_frequency;
+	esc_servo_arr = 1000000/parameters.steering_esc_pwm_frequency-1;
+	__HAL_TIM_SET_AUTORELOAD(&htim3,esc_servo_arr);
 	__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1,parameters.steering_offset);
+	pre_servo_ccr = parameters.steering_offset;
+
 	__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2,parameters.esc_offset);
+	pre_esc_ccr = parameters.esc_offset;
+
 	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
 	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
 
-	//set brake pwm
-	tim2_arr = uint32_t(1000000/parameters.brake_pwm_frequency-1);
-	__HAL_TIM_SET_AUTORELOAD(&htim2,tim2_arr);
+	//set brake pwm, prescaler 99, timer frequency is 100MHz
+	__HAL_TIM_SET_PRESCALER(&htim2,99);
+	//set tim2 ARR value based on brake frequency and start tim6, 1000000 = 100M/(99+1)
+	brake_arr = uint32_t(1000000/parameters.brake_pwm_frequency-1);
+	__HAL_TIM_SET_AUTORELOAD(&htim2,brake_arr);
+	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
+	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2);
+	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_3);
+	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_4);
+	//initial value zeros
 	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1,0);
 	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2,0);
 	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3,0);
 	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_4,0);
-	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
-	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
-	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_3);
-	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_4);
+
+	//pwm input capture for servo and esc
+	HAL_TIM_IC_Start_IT(&htim5, TIM_CHANNEL_1);
+	HAL_TIM_IC_Start(&htim5, TIM_CHANNEL_2);
+	HAL_TIM_IC_Start_IT(&htim15, TIM_CHANNEL_1);
+	HAL_TIM_IC_Start(&htim15, TIM_CHANNEL_2);
+
+	//start ros publish
+	//this timer should start as the last one.
+	HAL_TIM_Base_Start_IT(&htim16);
 
 }
 
@@ -470,20 +524,24 @@ ros::Subscriber<std_msgs::Float32> duty_cycle_sub("Commands/duty_cycle", &duty_c
 ros::Subscriber<std_msgs::Float32> steering_sub("Commands/steering", &steering_callback );
 ros::Subscriber<std_msgs::Float32MultiArray> brake_sub("Commands/brakes", &brake_callback );
 ros::Subscriber<std_msgs::Bool> input_mode_sub("Commands/input_mode", &input_mode_callback );
+ros::Subscriber<std_msgs::Bool> pid_mode_sub("Commands/pid_mode", &pid_mode_callback );
 
 void ros_setup(){
-	forces.data = new std_msgs::Float32MultiArray::_data_type[8];
-	forces.data_length = 8;
 
+	//setup the sensor message, the first 16 data are speed, next 8 data are force, next
+	sensor_msg.data_length = wheel_speed_size + force_size + vesc_size + imu_size;
+	sensor_msg.data = new std_msgs::Float32MultiArray::_data_type[sensor_msg.data_length];
 
-	wheel_speed.data = new std_msgs::Float32MultiArray::_data_type[16];
-	wheel_speed.data_length = 16;
+	nh.initNode();
 
+	nh.subscribe(speed_sub);
+	nh.subscribe(input_mode_sub);
+	nh.subscribe(brake_sub);
+	nh.subscribe(steering_sub);
+	nh.subscribe(duty_cycle_sub);
+	nh.subscribe(pid_mode_sub);
 
-
-	nh.advertise(vesc_pub);
-	nh.advertise(force_pub);
-	nh.advertise(wheel_speed_pub);
+	nh.advertise(ros_pub);
 }
 
 void gpio_setup(){
@@ -504,88 +562,36 @@ void read_parameters(){
 
 	uint8_t id[2];
 	if (QSPI_OK != QSPI_W25Q64JV_DeviceID(id)) {
-	    while (1);
+	    printf("Initializing ROM\n");
 	}
-	char str[]="Connect to ROM, ROM ID: [0x00,0x00]\n";
-	sprintf(str,"Connect to ROM, ROM ID: [0x%02x,0x%02x]\n",id[0],id[1]);
-	HAL_UART_Transmit(&huart7, (uint8_t*)str, sizeof(str), 10);
+	printf("Connect to ROM, ROM ID: [0x%02x,0x%02x]\n",id[0],id[1]);
 
 	char header[4];
 	QSPI_W25Q64JV_Read((uint8_t*)header, 0x00, 4);
 	if(header[0]!='a' || header[1]!='c' || header[2]!='s' || header[3]!='r'){
-		char str[]="Read Parameters Head Fails\n";
-		HAL_UART_Transmit(&huart7, (uint8_t*)header, 4, 10);
-		HAL_UART_Transmit(&huart7, (uint8_t*)str, sizeof(str), 10);
+		printf("Reading parameters fails, use default parameters\n");
 		return;
 	}
 
 	QSPI_W25Q64JV_Read((uint8_t*)(&parameters), 0x00, sizeof(ParameterTypeDef));
 	if(parameters.tailer[0]!='b' || parameters.tailer[1]!='4' || parameters.tailer[2]!='0' || parameters.tailer[3]!='1'){
-		char str[]="Read Parameters Tailor Fails\n";
-		HAL_UART_Transmit(&huart7, (uint8_t*)parameters.tailer, 4, 10);
-		HAL_UART_Transmit(&huart7, (uint8_t*)str, sizeof(str), 10);
+		printf("Reading parameters fails, use default parameters\n");
+		return;
 	}
-
-//	QSPI_W25Q64JV_Write((uint8_t*)(),0x0,2*Font_7x10.size);
-
 }
 
 
 void setup(void)
 {
-
+	DWT_Init();
 	read_parameters();
-  nh.initNode();
-  uart_setup();
-  timer_setup();
-  ros_setup();
-
-//  input_mode = true;
-
-
-//  HAL_TIM_PWM_Start_IT(&htim4, TIM_CHANNEL_2 );
-
-
-
-
-
-
-
-  uint16_t inc = TIM4->ARR/38;
-
-//  for(int i=0;i<32;++i){
-//	  triangle1[i] = (i+1)*inc;
-//  }
-//  inc*=2;
-//  for(int i=0;i<16;++i){
-//    triangle2[i] = (i+1)*inc;
-//  }
-//  for(int i=16;i<32;++i){
-//    triangle2[i] = (33-(i+1))*inc;
-//  }
-
-  pwm_generator_indicator = 0;
-  is_frequency_set = 0;
-  uint32_t clock = HAL_RCC_GetPCLK1Freq();
-//  TIMER_CLOCK_FREQ = clock/(TIM5->PSC+1);
-//
-//  HAL_TIM_PWM_Start_IT(&htim4, TIM_CHANNEL_1 );
-//  HAL_TIM_PWM_Start_IT(&htim4, TIM_CHANNEL_2 );
-
-//  HAL_TIM_PWM_
-
-  HAL_TIM_IC_Start_IT(&htim5, TIM_CHANNEL_1);
-  HAL_TIM_IC_Start(&htim5, TIM_CHANNEL_2);
-
-  HAL_TIM_IC_Start_IT(&htim15, TIM_CHANNEL_1);
-  HAL_TIM_IC_Start(&htim15, TIM_CHANNEL_2);
-
-
-
-  HAL_GPIO_WritePin(ONBOARD_LED_GPIO_Port, ONBOARD_LED_Pin, GPIO_PIN_SET);
-
-
-
+	uart_setup();
+	adc_setup();
+	ros_setup();
+	timer_setup();
+	HAL_GPIO_WritePin(Manual_Output_GPIO_Port, Manual_Output_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(ONBOARD_LED_GPIO_Port, ONBOARD_LED_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, (GPIO_PinState)pid_mode);
 }
 
 uint8_t loop_index = 0;
@@ -595,58 +601,18 @@ void loop(void)
 	auto state = HAL_GPIO_ReadPin(Manual_Input_GPIO_Port, Manual_Input_Pin);
 
 	if(state==GPIO_PIN_SET){
-		pid_mode=PID_MODE_MANUAL;
+		input_mode = INPUT_MODE_CONTROLLER;
 	}else if(state==GPIO_PIN_RESET){
-		pid_mode=PID_MODE_AUTOMATIC;
+		input_mode = INPUT_MODE_SOFTWARE;
 	}
 	HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, state);
 
 	loop_index++;
-	HAL_Delay(50);
-	if(loop_index==10){
-		HAL_GPIO_TogglePin(ONBOARD_LED_GPIO_Port, ONBOARD_LED_Pin);
+	HAL_Delay(100);
+	if(loop_index==5){
+		HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
+		loop_index=0;
 	}
-
-//  HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
-
-//  str_msg.data = hello;
-//  chatter.publish(&str_msg);
-
-//  vesc_state.duty_cycle = esc_sensor.throttle/100.0;
-//  vesc_state.voltage_input = esc_sensor.voltage;
-//  vesc_state.current_input = esc_sensor.current;
-//  vesc_state.temperature_pcb = esc_sensor.temperature;
-//  vesc_state.speed = esc_sensor.rpm;
-//
-//
-//	_index=(_index+1)%32;
-////	__HAL_TIM_SetCompare(&htim4, TIM_CHANNEL_1,triangle1[_index]);
-////	__HAL_TIM_SetCompare(&htim4, TIM_CHANNEL_2,triangle2[_index]);
-//
-//
-//  for(int i=2;i<8;++i){
-//	  forces.data[i] = 0.1*i;
-//  }
-//  for(int i=0;i<16;++i){
-//  	  wheel_speed.data[i] = 10*i;
-//  }
-
-//  forces.data[0] = freq;
-//  forces.data[1] = servo_duty;
-//
-//
-//  forces.data[2] = freq;
-//  forces.data[3] = esc_duty;
-//
-//  forces.data[4]=TIMER_CLOCK_FREQ;
-//  forces.data[5]=pwm_generator_indicator;
-
-
-
-//  freq1=0;
-//  duty1=0;
-//  freq2=1;
-//  duty2=1;
-
+	HAL_IWDG_Refresh(&hiwdg1);
 }
 

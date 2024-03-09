@@ -1,4 +1,4 @@
-18:55:49 **** Incremental Build of configuration Debug for project racecar_h750_jy901_setup ****
+17:53:25 **** Incremental Build of configuration Debug for project racecar_h750_jy901_setup ****
 make -j8 all 
 arm-none-eabi-size   racecar_h750_jy901_setup.elf 
    text	   data	    bss	    dec	    hex	filename
@@ -6,5 +6,5 @@ arm-none-eabi-size   racecar_h750_jy901_setup.elf
 Finished building: default.size.stdout
  
 
-18:55:49 Build Finished. 0 errors, 0 warnings. (took 480ms)
+17:53:25 Build Finished. 0 errors, 0 warnings. (took 420ms)
 
