@@ -86,6 +86,7 @@ const uint8_t imu_size = 9;
 
 uint8_t error_code = 0;
 uint8_t esc_receive_indicator = 0;
+uint8_t f103_receive_indicator = 0;
 
 //speed data from STM32F103, the first four elements are "acsr"
 uint8_t speed_receive[2*SPEED_PIN_COUNT+4];
@@ -205,6 +206,7 @@ HAL_StatusTypeDef read_speed_data(uint8_t* data){
 	for(int j=0;j<SPEED_PIN_COUNT;++j){
 		speed[j] = data[(2*j+i+4)%(2*SPEED_PIN_COUNT+4)]+data[(2*j+1+i+4)%(2*SPEED_PIN_COUNT+4)]/100.0;
 	}
+	f103_receive_indicator = 0;
 	return HAL_OK;
 }
 
@@ -624,13 +626,22 @@ void loop(void)
 	HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, state);
 
 	loop_index++;
+
 	if(esc_receive_indicator <=5 )esc_receive_indicator++;
+	if(f103_receive_indicator<=5)f103_receive_indicator++;
+
 	HAL_Delay(100);
 	if(loop_index==5){
 		HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
 		loop_index=0;
-		if(esc_receive_indicator>=5)error_code = error_code & 0xFF;
+
+		if(esc_receive_indicator>5)error_code = error_code | 0b00000001;
 		else error_code = error_code & 0b11111110;
+
+		if(f103_receive_indicator>5)error_code = error_code | 0b00000010;
+		else error_code = error_code & 0b11111101;
+
+
 	}
 	HAL_IWDG_Refresh(&hiwdg1);
 }
