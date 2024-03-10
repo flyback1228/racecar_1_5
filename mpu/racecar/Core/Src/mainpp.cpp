@@ -40,6 +40,9 @@ extern TIM_HandleTypeDef htim15;
 //ros publish timer
 extern TIM_HandleTypeDef htim16;
 
+//pid computation timer
+extern TIM_HandleTypeDef htim6;
+
 //communicate with ESC
 extern UART_HandleTypeDef hlpuart1;
 
@@ -81,6 +84,9 @@ const uint8_t force_size = 8;
 const uint8_t vesc_size = 5;
 const uint8_t imu_size = 9;
 
+uint8_t error_code = 0;
+uint8_t esc_receive_indicator = 0;
+
 //speed data from STM32F103, the first four elements are "acsr"
 uint8_t speed_receive[2*SPEED_PIN_COUNT+4];
 //speed, represent by frequency
@@ -95,8 +101,11 @@ PIDMode_TypeDef pid_mode = PID_MODE_MANUAL;
 
 uint8_t pid_its;
 float esc_duty_cycle_set;
-float speed_set;
-float duty_cycle_output;
+float speed_set = 0.0;
+float duty_cycle_output = 0.0;
+float current_esc_speed = 0.0;
+
+
 
 //usb buffer to store the received data from usb port
 uint8_t usb_buf[100];
@@ -129,6 +138,9 @@ ParameterTypeDef parameters ={
 		.kd = 0.0,
 		.publish_frequency = 20,
 		.pid_frequency = 10,
+
+		.esc_rpm_to_speed_ratio = 100.0,
+
 		.steering_esc_pwm_frequency = 64.5,
 		.steering_offset=1500,
 		.steering_ratio=100.0,
@@ -143,6 +155,8 @@ ParameterTypeDef parameters ={
 
 		.tailer={'b','4','0','1'}
 };
+
+PID<float> pid(&current_esc_speed,&duty_cycle_output,&speed_set,parameters.kp,parameters.ki,parameters.kd);
 
 //uint8_t publish_frequency = 20;
 //uint8_t pid_frequency = 10;
@@ -172,6 +186,9 @@ HAL_StatusTypeDef read_ble_data(uint8_t* data){
 	esc_sensor.voltage = (float)(data[(15+start_index)%ESC_DATA_SIZE])/10.0f;
 	esc_sensor.current = ((uint16_t)(data[(16+start_index)%ESC_DATA_SIZE] <<8) | (data[(17+start_index)%ESC_DATA_SIZE]))/10.0;
 	esc_sensor.temperature = (uint16_t)(data[(18+start_index)%ESC_DATA_SIZE] <<8) | (data[(19+start_index)%ESC_DATA_SIZE]);
+
+	current_esc_speed = esc_sensor.rpm/parameters.esc_rpm_to_speed_ratio;
+	esc_receive_indicator = 0;
 
 	return HAL_OK;
 }
@@ -227,6 +244,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
 	}
 }
 
+//uart receive callback for cp2102
 void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size){
 	if (huart->Instance == UART7)
 	{
@@ -240,7 +258,6 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size){
 				memcpy(&parameters,usb_buf,sizeof(ParameterTypeDef));
 				printf("Write the Configuration Complete!\n");
 				QSPI_W25Q64JV_Write((uint8_t*)(&parameters),0x0,sizeof(ParameterTypeDef));
-
 			}
 
 		}else{
@@ -252,7 +269,7 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size){
 	}
 }
 
-
+//error handle of uart
 void HAL_UART_ErrorCallback(UART_HandleTypeDef *UartHandle) {
     if(UartHandle->Instance==huart_esc.Instance) {
     	HAL_UART_Receive_DMA(&huart_esc, esc_receive, ESC_DATA_SIZE);
@@ -312,7 +329,7 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim){
 
 }
 
-
+//timer callback
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 
 	//ros publish
@@ -339,26 +356,20 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 
 		ros_pub.publish(&sensor_msg);
 		nh.spinOnce();
-	}/*else if(htim->Instance==TIM7){
-		//no esc topic received
-		if(pid_its++>10){
-			pid_its=10;
-			__HAL_TIM_SET_COMPARE(&htim3,TIM_CHANNEL_2,parameters.esc_offset);
-			return;
-		}
+	}else if(htim->Instance==TIM6)//pid computation
+	{
+		if(input_mode == INPUT_MODE_CONTROLLER || pid_mode == PID_MODE_MANUAL)return;
 
-		if(pid_mode==PID_MODE_MANUAL){
-			uint32_t esc_pulse=esc_duty_cycle_set*(parameters.esc_max-parameters.esc_offset)+parameters.esc_offset;
-			//if(pre_esc_pulse==esc_pulse) no action needed.
-			if(pre_esc_pulse!=esc_pulse){
-				pre_esc_pulse=esc_pulse;
-				__HAL_TIM_SET_COMPARE(&htim3,TIM_CHANNEL_2,pre_esc_pulse);
-			}
-		}else{
-			//apply pid
-		}
+		/*
+		uint32_t esc_pulse=esc_duty_cycle_set*(parameters.esc_max-parameters.esc_offset)+parameters.esc_offset;
 
-	}*/
+		if(pre_esc_pulse!=esc_pulse){
+			pre_esc_pulse=esc_pulse;
+			__HAL_TIM_SET_COMPARE(&htim3,TIM_CHANNEL_2,pre_esc_pulse);
+		}*/
+
+
+	}
 
 }
 
@@ -381,21 +392,25 @@ void HAL_TIM_ErrorCallback(TIM_HandleTypeDef *htim){
 	}
 }
 
+//ros speed subscriber callback
 void speed_callback(const std_msgs::Float32& msg){
 	if(input_mode == INPUT_MODE_CONTROLLER || pid_mode == PID_MODE_MANUAL)return;
 	pid_its=0;
 	speed_set=msg.data;
 }
 
+//ros duty cycle subscriber callback
 void duty_cycle_callback(const std_msgs::Float32& msg){
 	if(input_mode == INPUT_MODE_CONTROLLER || pid_mode == PID_MODE_AUTOMATIC)return;
-	int32_t esc_count = msg.data * esc_servo_arr;
+	duty_cycle_output = msg.data;
+	int32_t esc_count = duty_cycle_output * esc_servo_arr;
 	if(abs(esc_count - pre_esc_ccr)>5){
 		pre_esc_ccr = esc_count;
 		__HAL_TIM_SET_COMPARE(&htim3,TIM_CHANNEL_2,esc_count);
 	}
 }
 
+//ros steering subscriber callback
 void steering_callback(const std_msgs::Float32& msg){
 	if(input_mode == INPUT_MODE_CONTROLLER)return;
 	int32_t steering_pulse = parameters.steering_ratio*msg.data + parameters.steering_offset;
@@ -405,6 +420,7 @@ void steering_callback(const std_msgs::Float32& msg){
 	}
 }
 
+//ros brake subscriber callback
 void brake_callback(const std_msgs::Float32MultiArray& msg){
 	uint32_t c = msg.data[0]*brake_arr;
 	if(c!=pre_brake[0]){
@@ -467,16 +483,15 @@ void uart_setup(){
 }
 
 void timer_setup(){
-	//set ros publish frequency
-	uint32_t fe = uint32_t(10000/parameters.publish_frequency-1);
+
 	//set tim16 ARR value based on topic publish frequency and start tim16, 10000 = 100M/(9999+1), where 9999 is the prescale of timer16
-	__HAL_TIM_SET_AUTORELOAD(&htim16,fe);
+	__HAL_TIM_SET_PRESCALER(&htim16,9999);
+	__HAL_TIM_SET_AUTORELOAD(&htim16,10000/parameters.publish_frequency-1);
 
-
-	/*
-	//set tim7 ARR value based on PID calculation frequency and start tim7
-	__HAL_TIM_SET_AUTORELOAD(&htim7,uint32_t(10000/parameters.pid_frequency-1));
-	HAL_TIM_Base_Start_IT(&htim7);*/
+	//set tim6 ARR value based on PID calculation frequency and start tim7
+	__HAL_TIM_SET_PRESCALER(&htim6,9999);
+	__HAL_TIM_SET_AUTORELOAD(&htim6,uint32_t(10000/parameters.pid_frequency-1));
+	HAL_TIM_Base_Start_IT(&htim6);
 
 	//start esc and steering servo pwm output
 	input_freq = parameters.steering_esc_pwm_frequency;
@@ -515,6 +530,7 @@ void timer_setup(){
 	//start ros publish
 	//this timer should start as the last one.
 	HAL_TIM_Base_Start_IT(&htim16);
+
 
 }
 
@@ -608,10 +624,13 @@ void loop(void)
 	HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, state);
 
 	loop_index++;
+	if(esc_receive_indicator <=5 )esc_receive_indicator++;
 	HAL_Delay(100);
 	if(loop_index==5){
 		HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
 		loop_index=0;
+		if(esc_receive_indicator>=5)error_code = error_code & 0xFF;
+		else error_code = error_code & 0b11111110;
 	}
 	HAL_IWDG_Refresh(&hiwdg1);
 }

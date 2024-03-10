@@ -1,4 +1,4 @@
-19:48:05 **** Incremental Build of configuration Debug for project racecar ****
+19:24:19 **** Incremental Build of configuration Debug for project racecar ****
 make -j8 all 
 arm-none-eabi-g++ "../Core/Src/mainpp.cpp" -mcpu=cortex-m7 -std=gnu++14 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32H750xx -c -I../Core/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -fno-use-cxa-atexit -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/mainpp.d" -MT"Core/Src/mainpp.o" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -o "Core/Src/mainpp.o"
 In file included from ../Core/Inc/ros.h:39,
@@ -36,11 +36,11 @@ Finished building target: racecar.elf
 arm-none-eabi-size   racecar.elf 
 arm-none-eabi-objdump -h -S  racecar.elf  > "racecar.list"
    text	   data	    bss	    dec	    hex	filename
-  96164	    552	  19192	 115908	  1c4c4	racecar.elf
+  96812	    556	  19332	 116700	  1c7dc	racecar.elf
 Finished building: default.size.stdout
  
 Finished building: racecar.list
  
 
-19:48:06 Build Finished. 0 errors, 3 warnings. (took 1s.129ms)
+19:24:20 Build Finished. 0 errors, 3 warnings. (took 1s.129ms)
 

@@ -82,7 +82,7 @@ private:
 	
 	/* :::::::::: Constructor :::::::::: */
 	PID();
-	PID(T *Input, T *Output, T *Setpoint, T Kp, T Ki, T Kd, uint8_t add_input = 0);
+	PID(T *input, T *output, T *setpoint, T kp, T ki, T kd, uint8_t add_input = 0);
 //	PID(T *Input, T *Output, T *Setpoint, T Kp, T Ki, T Kd, PIDCD_TypeDef ControllerDirection);
 
 	/* :::::::::::::: Init ::::::::::::: */
@@ -91,18 +91,20 @@ private:
 //	void Init(T *Input, T *Output, T *Setpoint, T Kp, T Ki, T Kd, PIDCD_TypeDef ControllerDirection);
 
 	/* ::::::::::: Computing ::::::::::: */
-	void Compute(void);
+	void compute(void);
 
 	/* ::::::::::: PID Mode :::::::::::: */
 //	void            Set_Mode(PIDMode_TypeDef Mode);
 //	PIDMode_TypeDef GetMode(void);
 
 	/* :::::::::: PID Limits ::::::::::: */
-	void Set_Output_Limits(T Min, T Max);
+	void set_output_limits(T min, T max);
 
 	/* :::::::::: PID Tunings :::::::::: */
 //	void Set_Tunings(T Kp, T Ki, T Kd);
-	void Set_Tunings(T Kp, T Ki, T Kd, uint8_t add_input = 0);
+	void set_tunings(T kp, T ki, T kd, uint8_t add_input = 0);
+
+	void reset();
 
 	/* ::::::::: PID Direction ::::::::: */
 //	void          Set_Controller_Direction(PIDCD_TypeDef Direction);
@@ -124,5 +126,6 @@ void clip(T* value,T min,T max){
 	else if(*value<min)*value=min;
 }
 
+//template void clip<float>(float* value,float min,float max);
 
 #endif /* __PID_H_ */

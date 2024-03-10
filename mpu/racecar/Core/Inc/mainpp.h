@@ -37,6 +37,8 @@ typedef struct{
 	uint8_t publish_frequency;
 	uint8_t pid_frequency;
 
+	float esc_rpm_to_speed_ratio;
+
 	float steering_esc_pwm_frequency;
 	uint16_t steering_offset;
 	float steering_ratio;
