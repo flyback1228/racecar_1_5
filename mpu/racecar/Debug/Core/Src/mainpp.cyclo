@@ -60,30 +60,33 @@
 ../Core/Inc/utility.h:16:20:void DWT_Init()	1
 ../Core/Inc/ros/node_handle.h:50:7:constexpr ros::NodeHandleBase_::NodeHandleBase_()	1
 ../Core/Inc/ros/node_handle.h:104:7:constexpr ros::NodeHandle_<STM32Hardware, 100, 100, 4096, 4096>::NodeHandle_()	1
-../Core/Src/mainpp.cpp:167:19:HAL_StatusTypeDef read_ble_data(uint8_t*)	11
-../Core/Src/mainpp.cpp:199:19:HAL_StatusTypeDef read_speed_data(uint8_t*)	8
-../Core/Src/mainpp.cpp:214:6:void HAL_UART_TxCpltCallback(UART_HandleTypeDef*)	2
-../Core/Src/mainpp.cpp:221:6:void HAL_UART_RxCpltCallback(UART_HandleTypeDef*)	10
-../Core/Src/mainpp.cpp:250:6:void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef*, uint16_t)	31
-../Core/Src/mainpp.cpp:275:6:void HAL_UART_ErrorCallback(UART_HandleTypeDef*)	21
-../Core/Src/mainpp.cpp:290:6:void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef*)	11
-../Core/Src/mainpp.cpp:335:6:void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef*)	5
-../Core/Src/mainpp.cpp:379:6:void HAL_TIM_ErrorCallback(TIM_HandleTypeDef*)	4
-../Core/Src/mainpp.cpp:398:6:void speed_callback(const std_msgs::Float32&)	3
-../Core/Src/mainpp.cpp:405:6:void duty_cycle_callback(const std_msgs::Float32&)	4
-../Core/Src/mainpp.cpp:416:6:void steering_callback(const std_msgs::Float32&)	3
-../Core/Src/mainpp.cpp:426:6:void brake_callback(const std_msgs::Float32MultiArray&)	5
-../Core/Src/mainpp.cpp:449:6:void input_mode_callback(const std_msgs::Bool&)	1
-../Core/Src/mainpp.cpp:454:6:void pid_mode_callback(const std_msgs::Bool&)	2
-../Core/Src/mainpp.cpp:461:6:void HAL_GPIO_EXTI_Callback(uint16_t)	3
-../Core/Src/mainpp.cpp:474:6:void adc_setup()	1
-../Core/Src/mainpp.cpp:478:6:void uart_setup()	17
-../Core/Src/mainpp.cpp:487:6:void timer_setup()	1
-../Core/Src/mainpp.cpp:547:6:void ros_setup()	2
-../Core/Src/mainpp.cpp:565:6:void gpio_setup()	1
-../Core/Src/mainpp.cpp:577:6:void read_parameters()	10
-../Core/Src/mainpp.cpp:602:6:void setup()	1
-../Core/Src/mainpp.cpp:617:6:void loop()	8
+../Core/Src/mainpp.cpp:185:19:HAL_StatusTypeDef read_ble_data(uint8_t*)	11
+../Core/Src/mainpp.cpp:217:19:HAL_StatusTypeDef read_speed_data(uint8_t*)	8
+../Core/Src/mainpp.cpp:241:6:void HAL_UART_TxCpltCallback(UART_HandleTypeDef*)	2
+../Core/Src/mainpp.cpp:248:6:void HAL_UART_RxCpltCallback(UART_HandleTypeDef*)	10
+../Core/Src/mainpp.cpp:277:6:void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef*, uint16_t)	31
+../Core/Src/mainpp.cpp:302:6:void HAL_UART_ErrorCallback(UART_HandleTypeDef*)	21
+../Core/Src/mainpp.cpp:317:6:void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef*)	11
+../Core/Src/mainpp.cpp:362:6:void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef*)	6
+../Core/Src/mainpp.cpp:428:6:void HAL_TIM_ErrorCallback(TIM_HandleTypeDef*)	4
+../Core/Src/mainpp.cpp:447:6:void speed_callback(const std_msgs::Float32&)	3
+../Core/Src/mainpp.cpp:454:6:void set_esc_duty_cycle(float)	2
+../Core/Src/mainpp.cpp:466:6:void set_servo_duty_cycle(float)	2
+../Core/Src/mainpp.cpp:478:6:void duty_cycle_callback(const std_msgs::Float32&)	3
+../Core/Src/mainpp.cpp:484:6:void steering_callback(const std_msgs::Float32&)	2
+../Core/Src/mainpp.cpp:490:6:void brake_callback(const std_msgs::Float32MultiArray&)	5
+../Core/Src/mainpp.cpp:513:6:void input_mode_callback(const std_msgs::Bool&)	1
+../Core/Src/mainpp.cpp:518:6:void pid_mode_callback(const std_msgs::Bool&)	2
+../Core/Src/mainpp.cpp:526:6:void HAL_GPIO_EXTI_Callback(uint16_t)	3
+../Core/Src/mainpp.cpp:540:6:void adc_setup()	1
+../Core/Src/mainpp.cpp:544:6:void uart_setup()	17
+../Core/Src/mainpp.cpp:553:6:void timer_setup()	1
+../Core/Src/mainpp.cpp:613:6:void ros_setup()	2
+../Core/Src/mainpp.cpp:635:6:void gpio_setup()	1
+../Core/Src/mainpp.cpp:647:6:void read_parameters()	10
+../Core/Src/mainpp.cpp:671:6:void reset_pid()	3
+../Core/Src/mainpp.cpp:679:6:void setup()	1
+../Core/Src/mainpp.cpp:695:6:void loop()	8
 ../Core/Inc/ros/msg.h:188:15:static void ros::Msg::varToArr(A, V) [with A = unsigned char*; V = long unsigned int]	2
 ../Core/Inc/ros/msg.h:196:15:static void ros::Msg::arrToVar(V&, A) [with V = long unsigned int; A = unsigned char*]	2
 ../Core/Inc/ros/node_handle.h:128:13:Hardware* ros::NodeHandle_<Hardware, MAX_SUBSCRIBERS, MAX_PUBLISHERS, INPUT_SIZE, OUTPUT_SIZE>::getHardware() [with Hardware = STM32Hardware; int MAX_SUBSCRIBERS = 100; int MAX_PUBLISHERS = 100; int INPUT_SIZE = 4096; int OUTPUT_SIZE = 4096]	1
@@ -102,7 +105,7 @@
 ../Core/Inc/ros/node_handle.h:377:8:void ros::NodeHandle_<Hardware, MAX_SUBSCRIBERS, MAX_PUBLISHERS, INPUT_SIZE, OUTPUT_SIZE>::setNow(const ros::Time&) [with Hardware = STM32Hardware; int MAX_SUBSCRIBERS = 100; int MAX_PUBLISHERS = 100; int INPUT_SIZE = 4096; int OUTPUT_SIZE = 4096]	1
 ../Core/Inc/ros/node_handle.h:531:8:void ros::NodeHandle_<Hardware, MAX_SUBSCRIBERS, MAX_PUBLISHERS, INPUT_SIZE, OUTPUT_SIZE>::logerror(const char*) [with Hardware = STM32Hardware; int MAX_SUBSCRIBERS = 100; int MAX_PUBLISHERS = 100; int INPUT_SIZE = 4096; int OUTPUT_SIZE = 4096]	1
 ../Core/Inc/ros/node_handle.h:510:8:void ros::NodeHandle_<Hardware, MAX_SUBSCRIBERS, MAX_PUBLISHERS, INPUT_SIZE, OUTPUT_SIZE>::log(char, const char*) [with Hardware = STM32Hardware; int MAX_SUBSCRIBERS = 100; int MAX_PUBLISHERS = 100; int INPUT_SIZE = 4096; int OUTPUT_SIZE = 4096]	1
-../Core/Src/mainpp.cpp:647:1:void __static_initialization_and_destruction_0(int, int)	3
+../Core/Src/mainpp.cpp:725:1:void __static_initialization_and_destruction_0(int, int)	3
 ../Core/Inc/ros/subscriber.h:114:16:void ros::Subscriber<MsgT, void>::callback(unsigned char*) [with MsgT = std_msgs::Bool]	1
 ../Core/Inc/ros/subscriber.h:128:15:int ros::Subscriber<MsgT, void>::getEndpointType() [with MsgT = std_msgs::Bool]	1
 ../Core/Inc/ros/subscriber.h:120:24:const char* ros::Subscriber<MsgT, void>::getMsgType() [with MsgT = std_msgs::Bool]	1
@@ -116,4 +119,4 @@
 ../Core/Inc/ros/subscriber.h:120:24:const char* ros::Subscriber<MsgT, void>::getMsgType() [with MsgT = std_msgs::Float32]	1
 ../Core/Inc/ros/subscriber.h:124:24:const char* ros::Subscriber<MsgT, void>::getMsgMD5() [with MsgT = std_msgs::Float32]	1
 ../Core/Inc/ros/node_handle.h:338:16:bool ros::NodeHandle_<Hardware, MAX_SUBSCRIBERS, MAX_PUBLISHERS, INPUT_SIZE, OUTPUT_SIZE>::connected() [with Hardware = STM32Hardware; int MAX_SUBSCRIBERS = 100; int MAX_PUBLISHERS = 100; int INPUT_SIZE = 4096; int OUTPUT_SIZE = 4096]	1
-../Core/Src/mainpp.cpp:647:1:cpp)	1
+../Core/Src/mainpp.cpp:725:1:cpp)	1

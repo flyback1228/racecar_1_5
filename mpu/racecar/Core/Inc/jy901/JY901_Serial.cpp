@@ -119,6 +119,7 @@ double CJY901::getGyroZ() {
 /* -- Noticed that The Euler angles' order here is ---- */
 /* ----------- Z-Y-X, for more please visit ----------- */
 /* --- http://web.mit.edu/2.05/www/Handout/HO2.PDF ---- */
+
 double CJY901::getRoll() {  // X-axis
   return JY901_data.angle.roll / (32768.0 / 180.0);
 }  // getRoll() unit: degree(s)

@@ -46,10 +46,10 @@ Core/Src/mainpp.o: ../Core/Src/mainpp.cpp ../Core/Inc/mainpp.h \
  ../Core/Inc/STM32Hardware.h ../Core/Inc/std_msgs/Float32MultiArray.h \
  ../Core/Inc/std_msgs/MultiArrayLayout.h \
  ../Core/Inc/std_msgs/MultiArrayDimension.h \
- ../Core/Inc/std_msgs/Float32.h ../Core/Inc/std_msgs/Bool.h \
- ../Core/Inc/main.h ../Core/Inc/jy901/JY901_Serial.h \
- ../Core/Inc/w25q64jv/w25q64jv.h ../Core/Inc/utility.h ../Core/Inc/main.h \
- ../Core/Inc/pid/pid.h
+ ../Core/Inc/std_msgs/UInt8MultiArray.h ../Core/Inc/std_msgs/Float32.h \
+ ../Core/Inc/std_msgs/Bool.h ../Core/Inc/main.h \
+ ../Core/Inc/jy901/JY901_Serial.h ../Core/Inc/w25q64jv/w25q64jv.h \
+ ../Core/Inc/utility.h ../Core/Inc/main.h ../Core/Inc/pid/pid.h
 ../Core/Inc/mainpp.h:
 ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h:
 ../Core/Inc/stm32h7xx_hal_conf.h:
@@ -106,6 +106,7 @@ Core/Src/mainpp.o: ../Core/Src/mainpp.cpp ../Core/Inc/mainpp.h \
 ../Core/Inc/std_msgs/Float32MultiArray.h:
 ../Core/Inc/std_msgs/MultiArrayLayout.h:
 ../Core/Inc/std_msgs/MultiArrayDimension.h:
+../Core/Inc/std_msgs/UInt8MultiArray.h:
 ../Core/Inc/std_msgs/Float32.h:
 ../Core/Inc/std_msgs/Bool.h:
 ../Core/Inc/main.h:

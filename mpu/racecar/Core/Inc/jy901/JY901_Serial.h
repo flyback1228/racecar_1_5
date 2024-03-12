@@ -91,6 +91,8 @@ class CJY901 {
   void turnLED(uint8_t);
   void setGPSrate(int);
 
+
+
   struct {
     struct {
       uint8_t confl;
@@ -147,14 +149,6 @@ class CJY901 {
     } pwmt;
 
   } JY901_ctrl;
-
- private:
-
-  //Stream* Serial_ = NULL;
-  UART_HandleTypeDef* _huart;
-  unsigned long _lastTime;
-  //uint8_t rxBuffer[12] = {0};
-  //uint8_t rxCnt = 0;
 
   struct {
     struct {
@@ -226,6 +220,16 @@ class CJY901 {
     } GPS_DOP;
 
   } JY901_data;
+
+ private:
+
+  //Stream* Serial_ = NULL;
+  UART_HandleTypeDef* _huart;
+  unsigned long _lastTime;
+  //uint8_t rxBuffer[12] = {0};
+  //uint8_t rxCnt = 0;
+
+
 };
 
 extern CJY901 JY901;
