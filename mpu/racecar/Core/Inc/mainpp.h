@@ -98,6 +98,7 @@ typedef enum
 
 void set_esc_duty_cycle(float );
 void set_servo_duty_cycle(float );
+void set_brake(uint8_t*);
 
 void setup(void);
 void loop(void);

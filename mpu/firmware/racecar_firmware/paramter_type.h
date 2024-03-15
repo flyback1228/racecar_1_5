@@ -18,6 +18,7 @@ struct ParameterTypeDef{
     uint8_t publish_frequency=20;
     uint8_t pid_frequency=10;
 
+    float esc_rpm_to_speed_ratio;
     float steering_esc_pwm_frequency=64.5;
     uint16_t steering_offset=1500;
     float steering_ratio=3000;

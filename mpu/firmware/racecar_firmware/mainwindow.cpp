@@ -197,7 +197,8 @@ void MainWindow::read_timeout()
     ui->btnRead->setEnabled(true);
     if(data.size()==sizeof(ParameterTypeDef)){
         auto p = reinterpret_cast<ParameterTypeDef*>(data.data());
-        if(QString(p->header)=="acsr" && QString(p->tailer)=="b401"){
+        qDebug()<<QString(p->header)<<'\t'<<QString(p->tailer)<<'\n';
+        if(QString(p->tailer)=="b401"){
             pamameter_model_->setParameters(*p);
             qDebug()<<data<<'\n';
             show_message("Read Data From MPU Complete!\n");

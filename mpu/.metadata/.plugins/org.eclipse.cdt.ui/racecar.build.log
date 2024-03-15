@@ -1,10 +1,10 @@
-21:05:14 **** Incremental Build of configuration Debug for project racecar ****
+18:42:14 **** Incremental Build of configuration Debug for project racecar ****
 make -j8 all 
 arm-none-eabi-size   racecar.elf 
    text	   data	    bss	    dec	    hex	filename
-  96796	    600	  19240	 116636	  1c79c	racecar.elf
+  95460	    600	  19112	 115172	  1c1e4	racecar.elf
 Finished building: default.size.stdout
  
 
-21:05:15 Build Finished. 0 errors, 0 warnings. (took 478ms)
+18:42:14 Build Finished. 0 errors, 0 warnings. (took 422ms)
 

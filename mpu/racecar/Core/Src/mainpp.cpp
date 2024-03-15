@@ -7,13 +7,7 @@
  */
 #include <mainpp.h>
 #include <ros.h>
-#include <std_msgs/Float32MultiArray.h>
 #include <std_msgs/UInt8MultiArray.h>
-
-#include <std_msgs/Float32.h>
-#include <std_msgs/Bool.h>
-
-
 #include "main.h"
 #include "stm32h7xx_hal_rcc.h"
 #include "string.h"
@@ -73,10 +67,9 @@ extern ADC_HandleTypeDef hadc1;
 ros::NodeHandle nh;
 
 //sensor data message published by ros
-//std_msgs::UInt8MultiArray sensor_msg;
-std_msgs::Float32MultiArray sensor_msg;
-//ros::Publisher ros_pub("stm32_sensor", &sensor_msg);
-ros::Publisher *ros_pub;
+std_msgs::UInt8MultiArray sensor_msg;
+ros::Publisher ros_pub("stm32_sensor", &sensor_msg);
+
 
 //esc senso data
 ESC_SensorTypeDef esc_sensor;
@@ -89,15 +82,12 @@ const uint8_t vesc_size = 5;
 const uint8_t imu_size = 9;
 
 //error code
+//0x01: no esc data, 0x02: no speed data
 uint8_t error_code = 0;
 
 
 uint8_t esc_receive_indicator = 0;
 uint8_t f103_receive_indicator = 0;
-
-//need work, integrated to parameter structure
-const uint8_t esc_set_precision = 5;
-const uint8_t servo_set_precision = 5;
 
 //speed data from STM32F103, the first four elements are "acsr"
 uint8_t speed_receive[2*SPEED_PIN_COUNT+4];
@@ -131,10 +121,9 @@ int32_t pre_servo_ccr=0;
 int32_t pre_esc_ccr=0;
 uint32_t pre_brake[]={0,0,0,0};
 
-
-uint32_t servo_duty = 0;
-uint32_t esc_duty = 0;
-uint32_t input_freq;
+uint32_t pre_servo_ic = 0;
+uint32_t pre_esc_ic = 0;
+//uint32_t pre_ic_freq;
 
 uint8_t jy901_data_length = 11;
 uint8_t jy901_data[11];
@@ -177,9 +166,6 @@ ParameterTypeDef parameters = {
 
 PID<float> *pid_ptr;
 
-//uint8_t publish_frequency = 20;
-//uint8_t pid_frequency = 10;
-
 
 //read esc data from ble
 HAL_StatusTypeDef read_ble_data(uint8_t* data){
@@ -208,7 +194,6 @@ HAL_StatusTypeDef read_ble_data(uint8_t* data){
 
 	current_esc_speed = esc_sensor.rpm/parameters.esc_rpm_to_speed_ratio;
 	esc_receive_indicator = 0;
-
 	return HAL_OK;
 }
 
@@ -227,12 +212,6 @@ HAL_StatusTypeDef read_speed_data(uint8_t* data){
 		memcpy(speed,&data[i+4],2*SPEED_PIN_COUNT-i);
 		memcpy(&speed[2*SPEED_PIN_COUNT-i],data,i);
 	}
-
-	/*
-	for(int j=0;j<2*SPEED_PIN_COUNT;++j){
-		//speed[j] = data[(2*j+i+4)%(2*SPEED_PIN_COUNT+4)]+data[(2*j+1+i+4)%(2*SPEED_PIN_COUNT+4)]/100.0;
-		speed[j] = data[(j+i+4)%(2*SPEED_PIN_COUNT+4)];
-	}*/
 	f103_receive_indicator = 0;
 	return HAL_OK;
 }
@@ -287,6 +266,7 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size){
 				memcpy(&parameters,usb_buf,sizeof(ParameterTypeDef));
 				printf("Write the Configuration Complete!\n");
 				QSPI_W25Q64JV_Write((uint8_t*)(&parameters),0x0,sizeof(ParameterTypeDef));
+				NVIC_SystemReset();
 			}
 
 		}else{
@@ -318,14 +298,14 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim){
 
 	if(input_mode == INPUT_MODE_SOFTWARE)return;
 
-	uint32_t temp_freq;
+	uint32_t ic_freq;
 	if(htim->Instance==TIM5 && htim->Channel == HAL_TIM_ACTIVE_CHANNEL_1){
-		temp_freq = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_1);
-		uint32_t temp_servo_duty = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_2);
-		int32_t diff = temp_servo_duty - servo_duty;
+		ic_freq = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_1);
+		uint32_t servo_ic = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_2);
+		int32_t diff = servo_ic - pre_servo_ic;
 		if(abs(diff) > 2){
-			__HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_1,temp_servo_duty);
-			servo_duty = temp_servo_duty;
+			__HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_1,servo_ic);
+			pre_servo_ic = servo_ic;
 		}
 
 		__HAL_TIM_SetCounter(htim,0);
@@ -334,12 +314,12 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim){
 
 	}else if(htim->Instance==TIM15 && htim->Channel == HAL_TIM_ACTIVE_CHANNEL_1){
 
-		temp_freq = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_1);
-		uint32_t temp_esc_duty = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_2);
-		int32_t diff = temp_esc_duty - esc_duty;
+		ic_freq = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_1);
+		uint32_t esc_ic = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_2);
+		int32_t diff = esc_ic - pre_esc_ic;
 		if(abs(diff) >2){
-			__HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_2,temp_esc_duty);
-			esc_duty = temp_esc_duty;
+			__HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_2,esc_ic);
+			pre_esc_ic = esc_ic;
 		}
 
 		__HAL_TIM_SetCounter(htim,0);
@@ -348,11 +328,10 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim){
 		HAL_TIM_IC_Start(&htim15, TIM_CHANNEL_2);
 
 	}
-	int32_t diff = temp_freq-input_freq;
-	if(input_freq<1000 || abs(diff)>50){
-		input_freq=temp_freq;
-		__HAL_TIM_SET_AUTORELOAD(&htim3,temp_freq);
-		esc_servo_arr = 1000000/input_freq-1;
+	int32_t diff = ic_freq-esc_servo_arr;
+	if(esc_servo_arr<1000 || abs(diff)>50){
+		esc_servo_arr=ic_freq;
+		__HAL_TIM_SET_AUTORELOAD(&htim3,ic_freq);
 	}
 
 
@@ -363,10 +342,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 
 	//ros publish
 	if(htim->Instance==TIM16){
-		uint8_t index = 0;
-		//memcpy(&sensor_msg.data[index],speed,2*wheel_speed_size);
-		/*
-		index+=2*wheel_speed_size;
+		memcpy(&sensor_msg.data[0],speed,2*wheel_speed_size);
+		uint8_t index =2*wheel_speed_size;
 		memcpy(&sensor_msg.data[index],force_raw,4*force_size);
 		index+=4*force_size;
 		memcpy(&sensor_msg.data[index],&esc_sensor, sizeof(esc_sensor));
@@ -378,50 +355,16 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 		memcpy(&sensor_msg.data[index],&jy901.JY901_data.angle,sizeof(jy901.JY901_data.angle));
 		index+=sizeof(jy901.JY901_data.angle);
 
-		sensor_msg.data[index] = error_code;*/
-		/*
-		for(uint8_t i=0;i<force_size;++i){
-			sensor_msg.data[wheel_speed_size+i]=(float)force_raw[i]*3.3/0xFFFF;
-		}*/
-
-		/*
-		sensor_msg.data[wheel_speed_size+force_size]=esc_sensor.throttle/100.0;
-		sensor_msg.data[wheel_speed_size+force_size + 1] = esc_sensor.voltage;
-		sensor_msg.data[wheel_speed_size+force_size + 2] = esc_sensor.current;
-		sensor_msg.data[wheel_speed_size+force_size + 3] = (float)esc_sensor.temperature;
-		sensor_msg.data[wheel_speed_size+force_size + 4] = (float)esc_sensor.rpm;
-
-		sensor_msg.data[wheel_speed_size + force_size + vesc_size + 0] = jy901.getAccX();
-		sensor_msg.data[wheel_speed_size + force_size + vesc_size + 1] = jy901.getAccY();
-		sensor_msg.data[wheel_speed_size + force_size + vesc_size + 2] = jy901.getAccZ();
-		sensor_msg.data[wheel_speed_size + force_size + vesc_size + 3] = jy901.getGyroX();
-		sensor_msg.data[wheel_speed_size + force_size + vesc_size + 4] = jy901.getGyroY();
-		sensor_msg.data[wheel_speed_size + force_size + vesc_size + 5] = jy901.getGyroZ();
-		sensor_msg.data[wheel_speed_size + force_size + vesc_size + 6] = jy901.getRoll();
-		sensor_msg.data[wheel_speed_size + force_size + vesc_size + 7] = jy901.getPitch();
-		sensor_msg.data[wheel_speed_size + force_size + vesc_size + 8] = jy901.getYaw();*/
-
-		ros_pub->publish(&sensor_msg);
+		sensor_msg.data[index] = error_code;
+		ros_pub.publish(&sensor_msg);
 		nh.spinOnce();
 	}else if(htim->Instance==TIM6)//pid computation
 	{
 		if(input_mode == INPUT_MODE_CONTROLLER || pid_mode == PID_MODE_MANUAL)return;
 		if(error_code & 0x01)return;
 		pid_ptr->compute();
-
 		set_esc_duty_cycle(pid_esc_duty_cycle_output);
-
-		/*
-		uint32_t esc_pulse=esc_duty_cycle_set*(parameters.esc_max-parameters.esc_offset)+parameters.esc_offset;
-
-		if(pre_esc_pulse!=esc_pulse){
-			pre_esc_pulse=esc_pulse;
-			__HAL_TIM_SET_COMPARE(&htim3,TIM_CHANNEL_2,pre_esc_pulse);
-		}*/
-
-
 	}
-
 }
 
 
@@ -443,11 +386,6 @@ void HAL_TIM_ErrorCallback(TIM_HandleTypeDef *htim){
 	}
 }
 
-//ros speed subscriber callback
-void speed_callback(const std_msgs::Float32& msg){
-	if(input_mode == INPUT_MODE_CONTROLLER || pid_mode == PID_MODE_MANUAL)return;
-	pid_speed_set=msg.data;
-}
 
 //set the duty cycle of the esc,
 //input: fake_duty_cycle, a virtual duty cycle range from -1.0~1.0, where minus represents reverse
@@ -455,7 +393,7 @@ void set_esc_duty_cycle(float fake_duty_cycle){
 	float esc_duty_cycle = parameters.esc_offset + fake_duty_cycle * (parameters.esc_max-parameters.esc_min) / 2.0;
 	//convert duty cycle to pwm ccr
 	int32_t esc_ccr = esc_duty_cycle * esc_servo_arr;
-	if(abs(esc_ccr - pre_esc_ccr)>=esc_set_precision){
+	if(abs(esc_ccr - pre_esc_ccr)>=parameters.esc_set_precision){
 		pre_esc_ccr = esc_ccr;
 		__HAL_TIM_SET_COMPARE(&htim3,TIM_CHANNEL_2,esc_ccr);
 	}
@@ -468,58 +406,34 @@ void set_servo_duty_cycle(float steering_angle){
 
 	//convert duty cycle to pwm ccr
 	int32_t servo_ccr = servo_duty_cycle*esc_servo_arr;
-	if(abs(servo_ccr - pre_servo_ccr)>=servo_set_precision){
+	if(abs(servo_ccr - pre_servo_ccr)>=parameters.servo_set_precision){
 		pre_servo_ccr = servo_ccr;
 		__HAL_TIM_SET_COMPARE(&htim3,TIM_CHANNEL_1,servo_ccr);
 	}
 }
 
-//ros duty cycle subscriber callback
-void duty_cycle_callback(const std_msgs::Float32& msg){
-	if(input_mode == INPUT_MODE_CONTROLLER || pid_mode == PID_MODE_AUTOMATIC)return;
-	set_esc_duty_cycle(msg.data);
-}
-
-//ros steering subscriber callback
-void steering_callback(const std_msgs::Float32& msg){
-	if(input_mode == INPUT_MODE_CONTROLLER)return;
-	set_servo_duty_cycle(msg.data);
-}
-
-//ros brake subscriber callback
-void brake_callback(const std_msgs::Float32MultiArray& msg){
-	uint32_t c = msg.data[0]*brake_arr;
+//set the brake,
+//input: brake pwm, value from 0-255
+void set_brake(uint8_t* data){
+	uint32_t c = data[0]*brake_arr/255;
 	if(c!=pre_brake[0]){
 		pre_brake[0]=c;
 		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1,c);
 	}
-	c = msg.data[1]*brake_arr;
+	c = data[1]*brake_arr/255;
 	if(c!=pre_brake[1]){
 		pre_brake[1]=c;
 		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2,c);
 	}
-	c = msg.data[2]*brake_arr;
+	c = data[2]*brake_arr/255;
 	if(c!=pre_brake[2]){
 		pre_brake[2]=c;
 		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3,c);
 	}
-	c = msg.data[3]*brake_arr;
+	c = data[3]*brake_arr/255;
 	if(c!=pre_brake[3]){
 		pre_brake[3]=c;
 		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_4,c);
-	}
-}
-
-void input_mode_callback(const std_msgs::Bool& msg){
-	HAL_GPIO_WritePin(Manual_Output_GPIO_Port, Manual_Output_Pin, (GPIO_PinState)msg.data);
-
-}
-
-void pid_mode_callback(const std_msgs::Bool& msg){
-	if(msg.data != (bool)pid_mode){
-		pid_mode = (PIDMode_TypeDef)msg.data;
-		pid_ptr->reset();
-		HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, (GPIO_PinState)msg.data);
 	}
 }
 
@@ -557,12 +471,11 @@ void timer_setup(){
 	__HAL_TIM_SET_AUTORELOAD(&htim16,10000/parameters.publish_frequency-1);
 
 	//set tim6 ARR value based on PID calculation frequency and start tim7
-	__HAL_TIM_SET_PRESCALER(&htim6,9999);
-	__HAL_TIM_SET_AUTORELOAD(&htim6,uint32_t(10000/parameters.pid_frequency-1));
+	//__HAL_TIM_SET_PRESCALER(&htim6,9999);
+	__HAL_TIM_SET_AUTORELOAD(&htim6,10000/parameters.pid_frequency-1);
 	HAL_TIM_Base_Start_IT(&htim6);
 
 	//start esc and steering servo pwm output
-	input_freq = parameters.steering_esc_pwm_frequency;
 	esc_servo_arr = 1000000/parameters.steering_esc_pwm_frequency-1;
 	__HAL_TIM_SET_AUTORELOAD(&htim3,esc_servo_arr);
 	__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1,parameters.steering_offset);
@@ -596,39 +509,60 @@ void timer_setup(){
 	HAL_TIM_IC_Start(&htim15, TIM_CHANNEL_2);
 
 	//start ros publish
-	//this timer should start as the last one.
+	//this timer should the last one to start.
 	HAL_TIM_Base_Start_IT(&htim16);
-
 
 }
 
+//ros brake subscriber callback
+void command_callback(const std_msgs::UInt8MultiArray& msg){
+	//data[0] : input mode
+	HAL_GPIO_WritePin(Manual_Output_GPIO_Port, Manual_Output_Pin, (GPIO_PinState)msg.data[0]);
 
-ros::Subscriber<std_msgs::Float32> speed_sub("Commands/speed", &speed_callback );
-ros::Subscriber<std_msgs::Float32> duty_cycle_sub("Commands/duty_cycle", &duty_cycle_callback );
-ros::Subscriber<std_msgs::Float32> steering_sub("Commands/steering", &steering_callback );
-ros::Subscriber<std_msgs::Float32MultiArray> brake_sub("Commands/brakes", &brake_callback );
-ros::Subscriber<std_msgs::Bool> input_mode_sub("Commands/input_mode", &input_mode_callback );
-ros::Subscriber<std_msgs::Bool> pid_mode_sub("Commands/pid_mode", &pid_mode_callback );
+	//data[1] : pid mode
+	if(msg.data[1] != (uint8_t)pid_mode){
+		pid_mode = (PIDMode_TypeDef)msg.data[1];
+		pid_ptr->reset();
+		HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, (GPIO_PinState)msg.data[1]);
+	}
+
+	//data[2]~data[5]:brake, brake is represent by a uint8 0-255 correponding dutycycle 0-1
+	set_brake(&msg.data[2]);
+
+	//other commands are ignored if input mode is mannual
+	if(msg.data[0]){
+		return;
+	}
+
+	//data[6]: speed integer part if PID_MODE_AUTOMATIC, the high byte of int16 if PID_MODE_MANNUAL
+	//data[7]: speed decimal part if PID_MODE_AUTOMATIC, the low byte of int16 if PID_MODE_MANNUAL
+	//duty cycle shall convert to 0-1 by divided by 1000
+	if(pid_mode == PID_MODE_AUTOMATIC){
+		pid_speed_set = msg.data[6] + msg.data[7]/100.0;
+	}else{
+		auto dc = (int16_t) (msg.data[6]<<8) | msg.data[7];
+		set_esc_duty_cycle(dc/1000.0);
+	}
+
+	//data[8]: steering angle integer part
+	//data[9]: steering angle decimal part
+	float steering = msg.data[8] + msg.data[9]/100.0;
+	set_servo_duty_cycle(steering);
+
+}
+
+ros::Subscriber<std_msgs::UInt8MultiArray> command_sub("Commands/stm32_cmd", &command_callback );
 
 void ros_setup(){
 
-	//setup the sensor message, the first 16 data are speed, next 8 data are force, next
-
 	nh.initNode();
+	nh.subscribe(command_sub);
 
-	nh.subscribe(speed_sub);
-	nh.subscribe(input_mode_sub);
-	nh.subscribe(brake_sub);
-	nh.subscribe(steering_sub);
-	nh.subscribe(duty_cycle_sub);
-	nh.subscribe(pid_mode_sub);
+	sensor_msg.data_length = 2*wheel_speed_size + 4*force_size + sizeof(esc_sensor) + sizeof(jy901.JY901_data.acc) + sizeof(jy901.JY901_data.gyro)+sizeof(jy901.JY901_data.angle)+1;
+	sensor_msg.data = new std_msgs::UInt8MultiArray::_data_type[sensor_msg.data_length];
 
-	sensor_msg.data_length = 2*wheel_speed_size;
-	//sensor_msg.data_length = 2*wheel_speed_size + 4*force_size + sizeof(esc_sensor) + sizeof(jy901.JY901_data.acc) + sizeof(jy901.JY901_data.gyro)+sizeof(jy901.JY901_data.angle)+1;
-	sensor_msg.data = new std_msgs::Float32MultiArray::_data_type[sensor_msg.data_length];
-
-	ros_pub = new ros::Publisher("stm32_sensor", &sensor_msg);
-	nh.advertise(*ros_pub);
+	//ros_pub = new ros::Publisher("stm32_sensor", &sensor_msg);
+	nh.advertise(ros_pub);
 	HAL_Delay(1000);
 }
 
@@ -644,6 +578,7 @@ void gpio_setup(){
 	HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, GPIO_PIN_RESET);
 }
 
+//w25q64
 void read_parameters(){
 	QSPI_W25Q64JV_Init();
 	QSPI_W25Q64JV_Reset();
