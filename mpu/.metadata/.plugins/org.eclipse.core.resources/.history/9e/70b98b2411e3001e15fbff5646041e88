@@ -360,7 +360,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 		nh.spinOnce();
 	}else if(htim->Instance==TIM6)//pid computation
 	{
-		if(input_mode == INPUT_MODE_CONTROLLER || pid_mode == PID_MODE_MANUAL || (error_code & 0x01))return;
+		if(input_mode == INPUT_MODE_CONTROLLER || pid_mode == PID_MODE_MANUAL)return;
+		if(error_code & 0x01)return;
 		pid_ptr->compute();
 		set_esc_duty_cycle(pid_esc_duty_cycle_output);
 	}
