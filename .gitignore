@@ -2,3 +2,9 @@ mpu/racecar/Debug
 mpu/f103_slave/Debug
 .metadata
 mpu/.metadata
+mpu/f103_adc_signal_generator
+mpu/qspi_test
+mpu/racecar_h743vb
+mpu/raccar_pcb_test
+mpu/speed_simulator
+mpu/usb_logic
