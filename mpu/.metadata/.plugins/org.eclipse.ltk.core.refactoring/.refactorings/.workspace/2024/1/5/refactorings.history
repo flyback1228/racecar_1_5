@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Delete resource &apos;racecar_h750_jy901_setup/Core/Inc/jy901/memcpy_example&apos;" deleteContents="false" description="Delete resource &apos;racecar_h750_jy901_setup/Core/Inc/jy901/memcpy_example&apos;" element1="/racecar_h750_jy901_setup/Core/Inc/jy901/memcpy_example" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1706485314702"/>
-</session>
