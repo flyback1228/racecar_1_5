@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Rename resource &apos;racecar_h750_jy901_setup/Core/Inc/Arduino-JY901-Serial&apos; to &apos;jy901&apos;" description="Rename resource &apos;Arduino-JY901-Serial&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="Core/Inc/Arduino-JY901-Serial" name="jy901" stamp="1706307876236" updateReferences="true"/>
-</session>

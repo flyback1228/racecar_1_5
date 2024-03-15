@@ -1,3 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">&#x0A;<refactoring comment="Rename resource &apos;h750_bno_test/Core/Inc/BNO08X_I2C&apos; to &apos;BNO08x_I2C&apos;" description="Rename resource &apos;BNO08X_I2C&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="Core/Inc/BNO08X_I2C" name="BNO08x_I2C" stamp="1706028011382" updateReferences="true"/>&#x0A;<refactoring comment="Rename resource &apos;h750_bno_test/Core/Src/Adafruit_BNO08x.cpp&apos; to &apos;Adafruit_BNO08x.c&apos;" description="Rename resource &apos;Adafruit_BNO08x.cpp&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="Core/Src/Adafruit_BNO08x.cpp" name="Adafruit_BNO08x.c" stamp="1706222050721" updateReferences="true"/>
-</session>
