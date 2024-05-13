@@ -68,7 +68,7 @@ ros::NodeHandle nh;
 
 //sensor data message published by ros
 std_msgs::UInt8MultiArray sensor_msg;
-ros::Publisher ros_pub("stm32_sensor", &sensor_msg);
+ros::Publisher *ros_pub;//("stm32_sensor", &sensor_msg);
 
 
 //esc senso data
@@ -356,7 +356,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 		index+=sizeof(jy901.JY901_data.angle);
 
 		sensor_msg.data[index] = error_code;
-		ros_pub.publish(&sensor_msg);
+		ros_pub->publish(&sensor_msg);
 		nh.spinOnce();
 	}else if(htim->Instance==TIM6)//pid computation
 	{
@@ -560,8 +560,8 @@ void ros_setup(){
 	sensor_msg.data_length = 2*wheel_speed_size + 4*force_size + sizeof(esc_sensor) + sizeof(jy901.JY901_data.acc) + sizeof(jy901.JY901_data.gyro)+sizeof(jy901.JY901_data.angle)+1;
 	sensor_msg.data = new std_msgs::UInt8MultiArray::_data_type[sensor_msg.data_length];
 
-	//ros_pub = new ros::Publisher("stm32_sensor", &sensor_msg);
-	nh.advertise(ros_pub);
+	ros_pub = new ros::Publisher("stm32_sensor", &sensor_msg);
+	nh.advertise(*ros_pub);
 	HAL_Delay(1000);
 }
 
