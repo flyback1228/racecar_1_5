@@ -1,174 +1,176 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'parametermodel.h'
 **
-** Created by: The Qt Meta Object Compiler version 68 (Qt 6.6.0)
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.12.8)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
 
 #include "../racecar_firmware/parametermodel.h"
+#include <QtCore/qbytearray.h>
 #include <QtCore/qmetatype.h>
-
-#if __has_include(<QtCore/qtmochelpers.h>)
-#include <QtCore/qtmochelpers.h>
-#else
-QT_BEGIN_MOC_NAMESPACE
-#endif
-
-
-#include <memory>
-
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'parametermodel.h' doesn't include <QObject>."
-#elif Q_MOC_OUTPUT_REVISION != 68
-#error "This file was generated using the moc from 6.6.0. It"
+#elif Q_MOC_OUTPUT_REVISION != 67
+#error "This file was generated using the moc from 5.12.8. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
 
-#ifndef Q_CONSTINIT
-#define Q_CONSTINIT
-#endif
-
+QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
-QT_WARNING_DISABLE_GCC("-Wuseless-cast")
-namespace {
-
-#ifdef QT_MOC_HAS_STRINGDATA
-struct qt_meta_stringdata_CLASSParameterModelENDCLASS_t {};
-static constexpr auto qt_meta_stringdata_CLASSParameterModelENDCLASS = QtMocHelpers::stringData(
-    "ParameterModel",
-    "parametersChanged",
-    "",
-    "ParameterTypeDef",
-    "parameters",
-    "set_kp",
-    "text",
-    "set_ki",
-    "set_kd",
-    "set_publish_frequency",
-    "set_pid_frequency",
-    "set_steering_esc_pwm_frequency",
-    "set_steering_offset",
-    "set_steering_ratio",
-    "set_steering_max",
-    "set_steering_min",
-    "set_esc_offset",
-    "set_esc_max",
-    "set_esc_min",
-    "set_brake_pwm_frequency"
-);
-#else  // !QT_MOC_HAS_STRING_DATA
-struct qt_meta_stringdata_CLASSParameterModelENDCLASS_t {
-    uint offsetsAndSizes[40];
-    char stringdata0[15];
-    char stringdata1[18];
-    char stringdata2[1];
-    char stringdata3[17];
-    char stringdata4[11];
-    char stringdata5[7];
-    char stringdata6[5];
-    char stringdata7[7];
-    char stringdata8[7];
-    char stringdata9[22];
-    char stringdata10[18];
-    char stringdata11[31];
-    char stringdata12[20];
-    char stringdata13[19];
-    char stringdata14[17];
-    char stringdata15[17];
-    char stringdata16[15];
-    char stringdata17[12];
-    char stringdata18[12];
-    char stringdata19[24];
+struct qt_meta_stringdata_ParameterModel_t {
+    QByteArrayData data[41];
+    char stringdata0[662];
 };
-#define QT_MOC_LITERAL(ofs, len) \
-    uint(sizeof(qt_meta_stringdata_CLASSParameterModelENDCLASS_t::offsetsAndSizes) + ofs), len 
-Q_CONSTINIT static const qt_meta_stringdata_CLASSParameterModelENDCLASS_t qt_meta_stringdata_CLASSParameterModelENDCLASS = {
+#define QT_MOC_LITERAL(idx, ofs, len) \
+    Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
+    qptrdiff(offsetof(qt_meta_stringdata_ParameterModel_t, stringdata0) + ofs \
+        - idx * sizeof(QByteArrayData)) \
+    )
+static const qt_meta_stringdata_ParameterModel_t qt_meta_stringdata_ParameterModel = {
     {
-        QT_MOC_LITERAL(0, 14),  // "ParameterModel"
-        QT_MOC_LITERAL(15, 17),  // "parametersChanged"
-        QT_MOC_LITERAL(33, 0),  // ""
-        QT_MOC_LITERAL(34, 16),  // "ParameterTypeDef"
-        QT_MOC_LITERAL(51, 10),  // "parameters"
-        QT_MOC_LITERAL(62, 6),  // "set_kp"
-        QT_MOC_LITERAL(69, 4),  // "text"
-        QT_MOC_LITERAL(74, 6),  // "set_ki"
-        QT_MOC_LITERAL(81, 6),  // "set_kd"
-        QT_MOC_LITERAL(88, 21),  // "set_publish_frequency"
-        QT_MOC_LITERAL(110, 17),  // "set_pid_frequency"
-        QT_MOC_LITERAL(128, 30),  // "set_steering_esc_pwm_frequency"
-        QT_MOC_LITERAL(159, 19),  // "set_steering_offset"
-        QT_MOC_LITERAL(179, 18),  // "set_steering_ratio"
-        QT_MOC_LITERAL(198, 16),  // "set_steering_max"
-        QT_MOC_LITERAL(215, 16),  // "set_steering_min"
-        QT_MOC_LITERAL(232, 14),  // "set_esc_offset"
-        QT_MOC_LITERAL(247, 11),  // "set_esc_max"
-        QT_MOC_LITERAL(259, 11),  // "set_esc_min"
-        QT_MOC_LITERAL(271, 23)   // "set_brake_pwm_frequency"
+QT_MOC_LITERAL(0, 0, 14), // "ParameterModel"
+QT_MOC_LITERAL(1, 15, 17), // "parametersChanged"
+QT_MOC_LITERAL(2, 33, 0), // ""
+QT_MOC_LITERAL(3, 34, 16), // "ParameterTypeDef"
+QT_MOC_LITERAL(4, 51, 10), // "parameters"
+QT_MOC_LITERAL(5, 62, 6), // "set_kp"
+QT_MOC_LITERAL(6, 69, 4), // "text"
+QT_MOC_LITERAL(7, 74, 6), // "set_ki"
+QT_MOC_LITERAL(8, 81, 6), // "set_kd"
+QT_MOC_LITERAL(9, 88, 17), // "set_pid_frequency"
+QT_MOC_LITERAL(10, 106, 21), // "set_publish_frequency"
+QT_MOC_LITERAL(11, 128, 26), // "set_esc_rpm_to_speed_ratio"
+QT_MOC_LITERAL(12, 155, 14), // "set_esc_offset"
+QT_MOC_LITERAL(13, 170, 11), // "set_esc_max"
+QT_MOC_LITERAL(14, 182, 11), // "set_esc_min"
+QT_MOC_LITERAL(15, 194, 15), // "set_esc_reverse"
+QT_MOC_LITERAL(16, 210, 5), // "value"
+QT_MOC_LITERAL(17, 216, 17), // "set_esc_precision"
+QT_MOC_LITERAL(18, 234, 19), // "set_servo_precision"
+QT_MOC_LITERAL(19, 254, 30), // "set_steering_esc_pwm_frequency"
+QT_MOC_LITERAL(20, 285, 19), // "set_steering_offset"
+QT_MOC_LITERAL(21, 305, 18), // "set_steering_ratio"
+QT_MOC_LITERAL(22, 324, 16), // "set_steering_max"
+QT_MOC_LITERAL(23, 341, 16), // "set_steering_min"
+QT_MOC_LITERAL(24, 358, 17), // "set_force_offset0"
+QT_MOC_LITERAL(25, 376, 17), // "set_force_offset1"
+QT_MOC_LITERAL(26, 394, 17), // "set_force_offset2"
+QT_MOC_LITERAL(27, 412, 17), // "set_force_offset3"
+QT_MOC_LITERAL(28, 430, 17), // "set_force_offset4"
+QT_MOC_LITERAL(29, 448, 17), // "set_force_offset5"
+QT_MOC_LITERAL(30, 466, 17), // "set_force_offset6"
+QT_MOC_LITERAL(31, 484, 17), // "set_force_offset7"
+QT_MOC_LITERAL(32, 502, 16), // "set_force_ratio0"
+QT_MOC_LITERAL(33, 519, 16), // "set_force_ratio1"
+QT_MOC_LITERAL(34, 536, 16), // "set_force_ratio2"
+QT_MOC_LITERAL(35, 553, 16), // "set_force_ratio3"
+QT_MOC_LITERAL(36, 570, 16), // "set_force_ratio4"
+QT_MOC_LITERAL(37, 587, 16), // "set_force_ratio5"
+QT_MOC_LITERAL(38, 604, 16), // "set_force_ratio6"
+QT_MOC_LITERAL(39, 621, 16), // "set_force_ratio7"
+QT_MOC_LITERAL(40, 638, 23) // "set_brake_pwm_frequency"
+
     },
-    "ParameterModel",
-    "parametersChanged",
-    "",
-    "ParameterTypeDef",
-    "parameters",
-    "set_kp",
-    "text",
-    "set_ki",
-    "set_kd",
-    "set_publish_frequency",
-    "set_pid_frequency",
-    "set_steering_esc_pwm_frequency",
-    "set_steering_offset",
-    "set_steering_ratio",
-    "set_steering_max",
-    "set_steering_min",
-    "set_esc_offset",
-    "set_esc_max",
-    "set_esc_min",
+    "ParameterModel\0parametersChanged\0\0"
+    "ParameterTypeDef\0parameters\0set_kp\0"
+    "text\0set_ki\0set_kd\0set_pid_frequency\0"
+    "set_publish_frequency\0set_esc_rpm_to_speed_ratio\0"
+    "set_esc_offset\0set_esc_max\0set_esc_min\0"
+    "set_esc_reverse\0value\0set_esc_precision\0"
+    "set_servo_precision\0set_steering_esc_pwm_frequency\0"
+    "set_steering_offset\0set_steering_ratio\0"
+    "set_steering_max\0set_steering_min\0"
+    "set_force_offset0\0set_force_offset1\0"
+    "set_force_offset2\0set_force_offset3\0"
+    "set_force_offset4\0set_force_offset5\0"
+    "set_force_offset6\0set_force_offset7\0"
+    "set_force_ratio0\0set_force_ratio1\0"
+    "set_force_ratio2\0set_force_ratio3\0"
+    "set_force_ratio4\0set_force_ratio5\0"
+    "set_force_ratio6\0set_force_ratio7\0"
     "set_brake_pwm_frequency"
 };
 #undef QT_MOC_LITERAL
-#endif // !QT_MOC_HAS_STRING_DATA
-} // unnamed namespace
 
-Q_CONSTINIT static const uint qt_meta_data_CLASSParameterModelENDCLASS[] = {
+static const uint qt_meta_data_ParameterModel[] = {
 
  // content:
-      12,       // revision
+       8,       // revision
        0,       // classname
        0,    0, // classinfo
-      15,   14, // methods
-       1,  149, // properties
+      35,   14, // methods
+       1,  294, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
        1,       // signalCount
 
- // signals: name, argc, parameters, tag, flags, initial metatype offsets
-       1,    1,  104,    2, 0x06,    2 /* Public */,
+ // signals: name, argc, parameters, tag, flags
+       1,    1,  189,    2, 0x06 /* Public */,
 
- // slots: name, argc, parameters, tag, flags, initial metatype offsets
-       5,    1,  107,    2, 0x0a,    4 /* Public */,
-       7,    1,  110,    2, 0x0a,    6 /* Public */,
-       8,    1,  113,    2, 0x0a,    8 /* Public */,
-       9,    1,  116,    2, 0x0a,   10 /* Public */,
-      10,    1,  119,    2, 0x0a,   12 /* Public */,
-      11,    1,  122,    2, 0x0a,   14 /* Public */,
-      12,    1,  125,    2, 0x0a,   16 /* Public */,
-      13,    1,  128,    2, 0x0a,   18 /* Public */,
-      14,    1,  131,    2, 0x0a,   20 /* Public */,
-      15,    1,  134,    2, 0x0a,   22 /* Public */,
-      16,    1,  137,    2, 0x0a,   24 /* Public */,
-      17,    1,  140,    2, 0x0a,   26 /* Public */,
-      18,    1,  143,    2, 0x0a,   28 /* Public */,
-      19,    1,  146,    2, 0x0a,   30 /* Public */,
+ // slots: name, argc, parameters, tag, flags
+       5,    1,  192,    2, 0x0a /* Public */,
+       7,    1,  195,    2, 0x0a /* Public */,
+       8,    1,  198,    2, 0x0a /* Public */,
+       9,    1,  201,    2, 0x0a /* Public */,
+      10,    1,  204,    2, 0x0a /* Public */,
+      11,    1,  207,    2, 0x0a /* Public */,
+      12,    1,  210,    2, 0x0a /* Public */,
+      13,    1,  213,    2, 0x0a /* Public */,
+      14,    1,  216,    2, 0x0a /* Public */,
+      15,    1,  219,    2, 0x0a /* Public */,
+      17,    1,  222,    2, 0x0a /* Public */,
+      18,    1,  225,    2, 0x0a /* Public */,
+      19,    1,  228,    2, 0x0a /* Public */,
+      20,    1,  231,    2, 0x0a /* Public */,
+      21,    1,  234,    2, 0x0a /* Public */,
+      22,    1,  237,    2, 0x0a /* Public */,
+      23,    1,  240,    2, 0x0a /* Public */,
+      24,    1,  243,    2, 0x0a /* Public */,
+      25,    1,  246,    2, 0x0a /* Public */,
+      26,    1,  249,    2, 0x0a /* Public */,
+      27,    1,  252,    2, 0x0a /* Public */,
+      28,    1,  255,    2, 0x0a /* Public */,
+      29,    1,  258,    2, 0x0a /* Public */,
+      30,    1,  261,    2, 0x0a /* Public */,
+      31,    1,  264,    2, 0x0a /* Public */,
+      32,    1,  267,    2, 0x0a /* Public */,
+      33,    1,  270,    2, 0x0a /* Public */,
+      34,    1,  273,    2, 0x0a /* Public */,
+      35,    1,  276,    2, 0x0a /* Public */,
+      36,    1,  279,    2, 0x0a /* Public */,
+      37,    1,  282,    2, 0x0a /* Public */,
+      38,    1,  285,    2, 0x0a /* Public */,
+      39,    1,  288,    2, 0x0a /* Public */,
+      40,    1,  291,    2, 0x0a /* Public */,
 
  // signals: parameters
     QMetaType::Void, 0x80000000 | 3,    4,
 
  // slots: parameters
+    QMetaType::Void, QMetaType::QString,    6,
+    QMetaType::Void, QMetaType::QString,    6,
+    QMetaType::Void, QMetaType::QString,    6,
+    QMetaType::Void, QMetaType::QString,    6,
+    QMetaType::Void, QMetaType::QString,    6,
+    QMetaType::Void, QMetaType::QString,    6,
+    QMetaType::Void, QMetaType::QString,    6,
+    QMetaType::Void, QMetaType::QString,    6,
+    QMetaType::Void, QMetaType::QString,    6,
+    QMetaType::Void, QMetaType::Bool,   16,
+    QMetaType::Void, QMetaType::QString,    6,
+    QMetaType::Void, QMetaType::QString,    6,
+    QMetaType::Void, QMetaType::QString,    6,
+    QMetaType::Void, QMetaType::QString,    6,
+    QMetaType::Void, QMetaType::QString,    6,
+    QMetaType::Void, QMetaType::QString,    6,
+    QMetaType::Void, QMetaType::QString,    6,
+    QMetaType::Void, QMetaType::QString,    6,
+    QMetaType::Void, QMetaType::QString,    6,
+    QMetaType::Void, QMetaType::QString,    6,
     QMetaType::Void, QMetaType::QString,    6,
     QMetaType::Void, QMetaType::QString,    6,
     QMetaType::Void, QMetaType::QString,    6,
@@ -185,102 +187,65 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSParameterModelENDCLASS[] = {
     QMetaType::Void, QMetaType::QString,    6,
 
  // properties: name, type, flags
-       4, 0x80000000 | 3, 0x0001510b, uint(0), 0,
+       4, 0x80000000 | 3, 0x0049510b,
+
+ // properties: notify_signal_id
+       0,
 
        0        // eod
 };
-
-Q_CONSTINIT const QMetaObject ParameterModel::staticMetaObject = { {
-    QMetaObject::SuperData::link<QObject::staticMetaObject>(),
-    qt_meta_stringdata_CLASSParameterModelENDCLASS.offsetsAndSizes,
-    qt_meta_data_CLASSParameterModelENDCLASS,
-    qt_static_metacall,
-    nullptr,
-    qt_incomplete_metaTypeArray<qt_meta_stringdata_CLASSParameterModelENDCLASS_t,
-        // property 'parameters'
-        QtPrivate::TypeAndForceComplete<ParameterTypeDef, std::true_type>,
-        // Q_OBJECT / Q_GADGET
-        QtPrivate::TypeAndForceComplete<ParameterModel, std::true_type>,
-        // method 'parametersChanged'
-        QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        QtPrivate::TypeAndForceComplete<const ParameterTypeDef &, std::false_type>,
-        // method 'set_kp'
-        QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        QtPrivate::TypeAndForceComplete<const QString &, std::false_type>,
-        // method 'set_ki'
-        QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        QtPrivate::TypeAndForceComplete<const QString &, std::false_type>,
-        // method 'set_kd'
-        QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        QtPrivate::TypeAndForceComplete<const QString &, std::false_type>,
-        // method 'set_publish_frequency'
-        QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        QtPrivate::TypeAndForceComplete<const QString &, std::false_type>,
-        // method 'set_pid_frequency'
-        QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        QtPrivate::TypeAndForceComplete<const QString &, std::false_type>,
-        // method 'set_steering_esc_pwm_frequency'
-        QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        QtPrivate::TypeAndForceComplete<const QString &, std::false_type>,
-        // method 'set_steering_offset'
-        QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        QtPrivate::TypeAndForceComplete<const QString &, std::false_type>,
-        // method 'set_steering_ratio'
-        QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        QtPrivate::TypeAndForceComplete<const QString &, std::false_type>,
-        // method 'set_steering_max'
-        QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        QtPrivate::TypeAndForceComplete<const QString &, std::false_type>,
-        // method 'set_steering_min'
-        QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        QtPrivate::TypeAndForceComplete<const QString &, std::false_type>,
-        // method 'set_esc_offset'
-        QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        QtPrivate::TypeAndForceComplete<const QString &, std::false_type>,
-        // method 'set_esc_max'
-        QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        QtPrivate::TypeAndForceComplete<const QString &, std::false_type>,
-        // method 'set_esc_min'
-        QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        QtPrivate::TypeAndForceComplete<const QString &, std::false_type>,
-        // method 'set_brake_pwm_frequency'
-        QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        QtPrivate::TypeAndForceComplete<const QString &, std::false_type>
-    >,
-    nullptr
-} };
 
 void ParameterModel::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
 {
     if (_c == QMetaObject::InvokeMetaMethod) {
         auto *_t = static_cast<ParameterModel *>(_o);
-        (void)_t;
+        Q_UNUSED(_t)
         switch (_id) {
-        case 0: _t->parametersChanged((*reinterpret_cast< std::add_pointer_t<ParameterTypeDef>>(_a[1]))); break;
-        case 1: _t->set_kp((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
-        case 2: _t->set_ki((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
-        case 3: _t->set_kd((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
-        case 4: _t->set_publish_frequency((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
-        case 5: _t->set_pid_frequency((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
-        case 6: _t->set_steering_esc_pwm_frequency((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
-        case 7: _t->set_steering_offset((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
-        case 8: _t->set_steering_ratio((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
-        case 9: _t->set_steering_max((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
-        case 10: _t->set_steering_min((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
-        case 11: _t->set_esc_offset((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
-        case 12: _t->set_esc_max((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
-        case 13: _t->set_esc_min((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
-        case 14: _t->set_brake_pwm_frequency((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
+        case 0: _t->parametersChanged((*reinterpret_cast< const ParameterTypeDef(*)>(_a[1]))); break;
+        case 1: _t->set_kp((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 2: _t->set_ki((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 3: _t->set_kd((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 4: _t->set_pid_frequency((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 5: _t->set_publish_frequency((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 6: _t->set_esc_rpm_to_speed_ratio((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 7: _t->set_esc_offset((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 8: _t->set_esc_max((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 9: _t->set_esc_min((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 10: _t->set_esc_reverse((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 11: _t->set_esc_precision((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 12: _t->set_servo_precision((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 13: _t->set_steering_esc_pwm_frequency((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 14: _t->set_steering_offset((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 15: _t->set_steering_ratio((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 16: _t->set_steering_max((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 17: _t->set_steering_min((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 18: _t->set_force_offset0((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 19: _t->set_force_offset1((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 20: _t->set_force_offset2((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 21: _t->set_force_offset3((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 22: _t->set_force_offset4((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 23: _t->set_force_offset5((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 24: _t->set_force_offset6((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 25: _t->set_force_offset7((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 26: _t->set_force_ratio0((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 27: _t->set_force_ratio1((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 28: _t->set_force_ratio2((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 29: _t->set_force_ratio3((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 30: _t->set_force_ratio4((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 31: _t->set_force_ratio5((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 32: _t->set_force_ratio6((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 33: _t->set_force_ratio7((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 34: _t->set_brake_pwm_frequency((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
         switch (_id) {
-        default: *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType(); break;
+        default: *reinterpret_cast<int*>(_a[0]) = -1; break;
         case 0:
             switch (*reinterpret_cast<int*>(_a[1])) {
-            default: *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType(); break;
+            default: *reinterpret_cast<int*>(_a[0]) = -1; break;
             case 0:
-                *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType::fromType< ParameterTypeDef >(); break;
+                *reinterpret_cast<int*>(_a[0]) = qRegisterMetaType< ParameterTypeDef >(); break;
             }
             break;
         }
@@ -288,7 +253,7 @@ void ParameterModel::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _
         int *result = reinterpret_cast<int *>(_a[0]);
         {
             using _t = void (ParameterModel::*)(const ParameterTypeDef & );
-            if (_t _q_method = &ParameterModel::parametersChanged; *reinterpret_cast<_t *>(_a[1]) == _q_method) {
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&ParameterModel::parametersChanged)) {
                 *result = 0;
                 return;
             }
@@ -299,9 +264,12 @@ void ParameterModel::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _
         case 0:
             *reinterpret_cast<int*>(_a[0]) = qRegisterMetaType< ParameterTypeDef >(); break;
         }
-    }  else if (_c == QMetaObject::ReadProperty) {
+    }
+
+#ifndef QT_NO_PROPERTIES
+    else if (_c == QMetaObject::ReadProperty) {
         auto *_t = static_cast<ParameterModel *>(_o);
-        (void)_t;
+        Q_UNUSED(_t)
         void *_v = _a[0];
         switch (_id) {
         case 0: *reinterpret_cast< ParameterTypeDef*>(_v) = _t->parameters(); break;
@@ -309,16 +277,26 @@ void ParameterModel::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _
         }
     } else if (_c == QMetaObject::WriteProperty) {
         auto *_t = static_cast<ParameterModel *>(_o);
-        (void)_t;
+        Q_UNUSED(_t)
         void *_v = _a[0];
         switch (_id) {
         case 0: _t->setParameters(*reinterpret_cast< ParameterTypeDef*>(_v)); break;
         default: break;
         }
     } else if (_c == QMetaObject::ResetProperty) {
-    } else if (_c == QMetaObject::BindableProperty) {
     }
+#endif // QT_NO_PROPERTIES
 }
+
+QT_INIT_METAOBJECT const QMetaObject ParameterModel::staticMetaObject = { {
+    &QObject::staticMetaObject,
+    qt_meta_stringdata_ParameterModel.data,
+    qt_meta_data_ParameterModel,
+    qt_static_metacall,
+    nullptr,
+    nullptr
+} };
+
 
 const QMetaObject *ParameterModel::metaObject() const
 {
@@ -328,7 +306,7 @@ const QMetaObject *ParameterModel::metaObject() const
 void *ParameterModel::qt_metacast(const char *_clname)
 {
     if (!_clname) return nullptr;
-    if (!strcmp(_clname, qt_meta_stringdata_CLASSParameterModelENDCLASS.stringdata0))
+    if (!strcmp(_clname, qt_meta_stringdata_ParameterModel.stringdata0))
         return static_cast<void*>(this);
     return QObject::qt_metacast(_clname);
 }
@@ -339,26 +317,39 @@ int ParameterModel::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 15)
+        if (_id < 35)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 15;
+        _id -= 35;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 15)
+        if (_id < 35)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 15;
-    }else if (_c == QMetaObject::ReadProperty || _c == QMetaObject::WriteProperty
-            || _c == QMetaObject::ResetProperty || _c == QMetaObject::BindableProperty
-            || _c == QMetaObject::RegisterPropertyMetaType) {
+        _id -= 35;
+    }
+#ifndef QT_NO_PROPERTIES
+    else if (_c == QMetaObject::ReadProperty || _c == QMetaObject::WriteProperty
+            || _c == QMetaObject::ResetProperty || _c == QMetaObject::RegisterPropertyMetaType) {
         qt_static_metacall(this, _c, _id, _a);
         _id -= 1;
+    } else if (_c == QMetaObject::QueryPropertyDesignable) {
+        _id -= 1;
+    } else if (_c == QMetaObject::QueryPropertyScriptable) {
+        _id -= 1;
+    } else if (_c == QMetaObject::QueryPropertyStored) {
+        _id -= 1;
+    } else if (_c == QMetaObject::QueryPropertyEditable) {
+        _id -= 1;
+    } else if (_c == QMetaObject::QueryPropertyUser) {
+        _id -= 1;
     }
+#endif // QT_NO_PROPERTIES
     return _id;
 }
 
 // SIGNAL 0
 void ParameterModel::parametersChanged(const ParameterTypeDef & _t1)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
 QT_WARNING_POP
+QT_END_MOC_NAMESPACE

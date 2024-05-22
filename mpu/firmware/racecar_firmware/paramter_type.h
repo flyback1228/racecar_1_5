@@ -11,23 +11,34 @@
 struct ParameterTypeDef{
     char header[4]={'a','c','s','r'};
     uint8_t version=1;
-    uint8_t subversion=0;
+    uint8_t subversion=1;
+
     float kp=1;
     float ki=1;
-    float kd=0;
-    uint8_t publish_frequency=20;
+    float kd=0;    
     uint8_t pid_frequency=10;
 
-    float esc_rpm_to_speed_ratio;
+    uint8_t publish_frequency=20;
+
+    float esc_rpm_to_speed_ratio=1000;
+    float esc_offset=1500.0;
+    float esc_max=80.0;
+    float esc_min=50.0;
+
+    uint8_t esc_set_precision=5;
+    uint8_t allow_reverse=false; //a bool
+
     float steering_esc_pwm_frequency=64.5;
-    uint16_t steering_offset=1500;
-    float steering_ratio=3000;
+    float steering_offset=1500;
+    float steering_to_dutycycle_ratio=3000;
     float steering_max=17;
     float steering_min=-17;
 
-    uint16_t esc_offset=1500;
-    uint16_t esc_max=80;
-    uint16_t esc_min=50;
+    uint8_t servo_set_precision=5;
+
+    //force parameters
+    float force_ratio[8]={1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0};
+    float force_offset[8]={0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};
 
     float brake_pwm_frequency=1000;
 
@@ -35,12 +46,31 @@ struct ParameterTypeDef{
 
     bool operator==(const ParameterTypeDef& other) const
     {
-        return (abs(kp - other.kp)<0.01) && (abs(ki - other.ki)<0.01)  && (abs(kd - other.kd)<0.01)
-            && publish_frequency == other.publish_frequency && pid_frequency==other.pid_frequency
-            && abs(steering_esc_pwm_frequency-other.steering_esc_pwm_frequency)<0.01 && steering_offset== other.steering_offset
-            && abs(steering_ratio-other.steering_ratio)<0.01 && abs(steering_max-other.steering_max)<0.01 && abs(steering_min-other.steering_min)<0.01
-            && esc_offset==other.esc_offset && esc_max==other.esc_max && esc_min==other.esc_min
-            && abs(brake_pwm_frequency-other.brake_pwm_frequency)<0.01;
+        bool v=true;
+        for(auto i=0;i<8;++i)
+            v&=(abs(force_ratio[i]-other.force_ratio[i])<0.01);
+        if(!v)return false;
+
+        return (version==other.version
+                && subversion==other.subversion
+                && abs(kp - other.kp)<0.01)
+                && (abs(ki - other.ki)<0.01)
+                && (abs(kd - other.kd)<0.01)
+                &&  pid_frequency==other.pid_frequency
+                && publish_frequency == other.publish_frequency
+                && abs(esc_rpm_to_speed_ratio-other.esc_rpm_to_speed_ratio)<0.01
+                && esc_offset==other.esc_offset
+                && esc_max == other.esc_max
+                && esc_min == other.esc_min
+                && esc_set_precision==other.esc_set_precision
+                && allow_reverse==other.allow_reverse
+                && abs(steering_esc_pwm_frequency-other.steering_esc_pwm_frequency)<0.01
+                && steering_offset== other.steering_offset
+                && abs(steering_to_dutycycle_ratio-other.steering_to_dutycycle_ratio)<0.01
+                && abs(steering_max-other.steering_max)<0.01
+                && abs(steering_min-other.steering_min)<0.01
+                && servo_set_precision==other.servo_set_precision
+                && abs(brake_pwm_frequency-other.brake_pwm_frequency)<0.01;
     }
 
     friend QDataStream &operator<<(QDataStream &out, const ParameterTypeDef &rhs){

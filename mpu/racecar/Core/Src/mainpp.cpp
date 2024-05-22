@@ -18,8 +18,10 @@
 #include "utility.h"
 #include "pid/pid.h"
 
+#define MAX_PARAMETER_LENGTH 200
+
 //watch dog
-extern IWDG_HandleTypeDef hiwdg1;
+//extern IWDG_HandleTypeDef hiwdg1;
 
 //pwm for brakes, 4 channels in total
 extern TIM_HandleTypeDef htim2;
@@ -81,6 +83,8 @@ const uint8_t force_size = 8;
 const uint8_t vesc_size = 5;
 const uint8_t imu_size = 9;
 
+bool send_esc_speed = false;
+
 //error code
 //0x01: no esc data, 0x02: no speed data
 uint8_t error_code = 0;
@@ -107,7 +111,7 @@ float pid_esc_duty_cycle_output = 0.0;
 float current_esc_speed = 0.0;
 
 //usb buffer to store the received data from usb port
-uint8_t usb_buf[100];
+uint8_t usb_buf[MAX_PARAMETER_LENGTH];
 
 //input mode, by code or by transmitter, can be set by ros topic or by button on the control board
 InputMode_TypeDef input_mode = INPUT_MODE_SOFTWARE;
@@ -158,6 +162,7 @@ ParameterTypeDef parameters = {
 		.servo_set_precision = 5,
 
 		.force_ratio ={1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0},
+		.force_offset ={0.0,0.0,0.0,0.0,1.0,1.0,1.0,1.0},
 
 		.brake_pwm_frequency=100.0,
 
@@ -257,8 +262,12 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size){
 	if (huart->Instance == UART7)
 	{
 		if(usb_buf[0]=='x' && usb_buf[1]=='i' && usb_buf[2]=='l' && usb_buf[3]=='i' && usb_buf[4]=='n'){
+			if(send_esc_speed)
+				send_esc_speed=false;
 			HAL_UART_Transmit(&huart7, (uint8_t*)(&parameters) , sizeof(ParameterTypeDef), 10);
 		}else if(usb_buf[0]=='a' && usb_buf[1]=='c' && usb_buf[2]=='s' && usb_buf[3]=='r'){
+			if(send_esc_speed)
+				send_esc_speed=false;
 			uint32_t i = sizeof(ParameterTypeDef)-4;
 			if(usb_buf[i]!='b' || usb_buf[i+1]!='4'|| usb_buf[i+2]!='0'|| usb_buf[i+3]!='1'){
 				printf("Receive Wrong Data\n");
@@ -269,11 +278,14 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size){
 				NVIC_SystemReset();
 			}
 
-		}else{
-			printf("Receive Wrong Data\n");
-			//HAL_UART_Transmit(&huart7,data, sizeof(data), 10);
+		}else if(usb_buf[0]=='s' && usb_buf[1]=='p' && usb_buf[2]=='e' && usb_buf[3]=='e' && usb_buf[4]=='d'){
+			send_esc_speed=!send_esc_speed;
 		}
-		HAL_UARTEx_ReceiveToIdle_DMA(&huart7, (uint8_t *) usb_buf, 100);
+		else{
+			printf("Receive Wrong Data\n");
+		}
+
+		HAL_UARTEx_ReceiveToIdle_DMA(&huart7, (uint8_t *) usb_buf, MAX_PARAMETER_LENGTH);
 		__HAL_DMA_DISABLE_IT(&hdma_uart7_rx, DMA_IT_HT);
 	}
 }
@@ -288,7 +300,7 @@ void HAL_UART_ErrorCallback(UART_HandleTypeDef *UartHandle) {
     else if(UartHandle->Instance==huart_imu.Instance) {
 		HAL_UART_Receive_DMA(&huart_imu, (uint8_t*)jy901_data, 11);
 	}else if(UartHandle->Instance==UART7){
-		HAL_UARTEx_ReceiveToIdle_DMA(&huart7, (uint8_t *) usb_buf, 100);
+		HAL_UARTEx_ReceiveToIdle_DMA(&huart7, (uint8_t *) usb_buf, MAX_PARAMETER_LENGTH);
 		__HAL_DMA_DISABLE_IT(&hdma_uart7_rx, DMA_IT_HT);
 	}
 }
@@ -358,6 +370,19 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 		sensor_msg.data[index] = error_code;
 		ros_pub->publish(&sensor_msg);
 		nh.spinOnce();
+
+
+		if(send_esc_speed){
+			float value = sin(micros()/1000000.0/2)+1.0;
+			uint8_t v[5];
+			v[0]='s';
+			v[1]='p';
+			v[2]='d';
+			v[3]=uint8_t(value);
+			v[4]=uint8_t((value-v[3])*100);
+			HAL_UART_Transmit(&huart7, (uint8_t*)(v) , 5, 10);
+		}
+
 	}else if(htim->Instance==TIM6)//pid computation
 	{
 		if(input_mode == INPUT_MODE_CONTROLLER || pid_mode == PID_MODE_MANUAL || (error_code & 0x01))return;
@@ -459,7 +484,10 @@ void uart_setup(){
 	HAL_UART_Receive_DMA(&huart_f103, (uint8_t*)speed_receive, 2*SPEED_PIN_COUNT+4);
 	HAL_UART_Receive_DMA(&huart8, jy901_data, 11);
 
-	HAL_UARTEx_ReceiveToIdle_DMA(&huart7, usb_buf, 100);
+	//huart7.RxXferSize=MAX_PARAMETER_LENGTH;
+	//huart7.RxXferSize
+
+	HAL_UARTEx_ReceiveToIdle_DMA(&huart7, (uint8_t *) usb_buf, MAX_PARAMETER_LENGTH);
 	__HAL_DMA_DISABLE_IT(&hdma_uart7_rx, DMA_IT_HT);
 }
 
@@ -592,14 +620,18 @@ void read_parameters(){
 	QSPI_W25Q64JV_Read((uint8_t*)header, 0x00, 4);
 	if(header[0]!='a' || header[1]!='c' || header[2]!='s' || header[3]!='r'){
 		printf("Reading parameters fails, use default parameters\n");
+		QSPI_W25Q64JV_Write((uint8_t*)(&parameters),0x0,sizeof(ParameterTypeDef));
+
 		return;
 	}
 
 	QSPI_W25Q64JV_Read((uint8_t*)(&parameters), 0x00, sizeof(ParameterTypeDef));
 	if(parameters.tailer[0]!='b' || parameters.tailer[1]!='4' || parameters.tailer[2]!='0' || parameters.tailer[3]!='1'){
+		QSPI_W25Q64JV_Write((uint8_t*)(&parameters),0x0,sizeof(ParameterTypeDef));
 		printf("Reading parameters fails, use default parameters\n");
 		return;
 	}
+	printf("Reading parameters from ROM success\n");
 }
 
 void reset_pid(){
@@ -655,6 +687,6 @@ void loop(void)
 
 
 	}
-	HAL_IWDG_Refresh(&hiwdg1);
+	//HAL_IWDG_Refresh(&hiwdg1);
 }
 

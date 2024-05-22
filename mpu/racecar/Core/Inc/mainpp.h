@@ -65,6 +65,7 @@ typedef struct{
 
 	//force parameters
 	float force_ratio[8];
+	float force_offset[8];
 
 	//brake parameters
 	float brake_pwm_frequency;

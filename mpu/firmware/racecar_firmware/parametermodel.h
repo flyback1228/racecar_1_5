@@ -28,16 +28,43 @@ public slots:
     void set_kp(const QString &text);
     void set_ki(const QString &text);
     void set_kd(const QString &text);
-    void set_publish_frequency(const QString &text);
     void set_pid_frequency(const QString &text);
+
+    void set_publish_frequency(const QString &text);
+
+    void set_esc_rpm_to_speed_ratio(const QString &text);
+    void set_esc_offset(const QString &text);
+    void set_esc_max(const QString &text);
+    void set_esc_min(const QString &text);
+
+    void set_esc_reverse(bool value);
+    void set_esc_precision(const QString &text);
+    void set_servo_precision(const QString &text);
+
     void set_steering_esc_pwm_frequency(const QString &text);
     void set_steering_offset(const QString &text);
     void set_steering_ratio(const QString &text);
     void set_steering_max(const QString &text);
     void set_steering_min(const QString &text);
-    void set_esc_offset(const QString &text);
-    void set_esc_max(const QString &text);
-    void set_esc_min(const QString &text);
+
+    void set_force_offset0(const QString &text);
+    void set_force_offset1(const QString &text);
+    void set_force_offset2(const QString &text);
+    void set_force_offset3(const QString &text);
+    void set_force_offset4(const QString &text);
+    void set_force_offset5(const QString &text);
+    void set_force_offset6(const QString &text);
+    void set_force_offset7(const QString &text);
+
+    void set_force_ratio0(const QString &text);
+    void set_force_ratio1(const QString &text);
+    void set_force_ratio2(const QString &text);
+    void set_force_ratio3(const QString &text);
+    void set_force_ratio4(const QString &text);
+    void set_force_ratio5(const QString &text);
+    void set_force_ratio6(const QString &text);
+    void set_force_ratio7(const QString &text);
+
     void set_brake_pwm_frequency(const QString &text);
 
 
@@ -45,6 +72,10 @@ public slots:
 
 private:
     ParameterTypeDef parameters_;
+    float string_to_float(const QString &text);
+    uint8_t string_to_uint8(const QString &text);
+
+
 signals:
     void parametersChanged(const ParameterTypeDef& parameters);
 

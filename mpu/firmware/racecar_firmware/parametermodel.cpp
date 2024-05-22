@@ -8,72 +8,123 @@ ParameterModel::ParameterModel(QObject *parent)
 
 void ParameterModel::set_kp(const QString &text)
 {
-    bool ok;
-    float v = text.toFloat(&ok);
-    if(ok)parameters_.kp = v;
+    parameters_.kp = string_to_float(text);
 }
 
 void ParameterModel::set_ki(const QString &text)
 {
-    bool ok;
-    float v = text.toFloat(&ok);
-    if(ok)parameters_.ki = v;
+    parameters_.ki = string_to_float(text);
 }
 
 void ParameterModel::set_kd(const QString &text)
 {
-    bool ok;
-    float v = text.toFloat(&ok);
-    if(ok)parameters_.kd = v;
+    parameters_.kd = string_to_float(text);
 }
 
 void ParameterModel::set_publish_frequency(const QString &text)
 {
-    bool ok;
-    auto v = text.toUInt(&ok);
-    if(ok)parameters_.publish_frequency = (uint8_t)v;
+    parameters_.publish_frequency = string_to_uint8(text);
+}
+
+void ParameterModel::set_esc_rpm_to_speed_ratio(const QString &text)
+{
+    parameters_.esc_rpm_to_speed_ratio = string_to_float(text);
 }
 
 void ParameterModel::set_pid_frequency(const QString &text)
 {
-    bool ok;
-    auto v = text.toUInt(&ok);
-    if(ok)parameters_.pid_frequency = (uint8_t)v;
+    parameters_.pid_frequency = string_to_uint8(text);
 }
 
 void ParameterModel::set_steering_esc_pwm_frequency(const QString &text)
 {
-    bool ok;
-    auto v = text.toFloat(&ok);
-    if(ok)parameters_.steering_esc_pwm_frequency = v;
+    parameters_.steering_esc_pwm_frequency = string_to_float(text);
 }
 
 void ParameterModel::set_steering_offset(const QString &text)
 {
-    bool ok;
-    auto v = text.toUInt(&ok);
-    if(ok)parameters_.steering_offset = (uint16_t)v;
+    parameters_.steering_offset = string_to_float(text);
 }
 
 void ParameterModel::set_steering_ratio(const QString &text)
 {
-    bool ok;
-    auto v = text.toFloat(&ok);
-    if(ok)parameters_.steering_ratio = v;
+   parameters_.steering_to_dutycycle_ratio = string_to_float(text);
 }
 
 void ParameterModel::set_steering_max(const QString &text)
 {
-    bool ok;
-    auto v = text.toFloat(&ok);
-    if(ok)parameters_.steering_max = v;
+    parameters_.steering_max = string_to_float(text);
 }
 
 void ParameterModel::set_steering_min(const QString &text)
 {
-    bool ok;
-    auto v = text.toFloat(&ok);
-    if(ok)parameters_.steering_min = v;
+    parameters_.steering_min = string_to_float(text);
+}
+
+void ParameterModel::set_force_offset0(const QString &text)
+{
+    parameters_.force_offset[0] = string_to_float(text);
+}
+void ParameterModel::set_force_offset1(const QString &text)
+{
+    parameters_.force_offset[1] = string_to_float(text);
+}
+void ParameterModel::set_force_offset2(const QString &text)
+{
+    parameters_.force_offset[2] = string_to_float(text);
+}
+void ParameterModel::set_force_offset3(const QString &text)
+{
+    parameters_.force_offset[3] = string_to_float(text);
+}
+void ParameterModel::set_force_offset4(const QString &text)
+{
+    parameters_.force_offset[4] = string_to_float(text);
+}
+void ParameterModel::set_force_offset5(const QString &text)
+{
+    parameters_.force_offset[5] = string_to_float(text);
+}
+void ParameterModel::set_force_offset6(const QString &text)
+{
+    parameters_.force_offset[6] = string_to_float(text);
+}
+void ParameterModel::set_force_offset7(const QString &text)
+{
+    parameters_.force_offset[7] = string_to_float(text);
+}
+
+void ParameterModel::set_force_ratio0(const QString &text)
+{
+    parameters_.force_ratio[0] = string_to_float(text);
+}
+void ParameterModel::set_force_ratio1(const QString &text)
+{
+    parameters_.force_ratio[1] = string_to_float(text);
+}
+void ParameterModel::set_force_ratio2(const QString &text)
+{
+    parameters_.force_ratio[2] = string_to_float(text);
+}
+void ParameterModel::set_force_ratio3(const QString &text)
+{
+    parameters_.force_ratio[3] = string_to_float(text);
+}
+void ParameterModel::set_force_ratio4(const QString &text)
+{
+    parameters_.force_ratio[4] = string_to_float(text);
+}
+void ParameterModel::set_force_ratio5(const QString &text)
+{
+    parameters_.force_ratio[5] = string_to_float(text);
+}
+void ParameterModel::set_force_ratio6(const QString &text)
+{
+    parameters_.force_ratio[6] = string_to_float(text);
+}
+void ParameterModel::set_force_ratio7(const QString &text)
+{
+    parameters_.force_ratio[7] = string_to_float(text);
 }
 
 void ParameterModel::set_esc_offset(const QString &text)
@@ -97,11 +148,46 @@ void ParameterModel::set_esc_min(const QString &text)
     if(ok)parameters_.esc_min = (uint16_t)v;
 }
 
+void ParameterModel::set_esc_reverse(bool value)
+{
+    parameters_.allow_reverse=value;
+}
+
+void ParameterModel::set_esc_precision(const QString &text)
+{
+    bool ok;
+    auto v = text.toUInt(&ok);
+    if(ok)parameters_.esc_set_precision = (uint8_t)v;
+}
+
+void ParameterModel::set_servo_precision(const QString &text)
+{
+    bool ok;
+    auto v = text.toUInt(&ok);
+    if(ok)parameters_.servo_set_precision = (uint8_t)v;
+}
+
 void ParameterModel::set_brake_pwm_frequency(const QString &text)
 {
     bool ok;
     auto v = text.toFloat(&ok);
     if(ok)parameters_.brake_pwm_frequency = v;
+}
+
+float ParameterModel::string_to_float(const QString &text)
+{
+    bool ok;
+    auto v = text.toFloat(&ok);
+    if(ok)return v;
+    return 0.0f;
+}
+
+uint8_t ParameterModel::string_to_uint8(const QString &text)
+{
+    bool ok;
+    auto v = text.toUInt(&ok);
+    if(ok)return (uint8_t)v;
+    else return 0;
 }
 
 //void ParameterModel::setParameters(ParameterTypeDef parameters)

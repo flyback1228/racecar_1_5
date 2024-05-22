@@ -4,8 +4,10 @@ mpu/f103_slave/Debug
 mpu/.metadata
 mpu/f103_adc_signal_generator
 mpu/qspi_test
+mpu/racecar_h750_jy901_setup
 mpu/racecar_h743vb
 mpu/raccar_pcb_test
 mpu/speed_simulator
 mpu/usb_logic
 hobbywing_ezrun_esc_crack/Debug
+mpu/firmware/build*
