@@ -15,22 +15,22 @@ struct ParameterTypeDef{
 
     float kp=1;
     float ki=1;
-    float kd=0;    
+    float kd=0;
     uint8_t pid_frequency=10;
 
     uint8_t publish_frequency=20;
 
     float esc_rpm_to_speed_ratio=1000;
-    float esc_offset=1500.0;
-    float esc_max=80.0;
-    float esc_min=50.0;
+    float esc_offset=0.097;
+    float esc_max=0.109;
+    float esc_min=0.081;
 
     uint8_t esc_set_precision=5;
     uint8_t allow_reverse=false; //a bool
 
     float steering_esc_pwm_frequency=64.5;
-    float steering_offset=1500;
-    float steering_to_dutycycle_ratio=3000;
+    float steering_offset=0.096;
+    float steering_to_dutycycle_ratio=653.8;
     float steering_max=17;
     float steering_min=-17;
 
@@ -41,6 +41,8 @@ struct ParameterTypeDef{
     float force_offset[8]={0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};
 
     float brake_pwm_frequency=1000;
+
+    float wheel_speed_difference_warning=1.0f;
 
     char tailer[4]={'b','4','0','1'};
 
@@ -58,19 +60,20 @@ struct ParameterTypeDef{
                 && (abs(kd - other.kd)<0.01)
                 &&  pid_frequency==other.pid_frequency
                 && publish_frequency == other.publish_frequency
-                && abs(esc_rpm_to_speed_ratio-other.esc_rpm_to_speed_ratio)<0.01
+                && abs(esc_rpm_to_speed_ratio-other.esc_rpm_to_speed_ratio)<std::numeric_limits<float>::epsilon()
                 && esc_offset==other.esc_offset
                 && esc_max == other.esc_max
                 && esc_min == other.esc_min
                 && esc_set_precision==other.esc_set_precision
                 && allow_reverse==other.allow_reverse
-                && abs(steering_esc_pwm_frequency-other.steering_esc_pwm_frequency)<0.01
+               && abs(steering_esc_pwm_frequency-other.steering_esc_pwm_frequency)<std::numeric_limits<float>::epsilon()
                 && steering_offset== other.steering_offset
-                && abs(steering_to_dutycycle_ratio-other.steering_to_dutycycle_ratio)<0.01
-                && abs(steering_max-other.steering_max)<0.01
-                && abs(steering_min-other.steering_min)<0.01
+                && abs(steering_to_dutycycle_ratio-other.steering_to_dutycycle_ratio)<std::numeric_limits<float>::epsilon()
+                && abs(steering_max-other.steering_max)<std::numeric_limits<float>::epsilon()
+                && abs(steering_min-other.steering_min)<std::numeric_limits<float>::epsilon()
                 && servo_set_precision==other.servo_set_precision
-                && abs(brake_pwm_frequency-other.brake_pwm_frequency)<0.01;
+                && abs(brake_pwm_frequency-other.brake_pwm_frequency)<std::numeric_limits<float>::epsilon()
+                && abs(wheel_speed_difference_warning-other.wheel_speed_difference_warning)<std::numeric_limits<float>::epsilon();
     }
 
     friend QDataStream &operator<<(QDataStream &out, const ParameterTypeDef &rhs){

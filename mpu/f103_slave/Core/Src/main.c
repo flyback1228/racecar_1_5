@@ -34,14 +34,23 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
+typedef struct{
+	int16_t throttle;
+	uint32_t rpm;
+	float voltage;
+	float current;
+	uint16_t temperature;
+} ESC_SensorTypeDef;
 
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 #define SPEED_BUFFER_SIZE 16
-#define SPEED_PIN_COUNT 16
+#define SPEED_PIN_COUNT 8
 #define SPEED_MAX_INCREMENT 2
+#define ESC_DATA_SIZE 32
+#define RX_BUFFER_SIZE 16
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -56,6 +65,8 @@ TIM_HandleTypeDef htim1;
 
 UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart2;
+DMA_HandleTypeDef hdma_usart1_rx;
+DMA_HandleTypeDef hdma_usart2_rx;
 
 /* USER CODE BEGIN PV */
 FontDef Font_5x5 = {5,5,95*5,Font5x5};
@@ -65,36 +76,102 @@ FontDef Font_16x26 = {16,26,95*26,Font16x26};
 
 uint8_t pulse_pointer[SPEED_PIN_COUNT]={0};
 uint8_t increment_count[SPEED_PIN_COUNT]={0};
-uint8_t speed_on_single_pin[SPEED_PIN_COUNT*2+4];
+
+/*
+"ACSR" + WHEEL ROTATING DIRECTION + SPEED_DATA + ESC_RECEIVE_LABEL + ESC_DATA
+WHEEL ROTATING DIRECTION: 0 -- forward, 1 -- backward
+SPEED_DATA:  containing SPEED_PIN_COUNT sets data, each data has two bytes
+	1st byte -- the integer part of speed in Hz
+	2nd byte -- the decimal part of speed in Hz
+ESC_RECEIVE_LABEL : 0 -- no data, non-zeor -- has data
+*/
+uint8_t send_data[4 + 4 + SPEED_PIN_COUNT*2 + 1 + sizeof(ESC_SensorTypeDef)];
+
+//record the pulse time for each pin
 uint32_t pulse[SPEED_PIN_COUNT][SPEED_BUFFER_SIZE];
 
-//const uint32_t acsr = ('A'<<24) | ('C'<<16) | ('S'<<8) | 'R';
-//uint8_t speed_send[4+sizeof(float)*SPEED_PIN_COUNT];
+//esc raw data
+uint8_t esc_receive[ESC_DATA_SIZE];
+ESC_SensorTypeDef esc_sensor;
+
+//an index label to indicate esc data received
+uint8_t esc_index=0;
+
+uint8_t rx[RX_BUFFER_SIZE];
+uint8_t rx_index = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
+static void MX_DMA_Init(void);
 static void MX_SPI1_Init(void);
 static void MX_USART1_UART_Init(void);
 static void MX_TIM1_Init(void);
 static void MX_USART2_UART_Init(void);
 /* USER CODE BEGIN PFP */
-//#ifdef __GNUC__
-//#define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
-//#else
-//#define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
-//#endif
-//
-//PUTCHAR_PROTOTYPE
-//{
-//  HAL_UART_Transmit(&huart2, (uint8_t *)&ch, 1, HAL_MAX_DELAY);
-//  return ch;
-//}
+
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+
+HAL_StatusTypeDef read_ble_data(uint8_t* data){
+	static uint8_t start_index = 0;
+	for(uint8_t i=start_index;i<start_index+ESC_DATA_SIZE;++i){
+		if(data[i]==0xFE && data[(i+1)%ESC_DATA_SIZE]==0x01){
+			start_index = i%ESC_DATA_SIZE;
+			break;
+		}
+	}
+
+	if(data[(2+start_index)%ESC_DATA_SIZE]!=0x00)return HAL_ERROR;
+	if(data[(3+start_index)%ESC_DATA_SIZE]!=0x03)return HAL_ERROR;
+	if(data[(4+start_index)%ESC_DATA_SIZE]!=0x30)return HAL_ERROR;
+	if(data[(5+start_index)%ESC_DATA_SIZE]!=0x5c)return HAL_ERROR;
+	if(data[(6+start_index)%ESC_DATA_SIZE]!=0x17)return HAL_ERROR;
+	if(data[(7+start_index)%ESC_DATA_SIZE]!=0x06)return HAL_ERROR;
+
+
+	esc_sensor.throttle = (int16_t)(data[(9+start_index)%ESC_DATA_SIZE]);
+	if(data[(11+start_index)%ESC_DATA_SIZE]!=0x01)esc_sensor.throttle=-esc_sensor.throttle;
+
+	esc_sensor.rpm = ((uint32_t)(data[(14+start_index)%ESC_DATA_SIZE] <<8) | (data[(13+start_index)%ESC_DATA_SIZE]))*10;
+	esc_sensor.voltage = (float)(data[(15+start_index)%ESC_DATA_SIZE])/10.0f;
+	esc_sensor.current = ((uint16_t)(data[(16+start_index)%ESC_DATA_SIZE] <<8) | (data[(17+start_index)%ESC_DATA_SIZE]))/10.0;
+	esc_sensor.temperature = (uint16_t)(data[(18+start_index)%ESC_DATA_SIZE] <<8) | (data[(19+start_index)%ESC_DATA_SIZE]);
+
+	esc_index = 0;
+	memcpy(&send_data[SPEED_PIN_COUNT*2+9],&esc_sensor,sizeof(ESC_SensorTypeDef));
+
+	return HAL_OK;
+}
+
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
+	if(huart->Instance==huart1.Instance){
+		read_ble_data(esc_receive);
+	}else if(huart->Instance==huart2.Instance){
+		if(rx[(rx_index+RX_BUFFER_SIZE)%RX_BUFFER_SIZE]=='t'
+				&& rx[(rx_index+RX_BUFFER_SIZE-1)%RX_BUFFER_SIZE]=='e'
+				&& rx[(rx_index+RX_BUFFER_SIZE-2)%RX_BUFFER_SIZE]=='s'
+				&& rx[(rx_index+RX_BUFFER_SIZE-3)%RX_BUFFER_SIZE]=='e'
+				&& rx[(rx_index+RX_BUFFER_SIZE-3)%RX_BUFFER_SIZE]=='r'){
+			NVIC_SystemReset();
+		}
+
+		rx_index=(rx_index+1)%RX_BUFFER_SIZE;
+		HAL_UART_Receive_DMA(&huart2, &rx[rx_index], 1);
+	}
+}
+
+void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart) {
+    if(huart->Instance==huart1.Instance) {
+    	HAL_UART_Receive_DMA(&huart1, esc_receive, ESC_DATA_SIZE);
+    }else if(huart->Instance==huart2.Instance){
+    	HAL_UART_Receive_DMA(&huart2, rx, 1);
+    }
+}
+
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 
 	uint8_t index;
@@ -105,48 +182,52 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 	case S01_Pin:
 		index=1;
 		break;
+		/*
 	case S02_Pin:
 		index = 2;
 		break;
 	case S03_Pin:
 		index = 3;
-		break;
+		break;*/
 	case S04_Pin:
-		index = 4;
+		index = 2;
 		break;
 	case S05_Pin:
-		index = 5;
+		index = 3;
 		break;
+		/*
 	case S06_Pin:
 		index = 6;
 		break;
 	case S07_Pin:
 		index = 7;
-		break;
+		break;*/
 	case S08_Pin:
-		index = 8;
+		index = 4;
 		break;
 	case S09_Pin:
-		index = 9;
+		index = 5;
 		break;
+		/*
 	case S10_Pin:
 		index = 10;
 		break;
 	case S11_Pin:
 		index = 11;
-		break;
+		break;*/
 	case S12_Pin:
-		index = 12;
+		index = 6;
 		break;
 	case S13_Pin:
-		index = 13;
+		index = 7;
 		break;
+		/*
 	case S14_Pin:
 		index = 14;
 		break;
 	case S15_Pin:
 		index = 15;
-		break;
+		break;*/
 	}
 	pulse[index][pulse_pointer[index]]=micros();
 	++pulse_pointer[index];
@@ -158,36 +239,47 @@ void calcVelocity(){
 
 	for(uint8_t i=0;i<SPEED_PIN_COUNT;++i){
 		if(increment_count[i]>=SPEED_MAX_INCREMENT){
-			speed_on_single_pin[2*i+4]=0;
-			speed_on_single_pin[2*i+1+4]=0;
+			send_data[2*i+8]=0;
+			send_data[2*i+9]=0;
 			continue;
 		}
 		uint32_t s=pulse[i][(pulse_pointer[i]+SPEED_BUFFER_SIZE-1)%SPEED_BUFFER_SIZE]-pulse[i][pulse_pointer[i]];
 		if(s==0){
-			speed_on_single_pin[2*i+4]=0;
-			speed_on_single_pin[2*i+1+4]=0;
+			send_data[2*i+8]=0;
+			send_data[2*i+9]=0;
 		}
 		else{
 			float speed = (SPEED_BUFFER_SIZE-1)*1000000.0/s;
 			uint8_t speed_int = (uint8_t)speed;
 			uint8_t speed_decimal = (uint8_t)((speed-speed_int)*100.0);
-			speed_on_single_pin[2*i+4]=speed_int;
-			speed_on_single_pin[2*i+1+4]=speed_decimal;
+			send_data[2*i+8]=speed_int;
+			send_data[2*i+9]=speed_decimal;
 		}
+	}
+
+	/*
+	 * need work
+	 * label the rotating direction
+	 */
+	for(uint8_t i=0;i<4;++i){
+		send_data[4+i]=0;
 	}
 }
 
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 	calcVelocity();
-//	HAL_UART_Transmit(&huart1, (uint8_t*)"hello", 5);
+	if(esc_index++>9){
+		send_data[SPEED_PIN_COUNT*2+8]=1;
+		esc_index=10;
+	}else{
+		send_data[SPEED_PIN_COUNT*2+8]=0;
+	}
+	HAL_UART_Transmit(&huart2, send_data, SPEED_PIN_COUNT*2+9+sizeof(ESC_SensorTypeDef),10);
 
-	//HAL_UART_Transmit(&huart2, (uint8_t*)(&acsr), sizeof(uint32_t)*SPEED_PIN_COUNT,10);
-	//memcpy(&(speed_send[4]),speed_on_single_pin,sizeof(float)*(SPEED_PIN_COUNT));
-	HAL_UART_Transmit(&huart2, speed_on_single_pin, SPEED_PIN_COUNT*2+4,10);
-
-//	__NOP();
 }
+
+
 
 /* USER CODE END 0 */
 
@@ -219,16 +311,17 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_SPI1_Init();
   MX_USART1_UART_Init();
   MX_TIM1_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
   //speed_on_single_pin[0]=acsr;
-  speed_on_single_pin[0]='A';
-  speed_on_single_pin[1]='C';
-  speed_on_single_pin[2]='S';
-  speed_on_single_pin[3]='R';
+  send_data[0]='A';
+  send_data[1]='C';
+  send_data[2]='S';
+  send_data[3]='R';
 
   HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_SET);
   HAL_GPIO_WritePin(LCD_LED_GPIO_Port, LCD_LED_Pin, GPIO_PIN_SET);
@@ -241,6 +334,13 @@ int main(void)
   //ILI9341_Draw_Text("FPS TEST, 40 loop 2 screens", 10, 10, BLACK, 2, WHITE);
   ILI9341_Write_Text("FPS TEST, 40 loop 2 screens", 10, 10, &Font_11x18, BLACK, WHITE);
   HAL_TIM_Base_Start_IT(&htim1);
+  HAL_UART_Receive_DMA(&huart1, esc_receive, ESC_DATA_SIZE);
+  HAL_UART_Receive_DMA(&huart2, rx, 1);
+
+  for(int i=0;i<10;++i){
+	  HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
+	  HAL_Delay(200);
+  }
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -456,6 +556,25 @@ static void MX_USART2_UART_Init(void)
 }
 
 /**
+  * Enable DMA controller clock
+  */
+static void MX_DMA_Init(void)
+{
+
+  /* DMA controller clock enable */
+  __HAL_RCC_DMA1_CLK_ENABLE();
+
+  /* DMA interrupt init */
+  /* DMA1_Channel5_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Channel5_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Channel5_IRQn);
+  /* DMA1_Channel6_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Channel6_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Channel6_IRQn);
+
+}
+
+/**
   * @brief GPIO Initialization Function
   * @param None
   * @retval None
@@ -495,19 +614,11 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : S00_Pin S02_Pin S10_Pin S14_Pin
-                           S04_Pin S06_Pin S08_Pin */
-  GPIO_InitStruct.Pin = S00_Pin|S02_Pin|S10_Pin|S14_Pin
-                          |S04_Pin|S06_Pin|S08_Pin;
+  /*Configure GPIO pins : S00_Pin S04_Pin S08_Pin S12_Pin
+                           S01_Pin S09_Pin S13_Pin */
+  GPIO_InitStruct.Pin = S00_Pin|S04_Pin|S08_Pin|S12_Pin
+                          |S01_Pin|S09_Pin|S13_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-
-  /*Configure GPIO pins : S01_Pin S11_Pin S13_Pin S15_Pin
-                           S03_Pin S05_Pin S07_Pin S09_Pin */
-  GPIO_InitStruct.Pin = S01_Pin|S11_Pin|S13_Pin|S15_Pin
-                          |S03_Pin|S05_Pin|S07_Pin|S09_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
@@ -518,11 +629,11 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(LEDB12_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : S12_Pin */
-  GPIO_InitStruct.Pin = S12_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  /*Configure GPIO pin : S05_Pin */
+  GPIO_InitStruct.Pin = S05_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(S12_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(S05_GPIO_Port, &GPIO_InitStruct);
 
   /* EXTI interrupt init*/
   HAL_NVIC_SetPriority(EXTI0_IRQn, 0, 0);
@@ -542,9 +653,6 @@ static void MX_GPIO_Init(void)
 
   HAL_NVIC_SetPriority(EXTI9_5_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
-
-  HAL_NVIC_SetPriority(EXTI15_10_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
 
 /* USER CODE BEGIN MX_GPIO_Init_2 */
 /* USER CODE END MX_GPIO_Init_2 */

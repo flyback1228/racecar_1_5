@@ -7,7 +7,9 @@ mpu/qspi_test
 mpu/racecar_h750_jy901_setup
 mpu/racecar_h743vb
 mpu/raccar_pcb_test
+mpu/esc_test
 mpu/speed_simulator
 mpu/usb_logic
 hobbywing_ezrun_esc_crack/Debug
 mpu/firmware/build*
+mpu/firmware/build-racecar_firmware-Desktop_Qt_6_6_0_GCC_64bit-Debug

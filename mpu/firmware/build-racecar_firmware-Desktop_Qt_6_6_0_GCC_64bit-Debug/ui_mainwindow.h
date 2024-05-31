@@ -124,6 +124,10 @@ public:
     QLabel *label_14;
     QLineEdit *ledRosFrequency;
     QSpacerItem *horizontalSpacer_14;
+    QHBoxLayout *horizontalLayout_22;
+    QLabel *label_16;
+    QLineEdit *ledSpeedDifferenceWarning;
+    QSpacerItem *horizontalSpacer_19;
     QHBoxLayout *horizontalLayout_17;
     QLabel *labelBrakeFrequency;
     QLineEdit *ledBrakeFrequency;
@@ -180,6 +184,7 @@ public:
     QSpacerItem *verticalSpacer;
     QPushButton *btnRead;
     QPushButton *btnWrite;
+    QPushButton *btnReset;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -627,7 +632,7 @@ public:
         horizontalLayout_16->setObjectName(QString::fromUtf8("horizontalLayout_16"));
         label_14 = new QLabel(tab_miscellaneous);
         label_14->setObjectName(QString::fromUtf8("label_14"));
-        label_14->setMinimumSize(QSize(200, 0));
+        label_14->setMinimumSize(QSize(220, 0));
         label_14->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
 
         horizontalLayout_16->addWidget(label_14);
@@ -644,11 +649,32 @@ public:
 
         verticalLayout_7->addLayout(horizontalLayout_16);
 
+        horizontalLayout_22 = new QHBoxLayout();
+        horizontalLayout_22->setObjectName(QString::fromUtf8("horizontalLayout_22"));
+        label_16 = new QLabel(tab_miscellaneous);
+        label_16->setObjectName(QString::fromUtf8("label_16"));
+        label_16->setMinimumSize(QSize(220, 0));
+        label_16->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
+
+        horizontalLayout_22->addWidget(label_16);
+
+        ledSpeedDifferenceWarning = new QLineEdit(tab_miscellaneous);
+        ledSpeedDifferenceWarning->setObjectName(QString::fromUtf8("ledSpeedDifferenceWarning"));
+
+        horizontalLayout_22->addWidget(ledSpeedDifferenceWarning);
+
+        horizontalSpacer_19 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_22->addItem(horizontalSpacer_19);
+
+
+        verticalLayout_7->addLayout(horizontalLayout_22);
+
         horizontalLayout_17 = new QHBoxLayout();
         horizontalLayout_17->setObjectName(QString::fromUtf8("horizontalLayout_17"));
         labelBrakeFrequency = new QLabel(tab_miscellaneous);
         labelBrakeFrequency->setObjectName(QString::fromUtf8("labelBrakeFrequency"));
-        labelBrakeFrequency->setMinimumSize(QSize(200, 0));
+        labelBrakeFrequency->setMinimumSize(QSize(220, 0));
         labelBrakeFrequency->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
 
         horizontalLayout_17->addWidget(labelBrakeFrequency);
@@ -919,6 +945,11 @@ public:
 
         verticalLayout->addWidget(btnWrite);
 
+        btnReset = new QPushButton(centralwidget);
+        btnReset->setObjectName(QString::fromUtf8("btnReset"));
+
+        verticalLayout->addWidget(btnReset);
+
 
         horizontalLayout->addLayout(verticalLayout);
 
@@ -967,11 +998,11 @@ public:
         ledEscFrequency->setText(QApplication::translate("MainWindow", "64.5", nullptr));
         groupBox->setTitle(QApplication::translate("MainWindow", "ESC", nullptr));
         label_6->setText(QApplication::translate("MainWindow", "offset", nullptr));
-        ledEscOffset->setText(QApplication::translate("MainWindow", "1500", nullptr));
+        ledEscOffset->setText(QApplication::translate("MainWindow", "0.097", nullptr));
         label_8->setText(QApplication::translate("MainWindow", "min duty cycle", nullptr));
-        ledEscMin->setText(QApplication::translate("MainWindow", "0", nullptr));
+        ledEscMin->setText(QApplication::translate("MainWindow", "0.072", nullptr));
         label_9->setText(QApplication::translate("MainWindow", "max duty cycle", nullptr));
-        ledEscMax->setText(QApplication::translate("MainWindow", "100", nullptr));
+        ledEscMax->setText(QApplication::translate("MainWindow", "0.124", nullptr));
         ratio_3->setText(QApplication::translate("MainWindow", "rpm to speed", nullptr));
         ledEscRate->setText(QApplication::translate("MainWindow", "1000", nullptr));
         label_15->setText(QApplication::translate("MainWindow", "ESC PWM Precision", nullptr));
@@ -991,6 +1022,8 @@ public:
         tabWidget->setTabText(tabWidget->indexOf(tab_esc), QApplication::translate("MainWindow", "ESC", nullptr));
         label_14->setText(QApplication::translate("MainWindow", "ROS Topic Frequency", nullptr));
         ledRosFrequency->setText(QApplication::translate("MainWindow", "20", nullptr));
+        label_16->setText(QApplication::translate("MainWindow", "Max Speed Sensor Difference", nullptr));
+        ledSpeedDifferenceWarning->setText(QApplication::translate("MainWindow", "1.0", nullptr));
         labelBrakeFrequency->setText(QApplication::translate("MainWindow", "Brake PWM Frequency", nullptr));
         ledBrakeFrequency->setText(QApplication::translate("MainWindow", "1000", nullptr));
         groupBox_3->setTitle(QApplication::translate("MainWindow", "Force Calibration", nullptr));
@@ -1035,6 +1068,10 @@ public:
         btnWrite->setToolTip(QApplication::translate("MainWindow", "write configurations to mpu", nullptr));
 #endif // QT_NO_TOOLTIP
         btnWrite->setText(QApplication::translate("MainWindow", "Write", nullptr));
+#ifndef QT_NO_TOOLTIP
+        btnReset->setToolTip(QApplication::translate("MainWindow", "Restart the control board", nullptr));
+#endif // QT_NO_TOOLTIP
+        btnReset->setText(QApplication::translate("MainWindow", "Reset", nullptr));
     } // retranslateUi
 
 };

@@ -18,6 +18,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->btnClose, &QPushButton::clicked, this, &MainWindow::btnClose_clicked);
     connect(ui->btnRead, &QPushButton::clicked, this, &MainWindow::btnRead_clicked);
     connect(ui->btnWrite, &QPushButton::clicked, this, &MainWindow::btnWrite_clicked);
+    connect(ui->btnReset, &QPushButton::clicked, this, &MainWindow::btnReset_clicked);
     connect(ui->btnLoad,&QPushButton::clicked, this, &MainWindow::btnLoad_clicked);
     connect(ui->btnSave,&QPushButton::clicked, this, &MainWindow::btnSave_clicked);
     connect(ui->btnSpeedStart,&QPushButton::clicked, this, &MainWindow::btnSpeedStart_clicked);
@@ -28,6 +29,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(timer_, &QTimer::timeout,this, &MainWindow::read_speed_timeout);
 
     ui->btnWrite->setEnabled(false);
+    ui->btnReset->setEnabled(false);
     ui->btnRead->setEnabled(false);
     ui->btnClose->setEnabled(false);
     ui->btnOpen->setEnabled(true);
@@ -42,9 +44,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->ledEscFrequency->setValidator( new QDoubleValidator(0, 100, 2, this) );
 
-    ui->ledEscMax->setValidator( new QDoubleValidator(0, 100, 2, this) );
-    ui->ledEscMin->setValidator( new QDoubleValidator(0, 100, 2, this) );
-    ui->ledEscOffset->setValidator(new QDoubleValidator(1,20000,2,this));
+    ui->ledEscMax->setValidator( new QDoubleValidator(0, 1, 3, this) );
+    ui->ledEscMin->setValidator( new QDoubleValidator(0, 1, 3, this) );
+    ui->ledEscOffset->setValidator(new QDoubleValidator(0,1,3,this));
     ui->ledEscPrecision->setValidator(new QIntValidator(0, 100,this));
     ui->ledServoPrecision->setValidator(new QIntValidator(0, 100,this));
 
@@ -72,6 +74,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->ledForceRatio7->setValidator( new QDoubleValidator(-100000, 100000, 2, this) );
 
     ui->ledRosFrequency->setValidator( new QDoubleValidator(0, 50, 2, this) );
+    ui->ledSpeedDifferenceWarning->setValidator( new QDoubleValidator(0, 10, 2, this) );
     ui->ledBrakeFrequency->setValidator( new QDoubleValidator(50, 2000, 2, this) );
 
     pamameter_model_ = new ParameterModel(this);
@@ -93,6 +96,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(ui->ledRosFrequency,&QLineEdit::textChanged,pamameter_model_,&ParameterModel::set_publish_frequency);
     connect(ui->ledBrakeFrequency,&QLineEdit::textChanged,pamameter_model_,&ParameterModel::set_brake_pwm_frequency);
+    connect(ui->ledSpeedDifferenceWarning,&QLineEdit::textChanged,pamameter_model_,&ParameterModel::set_speed_difference_warning);
 
     connect(ui->ledEscRate,&QLineEdit::textChanged,pamameter_model_,&ParameterModel::set_esc_rpm_to_speed_ratio);
     connect(ui->ledEscPrecision,&QLineEdit::textChanged,pamameter_model_,&ParameterModel::set_esc_precision);
@@ -165,6 +169,7 @@ void MainWindow::btnOpen_clicked()
     port_.setReadBufferSize(200);
     if (port_.open(QIODevice::ReadWrite)) {
         ui->btnWrite->setEnabled(true);
+        ui->btnReset->setEnabled(true);
         ui->btnRead->setEnabled(true);
         ui->btnClose->setEnabled(true);
         ui->btnOpen->setEnabled(false);
@@ -186,6 +191,7 @@ void MainWindow::btnClose_clicked()
     if(!port_.isOpen())return;
     port_.close();
     ui->btnWrite->setEnabled(false);
+    ui->btnReset->setEnabled(false);
     ui->btnRead->setEnabled(false);
     ui->btnClose->setEnabled(false);
     ui->btnOpen->setEnabled(true);
@@ -215,6 +221,12 @@ void MainWindow::btnWrite_clicked()
     QByteArray byte_array((char*)(&p),sizeof(ParameterTypeDef));
     port_.write(byte_array);
 
+}
+
+void MainWindow::btnReset_clicked(){
+    char header[] = {'r','e','s','e','t'};
+    QByteArray byte_array(header,5);
+    port_.write(byte_array);
 }
 
 void MainWindow::btnLoad_clicked()
@@ -404,7 +416,6 @@ void MainWindow::update_values(const ParameterTypeDef& parameters)
     ui->ledForceOffset6->setText(QString::number(parameters.force_offset[6]));
     ui->ledForceOffset7->setText(QString::number(parameters.force_offset[7]));
 
-
-
+    ui->ledSpeedDifferenceWarning->setText(QString::number(parameters.wheel_speed_difference_warning));
 }
 

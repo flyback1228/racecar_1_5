@@ -66,6 +66,7 @@ extern ADC_HandleTypeDef hadc1;
 #define huart_usb huart7
 #define huart_imu huart8
 
+
 ros::NodeHandle nh;
 
 //sensor data message published by ros
@@ -94,9 +95,10 @@ uint8_t esc_receive_indicator = 0;
 uint8_t f103_receive_indicator = 0;
 
 //speed data from STM32F103, the first four elements are "acsr"
-uint8_t speed_receive[2*SPEED_PIN_COUNT+4];
+uint8_t f103_receive[2*SPEED_PIN_COUNT+9+sizeof(ESC_SensorTypeDef)];
 //speed, represent by frequency
-uint8_t speed[2*SPEED_PIN_COUNT];
+//uint8_t speed[2*SPEED_PIN_COUNT];
+uint8_t f103_data[2*SPEED_PIN_COUNT+4+sizeof(ESC_SensorTypeDef)];
 
 //uint8_t pwm_generator_indicator,pre_pwm_generator_indicator;
 uint8_t is_frequency_set;
@@ -146,16 +148,16 @@ ParameterTypeDef parameters = {
 		.publish_frequency = 20,
 
 		.esc_rpm_to_speed_ratio = 100.0,
-		.esc_offset=0.125,
-		.esc_max = 0.15,
-		.esc_min = 0.1,
+		.esc_offset=0.096,
+		.esc_max = 0.124,
+		.esc_min = 0.072,
 
 		.esc_set_precision = 5,
-		.allow_reverse = 1,
+		.allow_reverse = 0,
 
 		.steering_esc_pwm_frequency = 64.5,
-		.steering_offset=0.125,
-		.steering_to_dutycycle_ratio=100.0,
+		.steering_offset=0.097,
+		.steering_to_dutycycle_ratio=653.8,
 		.steering_max = 17.0,
 		.steering_min = -17.0,
 
@@ -165,6 +167,8 @@ ParameterTypeDef parameters = {
 		.force_offset ={0.0,0.0,0.0,0.0,1.0,1.0,1.0,1.0},
 
 		.brake_pwm_frequency=100.0,
+
+		.wheel_speed_difference_warning = 1.0,
 
 		.tailer={'b','4','0','1'}
 };
@@ -204,7 +208,7 @@ HAL_StatusTypeDef read_ble_data(uint8_t* data){
 
 //read speed data from f103
 //the first data are "acsr", then the fifth is the integer part of speed1, and the sixth is the decimal part of speed1..
-HAL_StatusTypeDef read_speed_data(uint8_t* data){
+HAL_StatusTypeDef parse_f103_data(uint8_t* data){
 	uint8_t i;
 	for(i = 0;i<2*SPEED_PIN_COUNT;++i){
 		if(data[i]=='A' && data[i+1]=='C'&& data[i+2]=='S'&& data[i+3]=='R')break;
@@ -212,30 +216,61 @@ HAL_StatusTypeDef read_speed_data(uint8_t* data){
 	if(i==2*SPEED_PIN_COUNT)return HAL_ERROR;
 
 	if(i==0){
-		memcpy(speed,&data[4],2*SPEED_PIN_COUNT);
+		memcpy(f103_data,&data[4],2*SPEED_PIN_COUNT+5+sizeof(ESC_SensorTypeDef));
 	}else{
-		memcpy(speed,&data[i+4],2*SPEED_PIN_COUNT-i);
-		memcpy(&speed[2*SPEED_PIN_COUNT-i],data,i);
+		memcpy(f103_data,&data[i+4],2*SPEED_PIN_COUNT+5+sizeof(ESC_SensorTypeDef)-i);
+		memcpy(&f103_data[2*SPEED_PIN_COUNT+5+sizeof(ESC_SensorTypeDef)-i],data,i);
 	}
+
+	if(abs((int)f103_data[4]*100+f103_data[5]-((int)f103_data[6]*100+f103_data[7]))>parameters.wheel_speed_difference_warning*100){
+		error_code |= 0b10000000;
+	}else{
+		error_code &= 0b01111111;
+	}
+
+	if(abs((int)f103_data[8]*100+f103_data[9]-((int)f103_data[10]*100+f103_data[11]))>parameters.wheel_speed_difference_warning*100){
+		error_code |= 0b01000000;
+	}else{
+		error_code &= 0b10111111;
+	}
+
+	if(abs((int)f103_data[12]*100+f103_data[13]-((int)f103_data[14]*100+f103_data[15]))>parameters.wheel_speed_difference_warning*100){
+		error_code |= 0b00100000;
+	}else{
+		error_code &= 0b11011111;
+	}
+
+	if(abs((int)f103_data[16]*100+f103_data[17]-((int)f103_data[18]*100+f103_data[19]))>parameters.wheel_speed_difference_warning*100){
+		error_code |= 0b00010000;
+	}else{
+		error_code &= 0b11101111;
+	}
+
+	if(f103_data[20]){
+		error_code |= 0b00000001;
+	}else{
+		error_code &= 0b11111110;
+	}
+
 	f103_receive_indicator = 0;
 	return HAL_OK;
 }
 
 //ros structure required
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart){
-	if(huart==&huart4){
+	if(huart->Instance==huart_ros.Instance){
 		nh.getHardware()->flush();
 	}
 }
 
 //uart data receive callback
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
-	if(huart->Instance==huart4.Instance){
+	if(huart->Instance==huart_ros.Instance){
 		nh.getHardware()->reset_rbuf();
-	}else if(huart->Instance==huart_esc.Instance){
+	}/*else if(huart->Instance==huart_esc.Instance){
 		read_ble_data(esc_receive);
-	}else if(huart->Instance==huart_f103.Instance){
-		read_speed_data(speed_receive);
+	}*/else if(huart->Instance==huart_f103.Instance){
+		parse_f103_data(f103_receive);
 	}else if(huart->Instance==huart_imu.Instance){
 		if(jy901_data[0]==0x55 && jy901_data_length==11){
 			jy901.parseData(jy901_data);
@@ -259,7 +294,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
 
 //uart receive callback for cp2102
 void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size){
-	if (huart->Instance == UART7)
+	if (huart->Instance == huart_usb.Instance)
 	{
 		if(usb_buf[0]=='x' && usb_buf[1]=='i' && usb_buf[2]=='l' && usb_buf[3]=='i' && usb_buf[4]=='n'){
 			if(send_esc_speed)
@@ -280,38 +315,47 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size){
 
 		}else if(usb_buf[0]=='s' && usb_buf[1]=='p' && usb_buf[2]=='e' && usb_buf[3]=='e' && usb_buf[4]=='d'){
 			send_esc_speed=!send_esc_speed;
+		}else if(usb_buf[0]=='r' && usb_buf[1]=='e' && usb_buf[2]=='s' && usb_buf[3]=='e' && usb_buf[4]=='t'){
+			uint8_t reset[]={'r','e','s','e','t'};
+			HAL_UART_Transmit(&huart_f103, reset, 5, 41);
+			NVIC_SystemReset();
 		}
 		else{
 			printf("Receive Wrong Data\n");
 		}
 
-		HAL_UARTEx_ReceiveToIdle_DMA(&huart7, (uint8_t *) usb_buf, MAX_PARAMETER_LENGTH);
+		HAL_UARTEx_ReceiveToIdle_DMA(&huart_usb, (uint8_t *) usb_buf, MAX_PARAMETER_LENGTH);
 		__HAL_DMA_DISABLE_IT(&hdma_uart7_rx, DMA_IT_HT);
 	}
 }
 
 //error handle of uart
 void HAL_UART_ErrorCallback(UART_HandleTypeDef *UartHandle) {
-    if(UartHandle->Instance==huart_esc.Instance) {
+    /*if(UartHandle->Instance==huart_esc.Instance) {
     	HAL_UART_Receive_DMA(&huart_esc, esc_receive, ESC_DATA_SIZE);
-    }else if(UartHandle->Instance==huart_f103.Instance) {
-    	HAL_UART_Receive_DMA(&huart_f103, (uint8_t*)speed_receive, 2*SPEED_PIN_COUNT+1);
+    }else */if(UartHandle->Instance==huart_f103.Instance) {
+    	HAL_UART_Receive_DMA(&huart_f103, f103_receive, 2*SPEED_PIN_COUNT+9+sizeof(ESC_SensorTypeDef));
     }
     else if(UartHandle->Instance==huart_imu.Instance) {
 		HAL_UART_Receive_DMA(&huart_imu, (uint8_t*)jy901_data, 11);
-	}else if(UartHandle->Instance==UART7){
-		HAL_UARTEx_ReceiveToIdle_DMA(&huart7, (uint8_t *) usb_buf, MAX_PARAMETER_LENGTH);
+	}else if(UartHandle->Instance==huart_usb.Instance){
+		HAL_UARTEx_ReceiveToIdle_DMA(&huart_usb, (uint8_t *) usb_buf, MAX_PARAMETER_LENGTH);
 		__HAL_DMA_DISABLE_IT(&hdma_uart7_rx, DMA_IT_HT);
 	}
 }
 
 //pwm input capture callback
 void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim){
-
 	if(input_mode == INPUT_MODE_SOFTWARE)return;
-
 	uint32_t ic_freq;
 	if(htim->Instance==TIM5 && htim->Channel == HAL_TIM_ACTIVE_CHANNEL_1){
+		/*
+		if(input_mode == INPUT_MODE_SOFTWARE){
+			__HAL_TIM_SetCounter(htim,0);
+			HAL_TIM_IC_Start_IT(&htim5, TIM_CHANNEL_1);
+			HAL_TIM_IC_Start(&htim5, TIM_CHANNEL_2);
+			return;
+		}*/
 		ic_freq = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_1);
 		uint32_t servo_ic = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_2);
 		int32_t diff = servo_ic - pre_servo_ic;
@@ -325,7 +369,12 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim){
 		HAL_TIM_IC_Start(&htim5, TIM_CHANNEL_2);
 
 	}else if(htim->Instance==TIM15 && htim->Channel == HAL_TIM_ACTIVE_CHANNEL_1){
-
+		/*
+		if(input_mode == INPUT_MODE_SOFTWARE){
+			__HAL_TIM_SetCounter(htim,0);
+			HAL_TIM_IC_Start_IT(&htim15, TIM_CHANNEL_1);
+			HAL_TIM_IC_Start(&htim15, TIM_CHANNEL_2);
+		}*/
 		ic_freq = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_1);
 		uint32_t esc_ic = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_2);
 		int32_t diff = esc_ic - pre_esc_ic;
@@ -335,7 +384,6 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim){
 		}
 
 		__HAL_TIM_SetCounter(htim,0);
-
 		HAL_TIM_IC_Start_IT(&htim15, TIM_CHANNEL_1);
 		HAL_TIM_IC_Start(&htim15, TIM_CHANNEL_2);
 
@@ -354,11 +402,11 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 
 	//ros publish
 	if(htim->Instance==TIM16){
-		memcpy(&sensor_msg.data[0],speed,2*wheel_speed_size);
-		uint8_t index =2*wheel_speed_size;
+		memcpy(&sensor_msg.data[0],f103_data,2*wheel_speed_size+4);
+		uint8_t index =2*wheel_speed_size+4;
 		memcpy(&sensor_msg.data[index],force_raw,4*force_size);
 		index+=4*force_size;
-		memcpy(&sensor_msg.data[index],&esc_sensor, sizeof(esc_sensor));
+		memcpy(&sensor_msg.data[index],&f103_data[2*SPEED_PIN_COUNT+5], sizeof(esc_sensor));
 		index+=sizeof(esc_sensor);
 		memcpy(&sensor_msg.data[index],&jy901.JY901_data.acc,sizeof(jy901.JY901_data.acc));
 		index+=sizeof(jy901.JY901_data.acc);
@@ -373,14 +421,13 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 
 
 		if(send_esc_speed){
-			float value = sin(micros()/1000000.0/2)+1.0;
-			uint8_t v[5];
+			auto value = esc_sensor.rpm;
+			uint8_t v[7];
 			v[0]='s';
 			v[1]='p';
 			v[2]='d';
-			v[3]=uint8_t(value);
-			v[4]=uint8_t((value-v[3])*100);
-			HAL_UART_Transmit(&huart7, (uint8_t*)(v) , 5, 10);
+			memcpy(&v[3],(uint8_t*)&value,4);
+			HAL_UART_Transmit(&huart7, (uint8_t*)(v) , 7, 10);
 		}
 
 	}else if(htim->Instance==TIM6)//pid computation
@@ -414,7 +461,18 @@ void HAL_TIM_ErrorCallback(TIM_HandleTypeDef *htim){
 //set the duty cycle of the esc,
 //input: fake_duty_cycle, a virtual duty cycle range from -1.0~1.0, where minus represents reverse
 void set_esc_duty_cycle(float fake_duty_cycle){
-	float esc_duty_cycle = parameters.esc_offset + fake_duty_cycle * (parameters.esc_max-parameters.esc_min) / 2.0;
+	float esc_duty_cycle;
+	if(fake_duty_cycle>0){
+		esc_duty_cycle = parameters.esc_offset - fake_duty_cycle * (parameters.esc_offset-parameters.esc_min);
+	}else{
+		if(!parameters.allow_reverse){
+			esc_duty_cycle=parameters.esc_offset;
+		}
+		else {
+			esc_duty_cycle = parameters.esc_offset - fake_duty_cycle * (parameters.esc_max-parameters.esc_offset);
+		}
+	}
+
 	//convert duty cycle to pwm ccr
 	int32_t esc_ccr = esc_duty_cycle * esc_servo_arr;
 	if(abs(esc_ccr - pre_esc_ccr)>=parameters.esc_set_precision){
@@ -426,10 +484,12 @@ void set_esc_duty_cycle(float fake_duty_cycle){
 //set the duty cycle of the esc,
 //input: steering_angle, unit is degree
 void set_servo_duty_cycle(float steering_angle){
-	float servo_duty_cycle = parameters.steering_to_dutycycle_ratio*steering_angle + parameters.steering_offset;
+	steering_angle = MAX(steering_angle,parameters.steering_min);
+	steering_angle = MIN(steering_angle,parameters.steering_max);
+	float servo_duty_cycle = steering_angle/parameters.steering_to_dutycycle_ratio + parameters.steering_offset;
 
 	//convert duty cycle to pwm ccr
-	int32_t servo_ccr = servo_duty_cycle*esc_servo_arr;
+	int32_t servo_ccr = servo_duty_cycle * esc_servo_arr;
 	if(abs(servo_ccr - pre_servo_ccr)>=parameters.servo_set_precision){
 		pre_servo_ccr = servo_ccr;
 		__HAL_TIM_SET_COMPARE(&htim3,TIM_CHANNEL_1,servo_ccr);
@@ -480,8 +540,8 @@ void adc_setup(){
 }
 
 void uart_setup(){
-	HAL_UART_Receive_DMA(&huart_esc, esc_receive, ESC_DATA_SIZE);
-	HAL_UART_Receive_DMA(&huart_f103, (uint8_t*)speed_receive, 2*SPEED_PIN_COUNT+4);
+	//HAL_UART_Receive_DMA(&huart_esc, esc_receive, ESC_DATA_SIZE);
+	HAL_UART_Receive_DMA(&huart_f103, f103_receive, 2*SPEED_PIN_COUNT+9+sizeof(ESC_SensorTypeDef));
 	HAL_UART_Receive_DMA(&huart8, jy901_data, 11);
 
 	//huart7.RxXferSize=MAX_PARAMETER_LENGTH;
@@ -529,11 +589,7 @@ void timer_setup(){
 	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3,0);
 	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_4,0);
 
-	//pwm input capture for servo and esc
-	HAL_TIM_IC_Start_IT(&htim5, TIM_CHANNEL_1);
-	HAL_TIM_IC_Start(&htim5, TIM_CHANNEL_2);
-	HAL_TIM_IC_Start_IT(&htim15, TIM_CHANNEL_1);
-	HAL_TIM_IC_Start(&htim15, TIM_CHANNEL_2);
+
 
 	//start ros publish
 	//this timer should the last one to start.
@@ -557,7 +613,7 @@ void command_callback(const std_msgs::UInt8MultiArray& msg){
 	set_brake(&msg.data[2]);
 
 	//other commands are ignored if input mode is mannual
-	if(msg.data[0]){
+	if(msg.data[0] || input_mode == INPUT_MODE_CONTROLLER ){
 		return;
 	}
 
@@ -571,21 +627,22 @@ void command_callback(const std_msgs::UInt8MultiArray& msg){
 		set_esc_duty_cycle(dc/1000.0);
 	}
 
-	//data[8]: steering angle integer part
+	//data[8]: steering angle integer part (the first bit indicates the sign)
 	//data[9]: steering angle decimal part
-	float steering = msg.data[8] + msg.data[9]/100.0;
+	float steering = (msg.data[8] & 0b01111111) + msg.data[9]/100.0;
+	if(msg.data[8]>>7)steering=-steering;
 	set_servo_duty_cycle(steering);
 
 }
 
-ros::Subscriber<std_msgs::UInt8MultiArray> command_sub("Commands/stm32_cmd", &command_callback );
+ros::Subscriber<std_msgs::UInt8MultiArray> command_sub("/Command/stm32", &command_callback );
 
 void ros_setup(){
 
 	nh.initNode();
 	nh.subscribe(command_sub);
 
-	sensor_msg.data_length = 2*wheel_speed_size + 4*force_size + sizeof(esc_sensor) + sizeof(jy901.JY901_data.acc) + sizeof(jy901.JY901_data.gyro)+sizeof(jy901.JY901_data.angle)+1;
+	sensor_msg.data_length = 2*wheel_speed_size + 4 + 4*force_size + sizeof(esc_sensor) + sizeof(jy901.JY901_data.acc) + sizeof(jy901.JY901_data.gyro)+sizeof(jy901.JY901_data.angle)+1;
 	sensor_msg.data = new std_msgs::UInt8MultiArray::_data_type[sensor_msg.data_length];
 
 	ros_pub = new ros::Publisher("stm32_sensor", &sensor_msg);
@@ -654,6 +711,11 @@ void setup(void)
 	HAL_GPIO_WritePin(Manual_Output_GPIO_Port, Manual_Output_Pin, GPIO_PIN_RESET);
 	HAL_GPIO_WritePin(ONBOARD_LED_GPIO_Port, ONBOARD_LED_Pin, GPIO_PIN_SET);
 	HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, (GPIO_PinState)pid_mode);
+
+	for(int i=0;i<10;++i){
+		HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
+		HAL_Delay(200);
+	}
 }
 
 uint8_t loop_index = 0;
@@ -662,28 +724,42 @@ void loop(void)
 {
 	auto state = HAL_GPIO_ReadPin(Manual_Input_GPIO_Port, Manual_Input_Pin);
 
-	if(state==GPIO_PIN_SET){
+	if(state==GPIO_PIN_SET && input_mode == INPUT_MODE_SOFTWARE){
+		//pwm input capture for servo and esc
+		HAL_TIM_IC_Start_IT(&htim5, TIM_CHANNEL_1);
+		HAL_TIM_IC_Start(&htim5, TIM_CHANNEL_2);
+		HAL_TIM_IC_Start_IT(&htim15, TIM_CHANNEL_1);
+		HAL_TIM_IC_Start(&htim15, TIM_CHANNEL_2);
 		input_mode = INPUT_MODE_CONTROLLER;
-	}else if(state==GPIO_PIN_RESET){
+
+	}else if(state==GPIO_PIN_RESET && input_mode == INPUT_MODE_CONTROLLER){
+		HAL_TIM_IC_Stop_IT(&htim5, TIM_CHANNEL_1);
+		HAL_TIM_IC_Stop(&htim5, TIM_CHANNEL_2);
+		HAL_TIM_IC_Stop_IT(&htim15, TIM_CHANNEL_1);
+		HAL_TIM_IC_Stop(&htim15, TIM_CHANNEL_2);
+
 		input_mode = INPUT_MODE_SOFTWARE;
 	}
 	HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, state);
 
 	loop_index++;
 
-	if(esc_receive_indicator <=5 )esc_receive_indicator++;
-	if(f103_receive_indicator<=5)f103_receive_indicator++;
+	//if(esc_receive_indicator <=5 )esc_receive_indicator++;
+	//f103_receive_indicator++;
+	if(f103_receive_indicator++>10){
+		f103_receive_indicator=11;
+		error_code = error_code | 0b00000010;
+	}
+	else {
+		error_code = error_code & 0b00001100;
+	}
 
 	HAL_Delay(100);
 	if(loop_index==5){
 		HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
 		loop_index=0;
-
-		if(esc_receive_indicator>5)error_code = error_code | 0b00000001;
-		else error_code = error_code & 0b11111110;
-
-		if(f103_receive_indicator>5)error_code = error_code | 0b00000010;
-		else error_code = error_code & 0b11111101;
+		//if(esc_receive_indicator>5)error_code = error_code | 0b00000001;
+		//else error_code = error_code & 0b11111110;
 
 
 	}

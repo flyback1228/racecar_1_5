@@ -129,23 +129,17 @@ void ParameterModel::set_force_ratio7(const QString &text)
 
 void ParameterModel::set_esc_offset(const QString &text)
 {
-    bool ok;
-    auto v = text.toUInt(&ok);
-    if(ok)parameters_.esc_offset = (uint16_t)v;
+    parameters_.esc_offset = string_to_float(text);
 }
 
 void ParameterModel::set_esc_max(const QString &text)
 {
-    bool ok;
-    auto v = text.toUInt(&ok);
-    if(ok)parameters_.esc_max = (uint16_t)v;
+    parameters_.esc_max = string_to_float(text);
 }
 
 void ParameterModel::set_esc_min(const QString &text)
 {
-    bool ok;
-    auto v = text.toUInt(&ok);
-    if(ok)parameters_.esc_min = (uint16_t)v;
+    parameters_.esc_min = string_to_float(text);
 }
 
 void ParameterModel::set_esc_reverse(bool value)
@@ -172,6 +166,11 @@ void ParameterModel::set_brake_pwm_frequency(const QString &text)
     bool ok;
     auto v = text.toFloat(&ok);
     if(ok)parameters_.brake_pwm_frequency = v;
+}
+
+void ParameterModel::set_speed_difference_warning(const QString &text)
+{
+    parameters_.wheel_speed_difference_warning = string_to_float(text);
 }
 
 float ParameterModel::string_to_float(const QString &text)

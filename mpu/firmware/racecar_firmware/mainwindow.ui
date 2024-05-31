@@ -433,7 +433,7 @@
                   </size>
                  </property>
                  <property name="text">
-                  <string>1500</string>
+                  <string>0.097</string>
                  </property>
                 </widget>
                </item>
@@ -485,7 +485,7 @@
                   </size>
                  </property>
                  <property name="text">
-                  <string>0</string>
+                  <string>0.072</string>
                  </property>
                 </widget>
                </item>
@@ -537,7 +537,7 @@
                   </size>
                  </property>
                  <property name="text">
-                  <string>100</string>
+                  <string>0.124</string>
                  </property>
                 </widget>
                </item>
@@ -982,7 +982,7 @@
              <widget class="QLabel" name="label_14">
               <property name="minimumSize">
                <size>
-                <width>200</width>
+                <width>220</width>
                 <height>0</height>
                </size>
               </property>
@@ -1017,12 +1017,52 @@
            </layout>
           </item>
           <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_22">
+            <item>
+             <widget class="QLabel" name="label_16">
+              <property name="minimumSize">
+               <size>
+                <width>220</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Max Speed Sensor Difference</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="ledSpeedDifferenceWarning">
+              <property name="text">
+               <string>1.0</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_19">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item>
            <layout class="QHBoxLayout" name="horizontalLayout_17">
             <item>
              <widget class="QLabel" name="labelBrakeFrequency">
               <property name="minimumSize">
                <size>
-                <width>200</width>
+                <width>220</width>
                 <height>0</height>
                </size>
               </property>
@@ -1387,6 +1427,16 @@
         </property>
         <property name="text">
          <string>Write</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnReset">
+        <property name="toolTip">
+         <string>Restart the control board</string>
+        </property>
+        <property name="text">
+         <string>Reset</string>
         </property>
        </widget>
       </item>

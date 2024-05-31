@@ -70,6 +70,8 @@ typedef struct{
 	//brake parameters
 	float brake_pwm_frequency;
 
+	float wheel_speed_difference_warning;
+
 	//tailer for handshake,"b401"
 	char tailer[4];
 
@@ -93,7 +95,7 @@ typedef enum
 
 //
 #define ESC_DATA_SIZE 32
-#define SPEED_PIN_COUNT 16
+#define SPEED_PIN_COUNT 8
 
 //extern
 

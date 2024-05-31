@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_ParameterModel_t {
-    QByteArrayData data[41];
-    char stringdata0[662];
+    QByteArrayData data[42];
+    char stringdata0[691];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -71,7 +71,8 @@ QT_MOC_LITERAL(36, 570, 16), // "set_force_ratio4"
 QT_MOC_LITERAL(37, 587, 16), // "set_force_ratio5"
 QT_MOC_LITERAL(38, 604, 16), // "set_force_ratio6"
 QT_MOC_LITERAL(39, 621, 16), // "set_force_ratio7"
-QT_MOC_LITERAL(40, 638, 23) // "set_brake_pwm_frequency"
+QT_MOC_LITERAL(40, 638, 23), // "set_brake_pwm_frequency"
+QT_MOC_LITERAL(41, 662, 28) // "set_speed_difference_warning"
 
     },
     "ParameterModel\0parametersChanged\0\0"
@@ -91,7 +92,8 @@ QT_MOC_LITERAL(40, 638, 23) // "set_brake_pwm_frequency"
     "set_force_ratio2\0set_force_ratio3\0"
     "set_force_ratio4\0set_force_ratio5\0"
     "set_force_ratio6\0set_force_ratio7\0"
-    "set_brake_pwm_frequency"
+    "set_brake_pwm_frequency\0"
+    "set_speed_difference_warning"
 };
 #undef QT_MOC_LITERAL
 
@@ -101,51 +103,52 @@ static const uint qt_meta_data_ParameterModel[] = {
        8,       // revision
        0,       // classname
        0,    0, // classinfo
-      35,   14, // methods
-       1,  294, // properties
+      36,   14, // methods
+       1,  302, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
        1,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    1,  189,    2, 0x06 /* Public */,
+       1,    1,  194,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-       5,    1,  192,    2, 0x0a /* Public */,
-       7,    1,  195,    2, 0x0a /* Public */,
-       8,    1,  198,    2, 0x0a /* Public */,
-       9,    1,  201,    2, 0x0a /* Public */,
-      10,    1,  204,    2, 0x0a /* Public */,
-      11,    1,  207,    2, 0x0a /* Public */,
-      12,    1,  210,    2, 0x0a /* Public */,
-      13,    1,  213,    2, 0x0a /* Public */,
-      14,    1,  216,    2, 0x0a /* Public */,
-      15,    1,  219,    2, 0x0a /* Public */,
-      17,    1,  222,    2, 0x0a /* Public */,
-      18,    1,  225,    2, 0x0a /* Public */,
-      19,    1,  228,    2, 0x0a /* Public */,
-      20,    1,  231,    2, 0x0a /* Public */,
-      21,    1,  234,    2, 0x0a /* Public */,
-      22,    1,  237,    2, 0x0a /* Public */,
-      23,    1,  240,    2, 0x0a /* Public */,
-      24,    1,  243,    2, 0x0a /* Public */,
-      25,    1,  246,    2, 0x0a /* Public */,
-      26,    1,  249,    2, 0x0a /* Public */,
-      27,    1,  252,    2, 0x0a /* Public */,
-      28,    1,  255,    2, 0x0a /* Public */,
-      29,    1,  258,    2, 0x0a /* Public */,
-      30,    1,  261,    2, 0x0a /* Public */,
-      31,    1,  264,    2, 0x0a /* Public */,
-      32,    1,  267,    2, 0x0a /* Public */,
-      33,    1,  270,    2, 0x0a /* Public */,
-      34,    1,  273,    2, 0x0a /* Public */,
-      35,    1,  276,    2, 0x0a /* Public */,
-      36,    1,  279,    2, 0x0a /* Public */,
-      37,    1,  282,    2, 0x0a /* Public */,
-      38,    1,  285,    2, 0x0a /* Public */,
-      39,    1,  288,    2, 0x0a /* Public */,
-      40,    1,  291,    2, 0x0a /* Public */,
+       5,    1,  197,    2, 0x0a /* Public */,
+       7,    1,  200,    2, 0x0a /* Public */,
+       8,    1,  203,    2, 0x0a /* Public */,
+       9,    1,  206,    2, 0x0a /* Public */,
+      10,    1,  209,    2, 0x0a /* Public */,
+      11,    1,  212,    2, 0x0a /* Public */,
+      12,    1,  215,    2, 0x0a /* Public */,
+      13,    1,  218,    2, 0x0a /* Public */,
+      14,    1,  221,    2, 0x0a /* Public */,
+      15,    1,  224,    2, 0x0a /* Public */,
+      17,    1,  227,    2, 0x0a /* Public */,
+      18,    1,  230,    2, 0x0a /* Public */,
+      19,    1,  233,    2, 0x0a /* Public */,
+      20,    1,  236,    2, 0x0a /* Public */,
+      21,    1,  239,    2, 0x0a /* Public */,
+      22,    1,  242,    2, 0x0a /* Public */,
+      23,    1,  245,    2, 0x0a /* Public */,
+      24,    1,  248,    2, 0x0a /* Public */,
+      25,    1,  251,    2, 0x0a /* Public */,
+      26,    1,  254,    2, 0x0a /* Public */,
+      27,    1,  257,    2, 0x0a /* Public */,
+      28,    1,  260,    2, 0x0a /* Public */,
+      29,    1,  263,    2, 0x0a /* Public */,
+      30,    1,  266,    2, 0x0a /* Public */,
+      31,    1,  269,    2, 0x0a /* Public */,
+      32,    1,  272,    2, 0x0a /* Public */,
+      33,    1,  275,    2, 0x0a /* Public */,
+      34,    1,  278,    2, 0x0a /* Public */,
+      35,    1,  281,    2, 0x0a /* Public */,
+      36,    1,  284,    2, 0x0a /* Public */,
+      37,    1,  287,    2, 0x0a /* Public */,
+      38,    1,  290,    2, 0x0a /* Public */,
+      39,    1,  293,    2, 0x0a /* Public */,
+      40,    1,  296,    2, 0x0a /* Public */,
+      41,    1,  299,    2, 0x0a /* Public */,
 
  // signals: parameters
     QMetaType::Void, 0x80000000 | 3,    4,
@@ -161,6 +164,7 @@ static const uint qt_meta_data_ParameterModel[] = {
     QMetaType::Void, QMetaType::QString,    6,
     QMetaType::Void, QMetaType::QString,    6,
     QMetaType::Void, QMetaType::Bool,   16,
+    QMetaType::Void, QMetaType::QString,    6,
     QMetaType::Void, QMetaType::QString,    6,
     QMetaType::Void, QMetaType::QString,    6,
     QMetaType::Void, QMetaType::QString,    6,
@@ -236,6 +240,7 @@ void ParameterModel::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _
         case 32: _t->set_force_ratio6((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         case 33: _t->set_force_ratio7((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         case 34: _t->set_brake_pwm_frequency((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 35: _t->set_speed_difference_warning((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
@@ -317,13 +322,13 @@ int ParameterModel::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 35)
+        if (_id < 36)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 35;
+        _id -= 36;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 35)
+        if (_id < 36)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 35;
+        _id -= 36;
     }
 #ifndef QT_NO_PROPERTIES
     else if (_c == QMetaObject::ReadProperty || _c == QMetaObject::WriteProperty

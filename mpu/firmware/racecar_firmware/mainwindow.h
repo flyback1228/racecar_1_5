@@ -37,6 +37,7 @@ private:
     void btnWrite_clicked();
     void btnLoad_clicked();
     void btnSave_clicked();
+    void btnReset_clicked();
     void btnSpeedStart_clicked();
     void btnSpeedStop_clicked();
     void read_data();

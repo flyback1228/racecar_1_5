@@ -66,6 +66,7 @@ public slots:
     void set_force_ratio7(const QString &text);
 
     void set_brake_pwm_frequency(const QString &text);
+    void set_speed_difference_warning(const QString &text);
 
 
 
