@@ -342,16 +342,19 @@ void MainWindow::read_timeout()
 void MainWindow::read_speed_timeout()
 {
     if(!begin_reading_speed_)return;
-    if(speed_data.size()<5)return;
-    while(speed_data.size()>=5 && speed_data[0]!='s' && speed_data[1]!='p' && speed_data[2]!='d')
+    if(speed_data.size()<7)return;
+    while(speed_data.size()>=7 && speed_data[0]!='s' && speed_data[1]!='p' && speed_data[2]!='d')
         speed_data.remove(0,1);
 
-    float speed=0;
+    uint32_t speed=0;
     int i=0;
-    while(speed_data.size()>=5){
-        speed = speed_data[3]+speed_data[4]/100.0;
+    while(speed_data.size()>=7){
+        uint32_t s;
+        memcpy(&s,&(speed_data.data()[3]),4);
+        speed+=s;
+        //speed = speed_data[3]<<24 + speed_data[4]<<
         i++;
-        speed_data.remove(0,5);
+        speed_data.remove(0,7);
     }
     if(i==0)return;
     speed/=i;
@@ -369,7 +372,6 @@ void MainWindow::read_speed_timeout()
     auto t = QDateTime::currentDateTime();
     series_->append(t.toMSecsSinceEpoch(), speed);
     xAxis_->setMax(t);
-
 }
 
 void MainWindow::update_values(const ParameterTypeDef& parameters)

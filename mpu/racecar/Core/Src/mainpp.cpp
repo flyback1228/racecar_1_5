@@ -147,7 +147,7 @@ ParameterTypeDef parameters = {
 
 		.publish_frequency = 20,
 
-		.esc_rpm_to_speed_ratio = 100.0,
+		.esc_rpm_to_speed_ratio = 1800.0,
 		.esc_offset=0.096,
 		.esc_max = 0.124,
 		.esc_min = 0.072,
@@ -347,7 +347,7 @@ void HAL_UART_ErrorCallback(UART_HandleTypeDef *UartHandle) {
 //pwm input capture callback
 void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim){
 	if(input_mode == INPUT_MODE_SOFTWARE)return;
-	uint32_t ic_freq;
+	//uint32_t ic_freq;
 	if(htim->Instance==TIM5 && htim->Channel == HAL_TIM_ACTIVE_CHANNEL_1){
 		/*
 		if(input_mode == INPUT_MODE_SOFTWARE){
@@ -356,7 +356,7 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim){
 			HAL_TIM_IC_Start(&htim5, TIM_CHANNEL_2);
 			return;
 		}*/
-		ic_freq = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_1);
+		//ic_freq = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_1);
 		uint32_t servo_ic = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_2);
 		int32_t diff = servo_ic - pre_servo_ic;
 		if(abs(diff) > 2){
@@ -375,7 +375,7 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim){
 			HAL_TIM_IC_Start_IT(&htim15, TIM_CHANNEL_1);
 			HAL_TIM_IC_Start(&htim15, TIM_CHANNEL_2);
 		}*/
-		ic_freq = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_1);
+		//ic_freq = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_1);
 		uint32_t esc_ic = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_2);
 		int32_t diff = esc_ic - pre_esc_ic;
 		if(abs(diff) >2){
@@ -388,11 +388,12 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim){
 		HAL_TIM_IC_Start(&htim15, TIM_CHANNEL_2);
 
 	}
+	/*
 	int32_t diff = ic_freq-esc_servo_arr;
 	if(esc_servo_arr<1000 || abs(diff)>50){
 		esc_servo_arr=ic_freq;
 		__HAL_TIM_SET_AUTORELOAD(&htim3,ic_freq);
-	}
+	}*/
 
 
 }
@@ -748,10 +749,10 @@ void loop(void)
 	//f103_receive_indicator++;
 	if(f103_receive_indicator++>10){
 		f103_receive_indicator=11;
-		error_code = error_code | 0b00000010;
+		error_code = error_code | 0b00000011;
 	}
 	else {
-		error_code = error_code & 0b00001100;
+		error_code = error_code & 0b11111101;
 	}
 
 	HAL_Delay(100);

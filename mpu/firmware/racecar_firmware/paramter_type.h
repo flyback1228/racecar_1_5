@@ -20,7 +20,7 @@ struct ParameterTypeDef{
 
     uint8_t publish_frequency=20;
 
-    float esc_rpm_to_speed_ratio=1000;
+    float esc_rpm_to_speed_ratio=1800;
     float esc_offset=0.097;
     float esc_max=0.109;
     float esc_min=0.081;

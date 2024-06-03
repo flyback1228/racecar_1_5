@@ -53,7 +53,7 @@ private:
     QDateTimeAxis* xAxis_;
     QValueAxis* yAxis_;
     float max_y_=0.0f, min_y_=0.0f;
-    QVector<float> speed_vector;
+    QVector<uint32_t> speed_vector;
 
 };
 #endif // MAINWINDOW_H
