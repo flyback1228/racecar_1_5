@@ -1,9 +1,22 @@
 #include "parametermodel.h"
 
-ParameterModel::ParameterModel(QObject *parent)
-    : QObject{parent}
-{
+#include <QFile>
 
+ParameterModel::ParameterModel(QObject *parent)
+    : QObject{parent},timer(new QTimer(this)),save_label(false)
+{
+    timer = new QTimer(this);
+    connect(timer, &QTimer::timeout, this, &ParameterModel::save);
+    timer->start(5000);
+
+    if(QFile::exists("default.rcc")){
+        QFile file("default.rcc");
+        if(!file.open(QIODevice::ReadOnly))
+            return;
+        QDataStream load(&file);
+        load >> parameters_;
+        emit parametersChanged(parameters_);
+    }
 }
 
 void ParameterModel::set_kp(const QString &text)
@@ -158,7 +171,10 @@ void ParameterModel::set_servo_precision(const QString &text)
 {
     bool ok;
     auto v = text.toUInt(&ok);
-    if(ok)parameters_.servo_set_precision = (uint8_t)v;
+    if(ok){
+        parameters_.servo_set_precision = (uint8_t)v;
+        //save_label = true;
+    }
 }
 
 void ParameterModel::set_brake_pwm_frequency(const QString &text)
@@ -173,11 +189,32 @@ void ParameterModel::set_speed_difference_warning(const QString &text)
     parameters_.wheel_speed_difference_warning = string_to_float(text);
 }
 
+void ParameterModel::save()
+{
+    if(save_label){
+        //auto filter = tr("Config Files (*.rcc);;files (*)");
+        //auto fileName = QFileDialog::getSaveFileName(this,
+        //                                             tr("Save Config File"), file_path_, filter, &filter );
+        //file_path_ = QFileInfo(fileName).path();
+
+        QFile file("default.rcc");
+        if(!file.open(QIODevice::WriteOnly))
+            return;
+        QDataStream save(&file);
+        save << parameters_;
+        file.close();
+        save_label = false;
+    }
+}
+
 float ParameterModel::string_to_float(const QString &text)
 {
     bool ok;
     auto v = text.toFloat(&ok);
-    if(ok)return v;
+    if(ok){
+        save_label = true;
+        return v;
+    }
     return 0.0f;
 }
 
@@ -185,7 +222,10 @@ uint8_t ParameterModel::string_to_uint8(const QString &text)
 {
     bool ok;
     auto v = text.toUInt(&ok);
-    if(ok)return (uint8_t)v;
+    if(ok){
+        save_label = true;
+        return (uint8_t)v;
+    }
     else return 0;
 }
 

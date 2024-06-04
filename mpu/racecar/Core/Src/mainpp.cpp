@@ -350,6 +350,9 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim){
 	//uint32_t ic_freq;
 	if(htim->Instance==TIM5 && htim->Channel == HAL_TIM_ACTIVE_CHANNEL_1){
 		/*
+		 * fixed the pwm frequency
+		 */
+		/*
 		if(input_mode == INPUT_MODE_SOFTWARE){
 			__HAL_TIM_SetCounter(htim,0);
 			HAL_TIM_IC_Start_IT(&htim5, TIM_CHANNEL_1);
@@ -369,6 +372,9 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim){
 		HAL_TIM_IC_Start(&htim5, TIM_CHANNEL_2);
 
 	}else if(htim->Instance==TIM15 && htim->Channel == HAL_TIM_ACTIVE_CHANNEL_1){
+		/*
+		 * fixed the pwm frequency
+		 */
 		/*
 		if(input_mode == INPUT_MODE_SOFTWARE){
 			__HAL_TIM_SetCounter(htim,0);
@@ -408,6 +414,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 		memcpy(&sensor_msg.data[index],force_raw,4*force_size);
 		index+=4*force_size;
 		memcpy(&sensor_msg.data[index],&f103_data[2*SPEED_PIN_COUNT+5], sizeof(esc_sensor));
+		memcpy(&esc_sensor,&f103_data[2*SPEED_PIN_COUNT+5], sizeof(esc_sensor));
 		index+=sizeof(esc_sensor);
 		memcpy(&sensor_msg.data[index],&jy901.JY901_data.acc,sizeof(jy901.JY901_data.acc));
 		index+=sizeof(jy901.JY901_data.acc);
@@ -427,13 +434,24 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 			v[0]='s';
 			v[1]='p';
 			v[2]='d';
-			memcpy(&v[3],(uint8_t*)&value,4);
-			HAL_UART_Transmit(&huart7, (uint8_t*)(v) , 7, 10);
+			memcpy(&v[3],(uint8_t*)&esc_sensor.rpm,4);
+			/*v[3]=(uint8_t)value>>24;
+			v[4]=(uint8_t)(value>>16 & 0x000F);
+			v[5] = (uint8_t)(value>>8 & 0x000F);
+			v[6] = (uint8_t)(value & 0x000F);*/
+			HAL_UART_Transmit(&huart7, v , 7, 10);
 		}
 
 	}else if(htim->Instance==TIM6)//pid computation
 	{
-		if(input_mode == INPUT_MODE_CONTROLLER || pid_mode == PID_MODE_MANUAL || (error_code & 0x01))return;
+		//not pid mode
+		if(input_mode == INPUT_MODE_CONTROLLER || pid_mode == PID_MODE_MANUAL)
+			return;
+		// no esc signal
+		if(error_code & 0x01){
+			set_esc_duty_cycle(0.0);
+			return;
+		}
 		pid_ptr->compute();
 		set_esc_duty_cycle(pid_esc_duty_cycle_output);
 	}

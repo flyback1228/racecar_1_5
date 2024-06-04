@@ -36,24 +36,24 @@ MainWindow::MainWindow(QWidget *parent)
     ui->cmbPort->setEnabled(true);
     ui->statusbar->showMessage(tr("Select A Serial Port and Open"));
 
-    ui->ledKp->setValidator( new QDoubleValidator(-100000, 100000, 2, this) );
-    ui->ledKi->setValidator( new QDoubleValidator(-100000, 100000, 2, this) );
-    ui->ledKd->setValidator( new QDoubleValidator(-100000, 100000, 2, this) );
+    ui->ledKp->setValidator( new QDoubleValidator(-100000, 100000, 5, this) );
+    ui->ledKi->setValidator( new QDoubleValidator(-100000, 100000, 5, this) );
+    ui->ledKd->setValidator( new QDoubleValidator(-100000, 100000, 5, this) );
     ui->ledPIDFrequency->setValidator(new QIntValidator(1,100,this));
 
 
     ui->ledEscFrequency->setValidator( new QDoubleValidator(0, 100, 2, this) );
 
-    ui->ledEscMax->setValidator( new QDoubleValidator(0, 1, 3, this) );
-    ui->ledEscMin->setValidator( new QDoubleValidator(0, 1, 3, this) );
-    ui->ledEscOffset->setValidator(new QDoubleValidator(0,1,3,this));
+    ui->ledEscMax->setValidator( new QDoubleValidator(0, 1, 4, this) );
+    ui->ledEscMin->setValidator( new QDoubleValidator(0, 1, 4, this) );
+    ui->ledEscOffset->setValidator(new QDoubleValidator(0,1,4,this));
     ui->ledEscPrecision->setValidator(new QIntValidator(0, 100,this));
     ui->ledServoPrecision->setValidator(new QIntValidator(0, 100,this));
 
-    ui->ledSteeringRate->setValidator( new QDoubleValidator(0, 10000, 2, this) );
-    ui->ledSteeringMax->setValidator( new QDoubleValidator(0, 90,2,this) );
-    ui->ledSteeringMin->setValidator( new QDoubleValidator(-90, 0,2, this) );
-    ui->ledSteeringOffset->setValidator(new QDoubleValidator(1,20000,2,this));
+    ui->ledSteeringRate->setValidator( new QDoubleValidator(0, 10000, 4, this) );
+    ui->ledSteeringMax->setValidator( new QDoubleValidator(0, 90,4,this) );
+    ui->ledSteeringMin->setValidator( new QDoubleValidator(-90, 0,4, this) );
+    ui->ledSteeringOffset->setValidator(new QDoubleValidator(1,20000,4,this));
 
     ui->ledForceOffset0->setValidator( new QDoubleValidator(-100000, 100000, 2, this) );
     ui->ledForceOffset1->setValidator( new QDoubleValidator(-100000, 100000, 2, this) );

@@ -2,6 +2,7 @@
 #define PARAMETERMODEL_H
 
 #include <QObject>
+#include <qtimer.h>
 #include "paramter_type.h"
 
 class ParameterModel : public QObject
@@ -68,7 +69,7 @@ public slots:
     void set_brake_pwm_frequency(const QString &text);
     void set_speed_difference_warning(const QString &text);
 
-
+    void save();
 
 
 private:
@@ -76,6 +77,8 @@ private:
     float string_to_float(const QString &text);
     uint8_t string_to_uint8(const QString &text);
 
+    QTimer *timer;
+    bool save_label;
 
 signals:
     void parametersChanged(const ParameterTypeDef& parameters);
