@@ -34,15 +34,22 @@ typedef struct{
 	//firmware version
 	uint8_t version;
 	uint8_t subversion;
+	uint8_t pid_frequency;
+	uint8_t publish_frequency;
+
+	uint8_t esc_set_precision;
+	uint8_t allow_reverse; //a bool
+	uint8_t servo_set_precision;
+	uint8_t upload_speed;
 
 	//pid parameters
 	float kp;
 	float ki;
 	float kd;
-	uint8_t pid_frequency;
+
 
 	//ros parameters
-	uint8_t publish_frequency;
+
 
 	//esc parameters
 	float esc_rpm_to_speed_ratio;
@@ -50,8 +57,7 @@ typedef struct{
 	float esc_max;
 	float esc_min;
 
-	uint8_t esc_set_precision;
-	uint8_t allow_reverse; //a bool
+
 
 
 	//steering servo parameters
@@ -61,7 +67,7 @@ typedef struct{
 	float steering_max;
 	float steering_min;
 
-	uint8_t servo_set_precision;
+
 
 	//force parameters
 	float force_ratio[8];
@@ -72,10 +78,25 @@ typedef struct{
 
 	float wheel_speed_difference_warning;
 
+
+
 	//tailer for handshake,"b401"
 	char tailer[4];
 
 } ParameterTypeDef;
+
+
+typedef struct{
+	//header for handshake,"acsr"
+	char header[4];
+
+	float current_speed;
+	float setpoint;
+	float output;
+
+	char tailer[4];
+
+} SpeedTypeDef;
 
 
 //pid mode

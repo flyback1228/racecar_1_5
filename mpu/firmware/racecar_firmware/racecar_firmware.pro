@@ -16,7 +16,8 @@ SOURCES += \
 HEADERS += \
     mainwindow.h \
     parametermodel.h \
-    paramter_type.h
+    paramter_type.h \
+    speed_type.h
 
 FORMS += \
     mainwindow.ui

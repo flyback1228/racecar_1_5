@@ -156,7 +156,8 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
 		../racecar_firmware/racecar_firmware.pro ../racecar_firmware/mainwindow.h \
 		../racecar_firmware/parametermodel.h \
-		../racecar_firmware/paramter_type.h ../racecar_firmware/main.cpp \
+		../racecar_firmware/paramter_type.h \
+		../racecar_firmware/speed_type.h ../racecar_firmware/main.cpp \
 		../racecar_firmware/mainwindow.cpp \
 		../racecar_firmware/parametermodel.cpp
 QMAKE_TARGET  = racecar_firmware
@@ -374,7 +375,7 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../racecar_firmware/mainwindow.h ../racecar_firmware/parametermodel.h ../racecar_firmware/paramter_type.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../racecar_firmware/mainwindow.h ../racecar_firmware/parametermodel.h ../racecar_firmware/paramter_type.h ../racecar_firmware/speed_type.h $(DISTDIR)/
 	$(COPY_FILE) --parents ../racecar_firmware/main.cpp ../racecar_firmware/mainwindow.cpp ../racecar_firmware/parametermodel.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../racecar_firmware/mainwindow.ui $(DISTDIR)/
 
@@ -454,7 +455,8 @@ main.o: ../racecar_firmware/main.cpp ../racecar_firmware/mainwindow.h \
 mainwindow.o: ../racecar_firmware/mainwindow.cpp ../racecar_firmware/mainwindow.h \
 		../racecar_firmware/parametermodel.h \
 		../racecar_firmware/paramter_type.h \
-		ui_mainwindow.h
+		ui_mainwindow.h \
+		../racecar_firmware/speed_type.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../racecar_firmware/mainwindow.cpp
 
 parametermodel.o: ../racecar_firmware/parametermodel.cpp ../racecar_firmware/parametermodel.h \

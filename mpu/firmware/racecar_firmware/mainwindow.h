@@ -8,6 +8,7 @@
 #include <QtCharts>
 #include "parametermodel.h"
 
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -40,20 +41,27 @@ private:
     void btnReset_clicked();
     void btnSpeedStart_clicked();
     void btnSpeedStop_clicked();
+    void btnExportPlot_clicked();
+    void btnExportData_clicked();
     void read_data();
     void update_values(const ParameterTypeDef& parameters);
     void show_message(QString msg);
     void read_timeout();
     void read_speed_timeout();
-    bool begin_reading_parameter_ = false;
-    bool begin_reading_speed_ = false;
+    //bool begin_reading_parameter_ = false;
+    //bool begin_reading_speed_ = false;
     QString file_path_;
 
-    QLineSeries* series_;
+    QLineSeries* speed_series_;
+    QLineSeries* setpoint_series_;
     QDateTimeAxis* xAxis_;
     QValueAxis* yAxis_;
     float max_y_=0.0f, min_y_=0.0f;
-    QVector<uint32_t> speed_vector;
+    QVector<float> speed_vector;
+    QVector<float> setpoint_vector;
+    QVector<float> output_vector;
+
+    bool plot_ = false;
 
 };
 #endif // MAINWINDOW_H

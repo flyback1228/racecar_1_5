@@ -134,35 +134,39 @@ public:
     QSpacerItem *horizontalSpacer_15;
     QGroupBox *groupBox_3;
     QGridLayout *gridLayout;
-    QLabel *label_25;
-    QLineEdit *ledForceOffset6;
-    QLineEdit *ledForceOffset1;
-    QLabel *label_38;
-    QLineEdit *ledForceRatio5;
-    QSpacerItem *horizontalSpacer_18;
-    QLabel *label_19;
-    QLabel *label_39;
-    QLineEdit *ledForceRatio4;
-    QLabel *label_36;
     QLabel *label_22;
-    QLineEdit *ledForceRatio1;
-    QLineEdit *ledForceRatio7;
-    QLabel *label_41;
-    QLineEdit *ledForceOffset2;
-    QLabel *label_24;
-    QLineEdit *ledForceRatio6;
-    QLabel *label_40;
-    QLineEdit *ledForceRatio0;
-    QLineEdit *ledForceRatio2;
-    QLineEdit *ledForceRatio3;
-    QLineEdit *ledForceOffset4;
-    QLabel *label_18;
-    QLabel *label_20;
     QLineEdit *ledForceOffset0;
+    QLineEdit *ledForceRatio4;
+    QSpacerItem *horizontalSpacer_18;
+    QLabel *label_18;
+    QLineEdit *ledForceRatio7;
+    QLabel *label_39;
+    QLabel *label_38;
+    QLabel *label_24;
     QLabel *label_37;
+    QLabel *label_19;
     QLineEdit *ledForceOffset3;
-    QLineEdit *ledForceOffset5;
+    QLineEdit *ledForceRatio1;
+    QLineEdit *ledForceOffset4;
+    QLineEdit *ledForceRatio2;
+    QLineEdit *ledForceOffset2;
     QLineEdit *ledForceOffset7;
+    QLineEdit *ledForceOffset6;
+    QLabel *label_20;
+    QLineEdit *ledForceRatio6;
+    QLineEdit *ledForceRatio5;
+    QLabel *label_36;
+    QLineEdit *ledForceOffset1;
+    QLabel *label_25;
+    QLabel *label_41;
+    QLineEdit *ledForceRatio0;
+    QLineEdit *ledForceOffset5;
+    QLabel *label_40;
+    QLineEdit *ledForceRatio3;
+    QHBoxLayout *horizontalLayout_23;
+    QLabel *label_17;
+    QCheckBox *ccbSpeedUpload;
+    QSpacerItem *horizontalSpacer_22;
     QSpacerItem *verticalSpacer_5;
     QWidget *tab_speed;
     QHBoxLayout *horizonLayout_8;
@@ -171,6 +175,8 @@ public:
     QPushButton *btnSpeedStart;
     QPushButton *btnSpeedStop;
     QSpacerItem *verticalSpacer_7;
+    QPushButton *btnExportPlot;
+    QPushButton *btnExportData;
     QPlainTextEdit *pteMessage;
     QVBoxLayout *verticalLayout;
     QHBoxLayout *horizontalLayout_2;
@@ -696,153 +702,174 @@ public:
         gridLayout = new QGridLayout(groupBox_3);
         gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
         gridLayout->setSizeConstraint(QLayout::SetDefaultConstraint);
-        label_25 = new QLabel(groupBox_3);
-        label_25->setObjectName(QString::fromUtf8("label_25"));
+        label_22 = new QLabel(groupBox_3);
+        label_22->setObjectName(QString::fromUtf8("label_22"));
 
-        gridLayout->addWidget(label_25, 2, 3, 1, 1);
+        gridLayout->addWidget(label_22, 5, 0, 1, 1);
 
-        ledForceOffset6 = new QLineEdit(groupBox_3);
-        ledForceOffset6->setObjectName(QString::fromUtf8("ledForceOffset6"));
+        ledForceOffset0 = new QLineEdit(groupBox_3);
+        ledForceOffset0->setObjectName(QString::fromUtf8("ledForceOffset0"));
 
-        gridLayout->addWidget(ledForceOffset6, 4, 2, 1, 1);
-
-        ledForceOffset1 = new QLineEdit(groupBox_3);
-        ledForceOffset1->setObjectName(QString::fromUtf8("ledForceOffset1"));
-
-        gridLayout->addWidget(ledForceOffset1, 1, 5, 1, 1);
-
-        label_38 = new QLabel(groupBox_3);
-        label_38->setObjectName(QString::fromUtf8("label_38"));
-
-        gridLayout->addWidget(label_38, 0, 1, 1, 1);
-
-        ledForceRatio5 = new QLineEdit(groupBox_3);
-        ledForceRatio5->setObjectName(QString::fromUtf8("ledForceRatio5"));
-
-        gridLayout->addWidget(ledForceRatio5, 3, 4, 1, 1);
-
-        horizontalSpacer_18 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        gridLayout->addItem(horizontalSpacer_18, 1, 6, 1, 1);
-
-        label_19 = new QLabel(groupBox_3);
-        label_19->setObjectName(QString::fromUtf8("label_19"));
-
-        gridLayout->addWidget(label_19, 2, 0, 1, 1);
-
-        label_39 = new QLabel(groupBox_3);
-        label_39->setObjectName(QString::fromUtf8("label_39"));
-
-        gridLayout->addWidget(label_39, 0, 5, 1, 1);
+        gridLayout->addWidget(ledForceOffset0, 2, 2, 1, 1);
 
         ledForceRatio4 = new QLineEdit(groupBox_3);
         ledForceRatio4->setObjectName(QString::fromUtf8("ledForceRatio4"));
 
-        gridLayout->addWidget(ledForceRatio4, 3, 1, 1, 1);
+        gridLayout->addWidget(ledForceRatio4, 4, 1, 1, 1);
 
-        label_36 = new QLabel(groupBox_3);
-        label_36->setObjectName(QString::fromUtf8("label_36"));
+        horizontalSpacer_18 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
-        gridLayout->addWidget(label_36, 0, 4, 1, 1);
+        gridLayout->addItem(horizontalSpacer_18, 2, 6, 1, 1);
 
-        label_22 = new QLabel(groupBox_3);
-        label_22->setObjectName(QString::fromUtf8("label_22"));
+        label_18 = new QLabel(groupBox_3);
+        label_18->setObjectName(QString::fromUtf8("label_18"));
 
-        gridLayout->addWidget(label_22, 4, 0, 1, 1);
-
-        ledForceRatio1 = new QLineEdit(groupBox_3);
-        ledForceRatio1->setObjectName(QString::fromUtf8("ledForceRatio1"));
-
-        gridLayout->addWidget(ledForceRatio1, 1, 4, 1, 1);
+        gridLayout->addWidget(label_18, 2, 0, 1, 1);
 
         ledForceRatio7 = new QLineEdit(groupBox_3);
         ledForceRatio7->setObjectName(QString::fromUtf8("ledForceRatio7"));
 
-        gridLayout->addWidget(ledForceRatio7, 4, 4, 1, 1);
+        gridLayout->addWidget(ledForceRatio7, 5, 4, 1, 1);
 
-        label_41 = new QLabel(groupBox_3);
-        label_41->setObjectName(QString::fromUtf8("label_41"));
+        label_39 = new QLabel(groupBox_3);
+        label_39->setObjectName(QString::fromUtf8("label_39"));
 
-        gridLayout->addWidget(label_41, 4, 3, 1, 1);
+        gridLayout->addWidget(label_39, 1, 5, 1, 1);
 
-        ledForceOffset2 = new QLineEdit(groupBox_3);
-        ledForceOffset2->setObjectName(QString::fromUtf8("ledForceOffset2"));
+        label_38 = new QLabel(groupBox_3);
+        label_38->setObjectName(QString::fromUtf8("label_38"));
 
-        gridLayout->addWidget(ledForceOffset2, 2, 2, 1, 1);
+        gridLayout->addWidget(label_38, 1, 1, 1, 1);
 
         label_24 = new QLabel(groupBox_3);
         label_24->setObjectName(QString::fromUtf8("label_24"));
         label_24->setLayoutDirection(Qt::RightToLeft);
 
-        gridLayout->addWidget(label_24, 1, 3, 1, 1);
-
-        ledForceRatio6 = new QLineEdit(groupBox_3);
-        ledForceRatio6->setObjectName(QString::fromUtf8("ledForceRatio6"));
-
-        gridLayout->addWidget(ledForceRatio6, 4, 1, 1, 1);
-
-        label_40 = new QLabel(groupBox_3);
-        label_40->setObjectName(QString::fromUtf8("label_40"));
-
-        gridLayout->addWidget(label_40, 3, 3, 1, 1);
-
-        ledForceRatio0 = new QLineEdit(groupBox_3);
-        ledForceRatio0->setObjectName(QString::fromUtf8("ledForceRatio0"));
-
-        gridLayout->addWidget(ledForceRatio0, 1, 1, 1, 1);
-
-        ledForceRatio2 = new QLineEdit(groupBox_3);
-        ledForceRatio2->setObjectName(QString::fromUtf8("ledForceRatio2"));
-
-        gridLayout->addWidget(ledForceRatio2, 2, 1, 1, 1);
-
-        ledForceRatio3 = new QLineEdit(groupBox_3);
-        ledForceRatio3->setObjectName(QString::fromUtf8("ledForceRatio3"));
-
-        gridLayout->addWidget(ledForceRatio3, 2, 4, 1, 1);
-
-        ledForceOffset4 = new QLineEdit(groupBox_3);
-        ledForceOffset4->setObjectName(QString::fromUtf8("ledForceOffset4"));
-
-        gridLayout->addWidget(ledForceOffset4, 3, 2, 1, 1);
-
-        label_18 = new QLabel(groupBox_3);
-        label_18->setObjectName(QString::fromUtf8("label_18"));
-
-        gridLayout->addWidget(label_18, 1, 0, 1, 1);
-
-        label_20 = new QLabel(groupBox_3);
-        label_20->setObjectName(QString::fromUtf8("label_20"));
-
-        gridLayout->addWidget(label_20, 3, 0, 1, 1);
-
-        ledForceOffset0 = new QLineEdit(groupBox_3);
-        ledForceOffset0->setObjectName(QString::fromUtf8("ledForceOffset0"));
-
-        gridLayout->addWidget(ledForceOffset0, 1, 2, 1, 1);
+        gridLayout->addWidget(label_24, 2, 3, 1, 1);
 
         label_37 = new QLabel(groupBox_3);
         label_37->setObjectName(QString::fromUtf8("label_37"));
 
-        gridLayout->addWidget(label_37, 0, 2, 1, 1);
+        gridLayout->addWidget(label_37, 1, 2, 1, 1);
+
+        label_19 = new QLabel(groupBox_3);
+        label_19->setObjectName(QString::fromUtf8("label_19"));
+
+        gridLayout->addWidget(label_19, 3, 0, 1, 1);
 
         ledForceOffset3 = new QLineEdit(groupBox_3);
         ledForceOffset3->setObjectName(QString::fromUtf8("ledForceOffset3"));
 
-        gridLayout->addWidget(ledForceOffset3, 2, 5, 1, 1);
+        gridLayout->addWidget(ledForceOffset3, 3, 5, 1, 1);
 
-        ledForceOffset5 = new QLineEdit(groupBox_3);
-        ledForceOffset5->setObjectName(QString::fromUtf8("ledForceOffset5"));
+        ledForceRatio1 = new QLineEdit(groupBox_3);
+        ledForceRatio1->setObjectName(QString::fromUtf8("ledForceRatio1"));
 
-        gridLayout->addWidget(ledForceOffset5, 3, 5, 1, 1);
+        gridLayout->addWidget(ledForceRatio1, 2, 4, 1, 1);
+
+        ledForceOffset4 = new QLineEdit(groupBox_3);
+        ledForceOffset4->setObjectName(QString::fromUtf8("ledForceOffset4"));
+
+        gridLayout->addWidget(ledForceOffset4, 4, 2, 1, 1);
+
+        ledForceRatio2 = new QLineEdit(groupBox_3);
+        ledForceRatio2->setObjectName(QString::fromUtf8("ledForceRatio2"));
+
+        gridLayout->addWidget(ledForceRatio2, 3, 1, 1, 1);
+
+        ledForceOffset2 = new QLineEdit(groupBox_3);
+        ledForceOffset2->setObjectName(QString::fromUtf8("ledForceOffset2"));
+
+        gridLayout->addWidget(ledForceOffset2, 3, 2, 1, 1);
 
         ledForceOffset7 = new QLineEdit(groupBox_3);
         ledForceOffset7->setObjectName(QString::fromUtf8("ledForceOffset7"));
 
-        gridLayout->addWidget(ledForceOffset7, 4, 5, 1, 1);
+        gridLayout->addWidget(ledForceOffset7, 5, 5, 1, 1);
+
+        ledForceOffset6 = new QLineEdit(groupBox_3);
+        ledForceOffset6->setObjectName(QString::fromUtf8("ledForceOffset6"));
+
+        gridLayout->addWidget(ledForceOffset6, 5, 2, 1, 1);
+
+        label_20 = new QLabel(groupBox_3);
+        label_20->setObjectName(QString::fromUtf8("label_20"));
+
+        gridLayout->addWidget(label_20, 4, 0, 1, 1);
+
+        ledForceRatio6 = new QLineEdit(groupBox_3);
+        ledForceRatio6->setObjectName(QString::fromUtf8("ledForceRatio6"));
+
+        gridLayout->addWidget(ledForceRatio6, 5, 1, 1, 1);
+
+        ledForceRatio5 = new QLineEdit(groupBox_3);
+        ledForceRatio5->setObjectName(QString::fromUtf8("ledForceRatio5"));
+
+        gridLayout->addWidget(ledForceRatio5, 4, 4, 1, 1);
+
+        label_36 = new QLabel(groupBox_3);
+        label_36->setObjectName(QString::fromUtf8("label_36"));
+
+        gridLayout->addWidget(label_36, 1, 4, 1, 1);
+
+        ledForceOffset1 = new QLineEdit(groupBox_3);
+        ledForceOffset1->setObjectName(QString::fromUtf8("ledForceOffset1"));
+
+        gridLayout->addWidget(ledForceOffset1, 2, 5, 1, 1);
+
+        label_25 = new QLabel(groupBox_3);
+        label_25->setObjectName(QString::fromUtf8("label_25"));
+
+        gridLayout->addWidget(label_25, 3, 3, 1, 1);
+
+        label_41 = new QLabel(groupBox_3);
+        label_41->setObjectName(QString::fromUtf8("label_41"));
+
+        gridLayout->addWidget(label_41, 5, 3, 1, 1);
+
+        ledForceRatio0 = new QLineEdit(groupBox_3);
+        ledForceRatio0->setObjectName(QString::fromUtf8("ledForceRatio0"));
+
+        gridLayout->addWidget(ledForceRatio0, 2, 1, 1, 1);
+
+        ledForceOffset5 = new QLineEdit(groupBox_3);
+        ledForceOffset5->setObjectName(QString::fromUtf8("ledForceOffset5"));
+
+        gridLayout->addWidget(ledForceOffset5, 4, 5, 1, 1);
+
+        label_40 = new QLabel(groupBox_3);
+        label_40->setObjectName(QString::fromUtf8("label_40"));
+
+        gridLayout->addWidget(label_40, 4, 3, 1, 1);
+
+        ledForceRatio3 = new QLineEdit(groupBox_3);
+        ledForceRatio3->setObjectName(QString::fromUtf8("ledForceRatio3"));
+
+        gridLayout->addWidget(ledForceRatio3, 3, 4, 1, 1);
 
 
         verticalLayout_7->addWidget(groupBox_3);
+
+        horizontalLayout_23 = new QHBoxLayout();
+        horizontalLayout_23->setObjectName(QString::fromUtf8("horizontalLayout_23"));
+        label_17 = new QLabel(tab_miscellaneous);
+        label_17->setObjectName(QString::fromUtf8("label_17"));
+        label_17->setMinimumSize(QSize(80, 0));
+        label_17->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
+
+        horizontalLayout_23->addWidget(label_17);
+
+        ccbSpeedUpload = new QCheckBox(tab_miscellaneous);
+        ccbSpeedUpload->setObjectName(QString::fromUtf8("ccbSpeedUpload"));
+
+        horizontalLayout_23->addWidget(ccbSpeedUpload);
+
+        horizontalSpacer_22 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_23->addItem(horizontalSpacer_22);
+
+
+        verticalLayout_7->addLayout(horizontalLayout_23);
 
         verticalSpacer_5 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
@@ -874,6 +901,16 @@ public:
         verticalSpacer_7 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
         verticalLayout_9->addItem(verticalSpacer_7);
+
+        btnExportPlot = new QPushButton(tab_speed);
+        btnExportPlot->setObjectName(QString::fromUtf8("btnExportPlot"));
+
+        verticalLayout_9->addWidget(btnExportPlot);
+
+        btnExportData = new QPushButton(tab_speed);
+        btnExportData->setObjectName(QString::fromUtf8("btnExportData"));
+
+        verticalLayout_9->addWidget(btnExportData);
 
 
         horizonLayout_8->addLayout(verticalLayout_9);
@@ -964,7 +1001,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(1);
+        tabWidget->setCurrentIndex(4);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -1003,7 +1040,7 @@ public:
         ledEscMin->setText(QApplication::translate("MainWindow", "0.072", nullptr));
         label_9->setText(QApplication::translate("MainWindow", "max duty cycle", nullptr));
         ledEscMax->setText(QApplication::translate("MainWindow", "0.124", nullptr));
-        ratio_3->setText(QApplication::translate("MainWindow", "rpm to speed", nullptr));
+        ratio_3->setText(QApplication::translate("MainWindow", "rpm to wheel rps", nullptr));
         ledEscRate->setText(QApplication::translate("MainWindow", "1000", nullptr));
         label_15->setText(QApplication::translate("MainWindow", "ESC PWM Precision", nullptr));
         ledEscPrecision->setText(QApplication::translate("MainWindow", "5", nullptr));
@@ -1027,21 +1064,25 @@ public:
         labelBrakeFrequency->setText(QApplication::translate("MainWindow", "Brake PWM Frequency", nullptr));
         ledBrakeFrequency->setText(QApplication::translate("MainWindow", "1000", nullptr));
         groupBox_3->setTitle(QApplication::translate("MainWindow", "Force Calibration", nullptr));
-        label_25->setText(QApplication::translate("MainWindow", "Front Right 2", nullptr));
-        label_38->setText(QApplication::translate("MainWindow", "Ratio", nullptr));
-        label_19->setText(QApplication::translate("MainWindow", "Front Right 1", nullptr));
-        label_39->setText(QApplication::translate("MainWindow", "Offset", nullptr));
-        label_36->setText(QApplication::translate("MainWindow", "Ratio", nullptr));
         label_22->setText(QApplication::translate("MainWindow", "Rear Right 1", nullptr));
-        label_41->setText(QApplication::translate("MainWindow", "Rear Right 2", nullptr));
-        label_24->setText(QApplication::translate("MainWindow", "Front Left 2", nullptr));
-        label_40->setText(QApplication::translate("MainWindow", "Rear Left 2", nullptr));
         label_18->setText(QApplication::translate("MainWindow", "Front Left 1", nullptr));
-        label_20->setText(QApplication::translate("MainWindow", "Rear Left 1", nullptr));
+        label_39->setText(QApplication::translate("MainWindow", "Offset", nullptr));
+        label_38->setText(QApplication::translate("MainWindow", "Ratio", nullptr));
+        label_24->setText(QApplication::translate("MainWindow", "Front Left 2", nullptr));
         label_37->setText(QApplication::translate("MainWindow", "Offset", nullptr));
+        label_19->setText(QApplication::translate("MainWindow", "Front Right 1", nullptr));
+        label_20->setText(QApplication::translate("MainWindow", "Rear Left 1", nullptr));
+        label_36->setText(QApplication::translate("MainWindow", "Ratio", nullptr));
+        label_25->setText(QApplication::translate("MainWindow", "Front Right 2", nullptr));
+        label_41->setText(QApplication::translate("MainWindow", "Rear Right 2", nullptr));
+        label_40->setText(QApplication::translate("MainWindow", "Rear Left 2", nullptr));
+        label_17->setText(QApplication::translate("MainWindow", "Plot Speed", nullptr));
+        ccbSpeedUpload->setText(QString());
         tabWidget->setTabText(tabWidget->indexOf(tab_miscellaneous), QApplication::translate("MainWindow", "Miscellaneous", nullptr));
         btnSpeedStart->setText(QApplication::translate("MainWindow", "Start Plot", nullptr));
         btnSpeedStop->setText(QApplication::translate("MainWindow", "Stop Plot", nullptr));
+        btnExportPlot->setText(QApplication::translate("MainWindow", "Export Plot", nullptr));
+        btnExportData->setText(QApplication::translate("MainWindow", "Export Data", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab_speed), QApplication::translate("MainWindow", "Speed", nullptr));
         label->setText(QApplication::translate("MainWindow", "port", nullptr));
 #ifndef QT_NO_TOOLTIP

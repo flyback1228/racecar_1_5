@@ -11,10 +11,11 @@ class ParameterModel : public QObject
     Q_PROPERTY(ParameterTypeDef parameters READ parameters WRITE setParameters NOTIFY parametersChanged)
 public:
     explicit ParameterModel(QObject *parent = nullptr);
-
+    ParameterTypeDef parameters_;
+    /*
     ParameterTypeDef parameters() const{
         return parameters_;
-    }
+    }*/
 
     void setParameters(const ParameterTypeDef& parameters){
         if(!(parameters_ == parameters)){
@@ -69,11 +70,13 @@ public slots:
     void set_brake_pwm_frequency(const QString &text);
     void set_speed_difference_warning(const QString &text);
 
+    void set_upload_speed(int state);
+
     void save();
 
 
 private:
-    ParameterTypeDef parameters_;
+
     float string_to_float(const QString &text);
     uint8_t string_to_uint8(const QString &text);
 

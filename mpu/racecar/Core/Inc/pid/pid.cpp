@@ -16,6 +16,8 @@ PID<T>::PID(T *input, T *output, T *setpoint, T kp, T ki, T kd,uint8_t add_input
 	PID<T>::set_tunings(kp, ki, kd, add_input);
 	
 	last_time_ = HAL_GetTick();
+
+	output_sum_ = 0;
 }
 
 
@@ -26,18 +28,18 @@ void PID<T>::compute(void)
 	uint32_t now = HAL_GetTick();
 	uint32_t dt = now - last_time_;
 	
+	if(dt>1000)return;
+
 	T input = *input_;
 	T error = *setpoint_-input;
-	T dInput = input-last_input_;
+	T dInput = last_input_-input;
 	//T output;
-	
 
-	
 	output_sum_ += ki_ * error * dt/1000.0;
-	output_sum_ -= kp_ * dInput*add_input_error_to_proportional_;
+	//output_sum_ -= kp_ * dInput*add_input_error_to_proportional_;
 	clip(&output_sum_, out_min_, out_max_);
 	
-	T output = output_sum_ - kp_ * error - kd_ * dInput * 1000.0 / dt;
+	T output = output_sum_ + kp_ * error + kd_ * dInput * 1000.0 / dt;
 	*output_ = output;
 	clip(output_, out_min_, out_max_);
 		

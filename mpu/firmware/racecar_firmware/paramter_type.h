@@ -10,23 +10,28 @@
 
 struct ParameterTypeDef{
     char header[4]={'a','c','s','r'};
+
     uint8_t version=1;
     uint8_t subversion=1;
+    uint8_t pid_frequency=10;
+    uint8_t publish_frequency=20;
+
+    uint8_t esc_set_precision=5;
+    uint8_t allow_reverse=false; //a bool
+    uint8_t servo_set_precision=5;
+    uint8_t upload_speed=false;
 
     float kp=1;
     float ki=1;
     float kd=0;
-    uint8_t pid_frequency=10;
 
-    uint8_t publish_frequency=20;
 
     float esc_rpm_to_speed_ratio=1800;
     float esc_offset=0.097;
     float esc_max=0.109;
     float esc_min=0.081;
 
-    uint8_t esc_set_precision=5;
-    uint8_t allow_reverse=false; //a bool
+
 
     float steering_esc_pwm_frequency=64.5;
     float steering_offset=0.096;
@@ -34,7 +39,7 @@ struct ParameterTypeDef{
     float steering_max=17;
     float steering_min=-17;
 
-    uint8_t servo_set_precision=5;
+
 
     //force parameters
     float force_ratio[8]={1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0};
@@ -43,6 +48,8 @@ struct ParameterTypeDef{
     float brake_pwm_frequency=1000;
 
     float wheel_speed_difference_warning=1.0f;
+
+
 
     char tailer[4]={'b','4','0','1'};
 
@@ -55,9 +62,9 @@ struct ParameterTypeDef{
 
         return (version==other.version
                 && subversion==other.subversion
-                && abs(kp - other.kp)<0.01)
-                && (abs(ki - other.ki)<0.01)
-                && (abs(kd - other.kd)<0.01)
+                && abs(kp - other.kp)<std::numeric_limits<float>::epsilon())
+                && (abs(ki - other.ki)<std::numeric_limits<float>::epsilon())
+                && (abs(kd - other.kd)<std::numeric_limits<float>::epsilon())
                 &&  pid_frequency==other.pid_frequency
                 && publish_frequency == other.publish_frequency
                 && abs(esc_rpm_to_speed_ratio-other.esc_rpm_to_speed_ratio)<std::numeric_limits<float>::epsilon()
@@ -73,7 +80,8 @@ struct ParameterTypeDef{
                 && abs(steering_min-other.steering_min)<std::numeric_limits<float>::epsilon()
                 && servo_set_precision==other.servo_set_precision
                 && abs(brake_pwm_frequency-other.brake_pwm_frequency)<std::numeric_limits<float>::epsilon()
-                && abs(wheel_speed_difference_warning-other.wheel_speed_difference_warning)<std::numeric_limits<float>::epsilon();
+                && abs(wheel_speed_difference_warning-other.wheel_speed_difference_warning)<std::numeric_limits<float>::epsilon()
+                && upload_speed==other.upload_speed;
     }
 
     friend QDataStream &operator<<(QDataStream &out, const ParameterTypeDef &rhs){

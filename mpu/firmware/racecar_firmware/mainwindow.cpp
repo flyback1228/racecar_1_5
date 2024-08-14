@@ -5,6 +5,8 @@
 #include <QFileDialog>
 #include <QDebug>
 
+#include "speed_type.h"
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow),timer_(new QTimer(this))
 {
@@ -24,9 +26,12 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->btnSpeedStart,&QPushButton::clicked, this, &MainWindow::btnSpeedStart_clicked);
     connect(ui->btnSpeedStop,&QPushButton::clicked, this, &MainWindow::btnSpeedStop_clicked);
 
+    connect(ui->btnExportPlot,&QPushButton::clicked, this, &MainWindow::btnExportPlot_clicked);
+    connect(ui->btnExportData,&QPushButton::clicked, this, &MainWindow::btnExportData_clicked);
+
     connect(&port_, &QSerialPort::readyRead, this, &MainWindow::read_data);
 
-    connect(timer_, &QTimer::timeout,this, &MainWindow::read_speed_timeout);
+    connect(timer_, &QTimer::timeout,this, &MainWindow::read_timeout);
 
     ui->btnWrite->setEnabled(false);
     ui->btnReset->setEnabled(false);
@@ -121,32 +126,59 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->ledForceRatio6,&QLineEdit::textChanged,pamameter_model_,&ParameterModel::set_force_ratio6);
     connect(ui->ledForceRatio7,&QLineEdit::textChanged,pamameter_model_,&ParameterModel::set_force_ratio7);
 
+    connect(ui->ledForceRatio7,&QLineEdit::textChanged,pamameter_model_,&ParameterModel::set_force_ratio7);
+    connect(ui->ccbSpeedUpload,&QCheckBox::stateChanged,pamameter_model_,&ParameterModel::set_upload_speed);
+
     connect(pamameter_model_,&ParameterModel::parametersChanged,this,&MainWindow::update_values);
 
-    update_values(pamameter_model_->parameters());
+    update_values(pamameter_model_->parameters_);
 
 
     //set the chart
     auto m_chart = ui->chartView->chart();
+    ui->chartView->setRenderHint(QPainter::Antialiasing);
 
-    series_ = new QLineSeries();
-    m_chart->addSeries(series_);
+    speed_series_ = new QLineSeries();
+    m_chart->addSeries(speed_series_);
+
+    setpoint_series_ = new QLineSeries();
+    m_chart->addSeries(setpoint_series_);
 
     xAxis_ = new QDateTimeAxis();
-    xAxis_->setFormat("mm:ss.z");
+    xAxis_->setFormat("hh:mm:ss");
     xAxis_->setTitleText("Time");
     xAxis_->setTickCount(10);
 
+
     m_chart->addAxis(xAxis_, Qt::AlignBottom);
-    series_->attachAxis(xAxis_);
+    speed_series_->attachAxis(xAxis_);
+    setpoint_series_->attachAxis(xAxis_);
 
     yAxis_ = new QValueAxis;
     yAxis_->setTitleText("Speed");
     m_chart->addAxis(yAxis_, Qt::AlignLeft);
-    series_->attachAxis(yAxis_);
+    speed_series_->attachAxis(yAxis_);
+    setpoint_series_->attachAxis(yAxis_);
 
+
+    //xAxis_->setMin(QDateTime::fromMSecsSinceEpoch(QDateTime::currentDateTime().toMSecsSinceEpoch()-1000));
+    /*
+    yAxis_->setMin(-2);
+    yAxis_->setMax(4);
+    QDateTime t;
+    t.setDate(QDate(1983,1,15));
+    xAxis_->setMin(t);
+    speed_series_->append(t.toMSecsSinceEpoch(), -1.0);
+    t.setDate(QDate(1983,2,15));
+    speed_series_->append(t.toMSecsSinceEpoch(), 2.0);
+    t.setDate(QDate(1983,3,15));
+    speed_series_->append(t.toMSecsSinceEpoch(), 3.0);
+
+    xAxis_->setMax(t);*/
 
     file_path_ = "/";
+
+    timer_->start(200);
 }
 
 MainWindow::~MainWindow()
@@ -202,22 +234,23 @@ void MainWindow::btnClose_clicked()
 void MainWindow::btnRead_clicked()
 {
     // to stop the speed
-    if(begin_reading_speed_){
-        btnSpeedStop_clicked();
-    }
-    data.clear();
-    begin_reading_parameter_=true;
+    //if(begin_reading_speed_){
+    //    btnSpeedStop_clicked();
+    //}
+    //data.clear();
+    //begin_reading_parameter_=true;
     char header[] = {'x','i','l','i','n'};
     QByteArray byte_array(header,5);
     port_.write(byte_array);
 
-    ui->btnRead->setEnabled(false);
-    QTimer::singleShot(1500, this, &MainWindow::read_timeout);
+    //ui->btnRead->setEnabled(false);
+    //QTimer::singleShot(1500, this, &MainWindow::read_timeout);
 }
 
 void MainWindow::btnWrite_clicked()
 {
-    auto p = pamameter_model_->parameters();
+    auto& p = pamameter_model_->parameters_;
+    //ParameterTypeDef p;
     QByteArray byte_array((char*)(&p),sizeof(ParameterTypeDef));
     port_.write(byte_array);
 
@@ -255,7 +288,7 @@ void MainWindow::btnSave_clicked()
     if(!file.open(QIODevice::WriteOnly))
         return;
     QDataStream save(&file);
-    save << pamameter_model_->parameters();
+    save << pamameter_model_->parameters_;
     file.close();
 }
 
@@ -263,8 +296,11 @@ void MainWindow::btnSave_clicked()
 //step 1: send the "speed" to mpu
 //step 2: start the timer to process the data from mpu
 
+
+
 void MainWindow::btnSpeedStart_clicked()
 {
+    /*
     if(begin_reading_speed_){
         return;
     }
@@ -274,13 +310,21 @@ void MainWindow::btnSpeedStart_clicked()
     char header[] = {'s','p','e','e','d'};
     QByteArray byte_array(header,5);
     port_.write(byte_array);
-    xAxis_->setMin(QDateTime::fromMSecsSinceEpoch(QDateTime::currentDateTime().toMSecsSinceEpoch()-1000));
+    xAxis_->setMin(QDateTime::fromMSecsSinceEpoch(QDateTime::currentDateTime().toMSecsSinceEpoch()-1000));*/
+    plot_=true;
+    speed_vector.clear();
+    setpoint_vector.clear();
+    output_vector.clear();
+
+    speed_series_->clear();
+    setpoint_series_->clear();
+    xAxis_->setMin(QDateTime::fromMSecsSinceEpoch(QDateTime::currentDateTime().toMSecsSinceEpoch()-500));
 }
 
 //callback function of button(Stop Plot) clicked, send the "speed" to mpu
 void MainWindow::btnSpeedStop_clicked()
 {
-    if(!begin_reading_speed_){
+    /*if(!begin_reading_speed_){
         return;
     }
     timer_->stop();
@@ -288,12 +332,49 @@ void MainWindow::btnSpeedStop_clicked()
     char header[] = {'s','p','e','e','d'};
     QByteArray byte_array(header,5);
     port_.write(byte_array);
-    //xAxis_->setMin(QDateTime::fromMSecsSinceEpoch(QDateTime::currentDateTime().toMSecsSinceEpoch()-1000));
+    //xAxis_->setMin(QDateTime::fromMSecsSinceEpoch(QDateTime::currentDateTime().toMSecsSinceEpoch()-1000));*/
+    plot_=false;
+}
+
+void MainWindow::btnExportPlot_clicked()
+{
+    auto pixmap = ui->chartView->grab();
+    auto filter = tr("png Files (*.png);;files (*)");
+    auto defaut_name = file_path_+"/_"+QString::number(pamameter_model_->parameters_.kp)+"_"+QString::number(pamameter_model_->parameters_.ki)+"_"+QString::number(pamameter_model_->parameters_.kd)+".png";
+    auto fileName = QFileDialog::getSaveFileName(this,
+                                                 tr("Save Plot"), defaut_name, filter, &filter );
+    file_path_ = QFileInfo(fileName).path();
+
+    QFile file(fileName);
+    file.open(QIODevice::WriteOnly);
+    pixmap.save(&file, "PNG");
+}
+
+void MainWindow::btnExportData_clicked()
+{
+    auto filter = tr("csv Files (*.csv);;files (*)");
+
+    // QString format_name = QString::asprintf("/_%s_%s_%s.txt",  pamameter_model_->parameters_.ki,pamameter_model_->parameters_.kd);
+
+    auto defaut_name = file_path_+"/_"+QString::number(pamameter_model_->parameters_.kp)+"_"+QString::number(pamameter_model_->parameters_.ki)+"_"+QString::number(pamameter_model_->parameters_.kd)+".csv";
+
+    auto fileName = QFileDialog::getSaveFileName(this,
+                                                 tr("Save Speed"), defaut_name , filter, &filter );
+    file_path_ = QFileInfo(fileName).path();
+
+    QFile file(fileName);
+    if(!file.open(QIODevice::WriteOnly))
+        return;
+    QTextStream stream(&file);
+    stream<<"#speed,#setpoint\n";
+    for(auto i=0;i<setpoint_vector.size();++i)
+        stream << speed_vector[i] << "," << setpoint_vector[i] << "\n";
+    file.close();
 }
 
 void MainWindow::read_data()
 {
-
+    /*
     QByteArray d = port_.readAll();
     qDebug()<<d<<'\n';
     if(begin_reading_parameter_){
@@ -304,8 +385,9 @@ void MainWindow::read_data()
         speed_data.append(d.begin(),d.size());
     }else{
         show_message(QString(d));
-    }
-
+    }*/
+    QByteArray d = port_.readAll();
+    data.append(d);
 }
 
 void MainWindow::show_message(QString msg){
@@ -316,7 +398,7 @@ void MainWindow::show_message(QString msg){
 
 void MainWindow::read_timeout()
 {
-
+    /*
     ui->btnRead->setEnabled(true);
     qDebug()<<"data:"<<data.size()<<"\tparma:"<<sizeof(ParameterTypeDef)<<'\n';
     qDebug()<<QString(data)<<'\n';
@@ -333,13 +415,126 @@ void MainWindow::read_timeout()
         }
     }else{
         show_message("Read Data From MPU Fail!\n");
+    }*/
+    //while(1){
+    //qDebug()<<data;
+    if(data.size()==0)return;
+
+    QVector<int> ind{data.indexOf("prmb"),data.indexOf("msgb"),data.indexOf("spdb")};
+    if(!ind.contains(0)){
+        if(std::all_of(ind.begin(),ind.end(),[](auto i){
+                return i==-1;
+            })){
+            data.clear();
+            return;
+        }
+
+        std::sort(ind.begin(),ind.end());
+        auto iter =std::lower_bound(ind.begin(),ind.end(),0);
+        qDebug()<<*iter;
+        data.remove(0,*iter);
+        return;
     }
+
+
+    if(data.startsWith("prmb")){
+        if(data.size()<sizeof(ParameterTypeDef))return;
+
+        if(data.indexOf("prme")!=sizeof(ParameterTypeDef)-4){
+            data.clear();
+            return;
+            //show_message("Read Data From MPU Fail!\n");
+        }else{
+            QByteArray s;
+            s.append(data.begin(),sizeof(ParameterTypeDef));
+            auto p = reinterpret_cast<ParameterTypeDef*>(s.data());
+            data.remove(0,sizeof(ParameterTypeDef));
+            //qDebug()<<QString(p->header)<<'\t'<<QString(p->tailer)<<'\n';
+            if(QString(p->tailer)=="prme"){
+                pamameter_model_->setParameters(*p);
+                //qDebug()<<data<<'\n';
+                //show_message("Read Data From MPU Complete!\n");
+            }
+        }
+
+    }
+    else if(data.startsWith("msgb")){
+        uint8_t size = data[4];
+        if(data.size()<8+size)return;
+        if(data.indexOf("msge")!=5+size){
+            data.clear();
+            return;
+        }
+        show_message(QString::fromUtf8(data.begin()+4,size));
+        data.remove(0,size+8);
+    }
+    else if(data.startsWith("spdb")){
+        if(data.size()<sizeof(SpeedTypeDef))return;
+
+        if(data.indexOf("spde")!=sizeof(SpeedTypeDef)-4){
+            data.clear();
+            return;
+            //show_message("Read Data From MPU Fail!\n");
+        }else{
+            QByteArray s;
+            s.append(data.begin(),sizeof(SpeedTypeDef));
+            data.remove(0,sizeof(SpeedTypeDef));
+            data.squeeze();
+            if(plot_){
+                auto p = reinterpret_cast<SpeedTypeDef*>(s.data());
+                if(QString(p->tailer)=="spde"){
+                    auto speed = p->current_speed;
+                    auto setpoint = p->setpoint;
+                    speed_vector.push_back(speed);
+                    setpoint_vector.push_back(setpoint);
+                    output_vector.push_back(p->output);
+
+                    //qDebug()<<"speed:"<<speed<<"\tsetpoint"<<setpoint<<'\n';
+
+                    min_y_=std::min(setpoint,min_y_);
+                    min_y_=std::min(speed,min_y_);
+
+                    max_y_=std::max(setpoint,max_y_);
+                    max_y_=std::max(speed,max_y_);
+
+                    yAxis_->setMax(max_y_+0.1);
+                    yAxis_->setMin(min_y_-0.1);
+
+                    auto t = QDateTime::currentDateTime();
+                    speed_series_->append(t.toMSecsSinceEpoch(), speed);
+                    setpoint_series_->append(t.toMSecsSinceEpoch(),setpoint);
+                    xAxis_->setMax(QDateTime::fromMSecsSinceEpoch(QDateTime::currentDateTime().toMSecsSinceEpoch()+100));
+
+
+                    //xAxis_->setMax(t);
+                    //pamameter_model_->setParameters(*p);
+                    //qDebug()<<data<<'\n';
+                    //show_message("Read Data From MPU Complete!\n");
+                }
+            }
+        }
+
+    }
+
+    else{
+        data.clear();
+        /*
+        auto i1 = data.indexOf("prmbgn");
+        auto i2 = data.indexOf("spdbgn");
+        if(i1>i2){
+            data.remove(0,i2);
+        }else if(i1<i2){
+            data.remove(0,i1);
+        }*/
+    }
+    //}
 
 }
 
 //callback for the timeout function of a timer, to process the speed data and to plot
 //each set of the data contains 5 bytes, the first three are 's', 'p' and 'd', the 4th byte is the integer part of a float, and the 5th byte is the decimal part multiplied by 100
-void MainWindow::read_speed_timeout()
+
+/*void MainWindow::read_speed_timeout()
 {
     if(!begin_reading_speed_)return;
     if(speed_data.size()<7)return;
@@ -372,7 +567,7 @@ void MainWindow::read_speed_timeout()
     auto t = QDateTime::currentDateTime();
     series_->append(t.toMSecsSinceEpoch(), speed);
     xAxis_->setMax(t);
-}
+}*/
 
 void MainWindow::update_values(const ParameterTypeDef& parameters)
 {
@@ -419,5 +614,7 @@ void MainWindow::update_values(const ParameterTypeDef& parameters)
     ui->ledForceOffset7->setText(QString::number(parameters.force_offset[7]));
 
     ui->ledSpeedDifferenceWarning->setText(QString::number(parameters.wheel_speed_difference_warning));
+
+    ui->ccbSpeedUpload->setChecked(parameters.upload_speed);
 }
 

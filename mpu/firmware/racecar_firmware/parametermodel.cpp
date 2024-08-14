@@ -162,26 +162,17 @@ void ParameterModel::set_esc_reverse(bool value)
 
 void ParameterModel::set_esc_precision(const QString &text)
 {
-    bool ok;
-    auto v = text.toUInt(&ok);
-    if(ok)parameters_.esc_set_precision = (uint8_t)v;
+    parameters_.esc_set_precision = string_to_uint8(text);
 }
 
 void ParameterModel::set_servo_precision(const QString &text)
 {
-    bool ok;
-    auto v = text.toUInt(&ok);
-    if(ok){
-        parameters_.servo_set_precision = (uint8_t)v;
-        //save_label = true;
-    }
+    parameters_.servo_set_precision = string_to_uint8(text);
 }
 
 void ParameterModel::set_brake_pwm_frequency(const QString &text)
 {
-    bool ok;
-    auto v = text.toFloat(&ok);
-    if(ok)parameters_.brake_pwm_frequency = v;
+    parameters_.brake_pwm_frequency = string_to_float(text);
 }
 
 void ParameterModel::set_speed_difference_warning(const QString &text)
@@ -205,6 +196,10 @@ void ParameterModel::save()
         file.close();
         save_label = false;
     }
+}
+
+void ParameterModel::set_upload_speed(int state){
+    parameters_.upload_speed=state;
 }
 
 float ParameterModel::string_to_float(const QString &text)

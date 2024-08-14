@@ -84,7 +84,7 @@ const uint8_t force_size = 8;
 const uint8_t vesc_size = 5;
 const uint8_t imu_size = 9;
 
-bool send_esc_speed = false;
+//bool send_esc_speed = false;
 
 //error code
 //0x01: no esc data, 0x02: no speed data
@@ -112,6 +112,11 @@ float pid_speed_set = 0.0;
 float pid_esc_duty_cycle_output = 0.0;
 float current_esc_speed = 0.0;
 
+//char param_trans_begin_label[]="prmbgn";
+//char param_trans_end_label[]="prmend";
+//char speed_trans_begin_label[]="spdbgn";
+//char speed_trans_end_label[]="spdend";
+
 //usb buffer to store the received data from usb port
 uint8_t usb_buf[MAX_PARAMETER_LENGTH];
 
@@ -136,32 +141,32 @@ uint8_t jy901_data[11];
 CJY901 jy901(&huart8);
 
 ParameterTypeDef parameters = {
-		.header={'a','c','s','r'},
+		.header={'p','r','m','b'},
+
 		.version = 1,
 		.subversion = 1,
+		.pid_frequency = 10,
+		.publish_frequency = 20,
+
+		.esc_set_precision = 5,
+		.allow_reverse = 0,
+		.servo_set_precision = 5,
+		.upload_speed = false,
 
 		.kp = 2.0,
 		.ki = 1.0,
 		.kd = 0.0,
-		.pid_frequency = 10,
-
-		.publish_frequency = 20,
 
 		.esc_rpm_to_speed_ratio = 1800.0,
 		.esc_offset=0.096,
 		.esc_max = 0.124,
 		.esc_min = 0.072,
 
-		.esc_set_precision = 5,
-		.allow_reverse = 0,
-
 		.steering_esc_pwm_frequency = 64.5,
 		.steering_offset=0.097,
 		.steering_to_dutycycle_ratio=653.8,
 		.steering_max = 17.0,
 		.steering_min = -17.0,
-
-		.servo_set_precision = 5,
 
 		.force_ratio ={1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0},
 		.force_offset ={0.0,0.0,0.0,0.0,1.0,1.0,1.0,1.0},
@@ -170,11 +175,32 @@ ParameterTypeDef parameters = {
 
 		.wheel_speed_difference_warning = 1.0,
 
-		.tailer={'b','4','0','1'}
+		.tailer={'p','r','m','e'}
+};
+
+SpeedTypeDef speed_ = {
+		.header={'s','p','d','b'},
+
+		.current_speed = 2.0,
+		.setpoint = 1.0,
+		.output = 0.0,
+
+		.tailer={'s','p','d','e'}
 };
 
 PID<float> *pid_ptr;
 
+char message[200];
+
+void send_message(char* str, uint8_t size){
+	message[4]=size;
+	memcpy(&message[5],str,size);
+	message[5+size]='m';
+	message[6+size]='s';
+	message[7+size]='g';
+	message[8+size]='e';
+	HAL_UART_Transmit(&huart7, (uint8_t*)message, size+9, 10);
+}
 
 //read esc data from ble
 HAL_StatusTypeDef read_ble_data(uint8_t* data){
@@ -201,7 +227,13 @@ HAL_StatusTypeDef read_ble_data(uint8_t* data){
 	esc_sensor.current = ((uint16_t)(data[(16+start_index)%ESC_DATA_SIZE] <<8) | (data[(17+start_index)%ESC_DATA_SIZE]))/10.0;
 	esc_sensor.temperature = (uint16_t)(data[(18+start_index)%ESC_DATA_SIZE] <<8) | (data[(19+start_index)%ESC_DATA_SIZE]);
 
-	current_esc_speed = esc_sensor.rpm/parameters.esc_rpm_to_speed_ratio;
+	current_esc_speed = 1.0f*esc_sensor.rpm/parameters.esc_rpm_to_speed_ratio;
+
+	/*
+	char s[30];
+	sprintf(s,"%0.2f,%0.2f\n",1.0*esc_sensor.rpm,current_esc_speed,parameters.esc_rpm_to_speed_ratio);
+	HAL_UART_Transmit(&huart7, (uint8_t*)s, 30, 10);*/
+
 	esc_receive_indicator = 0;
 	return HAL_OK;
 }
@@ -221,6 +253,9 @@ HAL_StatusTypeDef parse_f103_data(uint8_t* data){
 		memcpy(f103_data,&data[i+4],2*SPEED_PIN_COUNT+5+sizeof(ESC_SensorTypeDef)-i);
 		memcpy(&f103_data[2*SPEED_PIN_COUNT+5+sizeof(ESC_SensorTypeDef)-i],data,i);
 	}
+
+	memcpy(&esc_sensor,&f103_data[2*SPEED_PIN_COUNT+5], sizeof(esc_sensor));
+	current_esc_speed = esc_sensor.rpm/parameters.esc_rpm_to_speed_ratio;
 
 	if(abs((int)f103_data[4]*100+f103_data[5]-((int)f103_data[6]*100+f103_data[7]))>parameters.wheel_speed_difference_warning*100){
 		error_code |= 0b10000000;
@@ -297,31 +332,41 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size){
 	if (huart->Instance == huart_usb.Instance)
 	{
 		if(usb_buf[0]=='x' && usb_buf[1]=='i' && usb_buf[2]=='l' && usb_buf[3]=='i' && usb_buf[4]=='n'){
-			if(send_esc_speed)
-				send_esc_speed=false;
+			/*if(send_esc_speed)
+				send_esc_speed=false;*/
+
+
+			//HAL_UART_Transmit(&huart7, (uint8_t*)param_trans_begin_label, sizeof(param_trans_begin_label), 10);
 			HAL_UART_Transmit(&huart7, (uint8_t*)(&parameters) , sizeof(ParameterTypeDef), 10);
-		}else if(usb_buf[0]=='a' && usb_buf[1]=='c' && usb_buf[2]=='s' && usb_buf[3]=='r'){
-			if(send_esc_speed)
-				send_esc_speed=false;
+			//HAL_UART_Transmit(&huart7, (uint8_t*)param_trans_end_label, sizeof(param_trans_end_label), 10);
+		}else if(usb_buf[0]==parameters.header[0] && usb_buf[1]==parameters.header[1] && usb_buf[2]==parameters.header[2] && usb_buf[3]==parameters.header[3]){
+			/*if(send_esc_speed)
+				send_esc_speed=false;*/
 			uint32_t i = sizeof(ParameterTypeDef)-4;
-			if(usb_buf[i]!='b' || usb_buf[i+1]!='4'|| usb_buf[i+2]!='0'|| usb_buf[i+3]!='1'){
-				printf("Receive Wrong Data\n");
+			if(usb_buf[i]!=parameters.tailer[0] || usb_buf[i+1]!=parameters.tailer[1]|| usb_buf[i+2]!=parameters.tailer[2]|| usb_buf[i+3]!=parameters.tailer[3]){
+				//printf();
+				char msg[]="Receive Wrong Data\n";
+				send_message(msg,sizeof(msg));
 			}else{
 				memcpy(&parameters,usb_buf,sizeof(ParameterTypeDef));
-				printf("Write the Configuration Complete!\n");
+				char msg[]="Write the Configuration Complete!\n";
+				send_message(msg,sizeof(msg));
+				//printf();
 				QSPI_W25Q64JV_Write((uint8_t*)(&parameters),0x0,sizeof(ParameterTypeDef));
 				NVIC_SystemReset();
 			}
 
-		}else if(usb_buf[0]=='s' && usb_buf[1]=='p' && usb_buf[2]=='e' && usb_buf[3]=='e' && usb_buf[4]=='d'){
+		}/*else if(usb_buf[0]=='s' && usb_buf[1]=='p' && usb_buf[2]=='e' && usb_buf[3]=='e' && usb_buf[4]=='d'){
 			send_esc_speed=!send_esc_speed;
-		}else if(usb_buf[0]=='r' && usb_buf[1]=='e' && usb_buf[2]=='s' && usb_buf[3]=='e' && usb_buf[4]=='t'){
+		}*/else if(usb_buf[0]=='r' && usb_buf[1]=='e' && usb_buf[2]=='s' && usb_buf[3]=='e' && usb_buf[4]=='t'){
 			uint8_t reset[]={'r','e','s','e','t'};
 			HAL_UART_Transmit(&huart_f103, reset, 5, 41);
 			NVIC_SystemReset();
 		}
 		else{
-			printf("Receive Wrong Data\n");
+			char msg[]="Receive Wrong Data\n\n";
+			send_message(msg,sizeof(msg));
+			//printf("Receive Wrong Data\n");
 		}
 
 		HAL_UARTEx_ReceiveToIdle_DMA(&huart_usb, (uint8_t *) usb_buf, MAX_PARAMETER_LENGTH);
@@ -404,6 +449,15 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim){
 
 }
 
+void update_and_upload_speed(float esc_speed,float setpoint,float dutycycle){
+	speed_.current_speed=esc_speed;
+	speed_.setpoint=setpoint;
+	speed_.output=dutycycle;
+	//HAL_UART_Transmit(&huart7, (uint8_t*)(speed_trans_begin_label), sizeof(speed_trans_begin_label), 10);
+	HAL_UART_Transmit(&huart7, (uint8_t*)(&speed_), sizeof(SpeedTypeDef), 10);
+	//HAL_UART_Transmit(&huart7, (uint8_t*)(speed_trans_end_label), sizeof(speed_trans_end_label), 10);
+}
+
 //timer callback
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 
@@ -414,7 +468,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 		memcpy(&sensor_msg.data[index],force_raw,4*force_size);
 		index+=4*force_size;
 		memcpy(&sensor_msg.data[index],&f103_data[2*SPEED_PIN_COUNT+5], sizeof(esc_sensor));
-		memcpy(&esc_sensor,&f103_data[2*SPEED_PIN_COUNT+5], sizeof(esc_sensor));
+		//memcpy(&esc_sensor,&f103_data[2*SPEED_PIN_COUNT+5], sizeof(esc_sensor));
 		index+=sizeof(esc_sensor);
 		memcpy(&sensor_msg.data[index],&jy901.JY901_data.acc,sizeof(jy901.JY901_data.acc));
 		index+=sizeof(jy901.JY901_data.acc);
@@ -427,7 +481,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 		ros_pub->publish(&sensor_msg);
 		nh.spinOnce();
 
-
+		/*
 		if(send_esc_speed){
 			auto value = esc_sensor.rpm;
 			uint8_t v[7];
@@ -435,25 +489,38 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 			v[1]='p';
 			v[2]='d';
 			memcpy(&v[3],(uint8_t*)&esc_sensor.rpm,4);
-			/*v[3]=(uint8_t)value>>24;
-			v[4]=(uint8_t)(value>>16 & 0x000F);
-			v[5] = (uint8_t)(value>>8 & 0x000F);
-			v[6] = (uint8_t)(value & 0x000F);*/
 			HAL_UART_Transmit(&huart7, v , 7, 10);
-		}
+		}*/
 
 	}else if(htim->Instance==TIM6)//pid computation
 	{
 		//not pid mode
-		if(input_mode == INPUT_MODE_CONTROLLER || pid_mode == PID_MODE_MANUAL)
+		if(input_mode == INPUT_MODE_CONTROLLER || pid_mode == PID_MODE_MANUAL){
+			if(parameters.upload_speed){
+				update_and_upload_speed(current_esc_speed, 0, esc_sensor.throttle);
+			}
 			return;
+		}
 		// no esc signal
 		if(error_code & 0x01){
 			set_esc_duty_cycle(0.0);
+			if(parameters.upload_speed){
+				update_and_upload_speed(0, 0, 0);
+			}
 			return;
 		}
 		pid_ptr->compute();
 		set_esc_duty_cycle(pid_esc_duty_cycle_output);
+
+		if(parameters.upload_speed){
+			update_and_upload_speed(current_esc_speed, pid_speed_set, esc_sensor.throttle);
+		}
+		/*
+		char s[30];
+		sprintf(s,"%0.2f,%0.2f,%0.2f\n",current_esc_speed,pid_speed_set,pid_esc_duty_cycle_output);*/
+
+
+
 	}
 }
 
@@ -688,39 +755,57 @@ void read_parameters(){
 
 	uint8_t id[2];
 	if (QSPI_OK != QSPI_W25Q64JV_DeviceID(id)) {
-	    printf("Initializing ROM\n");
+		char msg[]="Initializing ROM\n";
+		send_message(msg, sizeof(msg));
 	}
-	printf("Connect to ROM, ROM ID: [0x%02x,0x%02x]\n",id[0],id[1]);
+	char msg[50];
+	sprintf(msg,"Connect to ROM, ROM ID: [0x%02x,0x%02x]\n",id[0],id[1]);
+	send_message(msg,50);
 
 	char header[4];
 	QSPI_W25Q64JV_Read((uint8_t*)header, 0x00, 4);
-	if(header[0]!='a' || header[1]!='c' || header[2]!='s' || header[3]!='r'){
-		printf("Reading parameters fails, use default parameters\n");
+
+	char error_message[]="Reading parameters fails, use default parameters\n";
+
+	if(header[0]!='p' || header[1]!='r' || header[2]!='m' || header[3]!='b'){
+		send_message(error_message, sizeof(error_message));
+		//printf();
 		QSPI_W25Q64JV_Write((uint8_t*)(&parameters),0x0,sizeof(ParameterTypeDef));
 
 		return;
 	}
 
 	QSPI_W25Q64JV_Read((uint8_t*)(&parameters), 0x00, sizeof(ParameterTypeDef));
-	if(parameters.tailer[0]!='b' || parameters.tailer[1]!='4' || parameters.tailer[2]!='0' || parameters.tailer[3]!='1'){
+	if(parameters.tailer[0]!='p' || parameters.tailer[1]!='r' || parameters.tailer[2]!='m' || parameters.tailer[3]!='e'){
 		QSPI_W25Q64JV_Write((uint8_t*)(&parameters),0x0,sizeof(ParameterTypeDef));
-		printf("Reading parameters fails, use default parameters\n");
+		send_message(error_message, sizeof(error_message));
+		//printf("Reading parameters fails, use default parameters\n");
 		return;
 	}
-	printf("Reading parameters from ROM success\n");
+	char suc_msg[]="Reading parameters from ROM success\n";
+	send_message(suc_msg,sizeof(suc_msg));
 }
 
 void reset_pid(){
 	//reset pid class
 	if(pid_ptr)delete pid_ptr;
 	pid_ptr = new PID<float>(&current_esc_speed,&pid_esc_duty_cycle_output,&pid_speed_set,parameters.kp,parameters.ki,parameters.kd);
-	pid_ptr->set_output_limits(-1,+1);
+	//if(parameters.allow_reverse)
+		//pid_ptr->set_output_limits(-1.0,+1.0);
+	//else
+		pid_ptr->set_output_limits(0.0, 1.0);
 }
 
 
 void setup(void)
 {
 	DWT_Init();
+
+	message[0] = 'm';
+	message[1] = 's';
+	message[2] = 'g';
+	message[3] = 'b';
+
 	read_parameters();
 	reset_pid();
 	uart_setup();
@@ -730,6 +815,8 @@ void setup(void)
 	HAL_GPIO_WritePin(Manual_Output_GPIO_Port, Manual_Output_Pin, GPIO_PIN_RESET);
 	HAL_GPIO_WritePin(ONBOARD_LED_GPIO_Port, ONBOARD_LED_Pin, GPIO_PIN_SET);
 	HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, (GPIO_PinState)pid_mode);
+
+
 
 	for(int i=0;i<10;++i){
 		HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
