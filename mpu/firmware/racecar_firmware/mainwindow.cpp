@@ -82,6 +82,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->ledSpeedDifferenceWarning->setValidator( new QDoubleValidator(0, 10, 2, this) );
     ui->ledBrakeFrequency->setValidator( new QDoubleValidator(50, 2000, 2, this) );
 
+
     pamameter_model_ = new ParameterModel(this);
 
     connect(ui->ledKp,&QLineEdit::textChanged,pamameter_model_,&ParameterModel::set_kp);
@@ -106,7 +107,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->ledEscRate,&QLineEdit::textChanged,pamameter_model_,&ParameterModel::set_esc_rpm_to_speed_ratio);
     connect(ui->ledEscPrecision,&QLineEdit::textChanged,pamameter_model_,&ParameterModel::set_esc_precision);
     connect(ui->ledServoPrecision,&QLineEdit::textChanged,pamameter_model_,&ParameterModel::set_servo_precision);
-    connect(ui->ckbEscReverse,&QRadioButton::toggled,pamameter_model_,&ParameterModel::set_esc_reverse);
+    connect(ui->ckbEscReverse,&QCheckBox::toggled,pamameter_model_,&ParameterModel::set_esc_reverse);
 
     connect(ui->ledForceOffset0,&QLineEdit::textChanged,pamameter_model_,&ParameterModel::set_force_offset0);
     connect(ui->ledForceOffset1,&QLineEdit::textChanged,pamameter_model_,&ParameterModel::set_force_offset1);
@@ -127,10 +128,11 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->ledForceRatio7,&QLineEdit::textChanged,pamameter_model_,&ParameterModel::set_force_ratio7);
 
     connect(ui->ledForceRatio7,&QLineEdit::textChanged,pamameter_model_,&ParameterModel::set_force_ratio7);
-    connect(ui->ccbSpeedUpload,&QCheckBox::stateChanged,pamameter_model_,&ParameterModel::set_upload_speed);
+    connect(ui->ccbSpeedUpload,&QCheckBox::toggled,pamameter_model_,&ParameterModel::set_upload_speed);
 
     connect(pamameter_model_,&ParameterModel::parametersChanged,this,&MainWindow::update_values);
 
+    pamameter_model_->read_default_file();
     update_values(pamameter_model_->parameters_);
 
 
@@ -139,10 +141,14 @@ MainWindow::MainWindow(QWidget *parent)
     ui->chartView->setRenderHint(QPainter::Antialiasing);
 
     speed_series_ = new QLineSeries();
+    speed_series_->setName("Speed");
     m_chart->addSeries(speed_series_);
 
     setpoint_series_ = new QLineSeries();
+    setpoint_series_->setName("Setpoint");
     m_chart->addSeries(setpoint_series_);
+
+
 
     xAxis_ = new QDateTimeAxis();
     xAxis_->setFormat("hh:mm:ss");
@@ -178,7 +184,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     file_path_ = "/";
 
-    timer_->start(200);
+    timer_->start(100);
 }
 
 MainWindow::~MainWindow()
@@ -312,6 +318,7 @@ void MainWindow::btnSpeedStart_clicked()
     port_.write(byte_array);
     xAxis_->setMin(QDateTime::fromMSecsSinceEpoch(QDateTime::currentDateTime().toMSecsSinceEpoch()-1000));*/
     plot_=true;
+    time_vector.clear();
     speed_vector.clear();
     setpoint_vector.clear();
     output_vector.clear();
@@ -366,9 +373,9 @@ void MainWindow::btnExportData_clicked()
     if(!file.open(QIODevice::WriteOnly))
         return;
     QTextStream stream(&file);
-    stream<<"#speed,#setpoint\n";
+    stream<<"#time,#speed,#setpoint\n";
     for(auto i=0;i<setpoint_vector.size();++i)
-        stream << speed_vector[i] << "," << setpoint_vector[i] << "\n";
+        stream << time_vector[0].msecsTo(time_vector[i])/1000.0<<"," << speed_vector[i] << "," << setpoint_vector[i] << "\n";
     file.close();
 }
 
@@ -443,7 +450,7 @@ void MainWindow::read_timeout()
         if(data.indexOf("prme")!=sizeof(ParameterTypeDef)-4){
             data.clear();
             return;
-            //show_message("Read Data From MPU Fail!\n");
+            show_message("Read Data From MPU Fail!\n");
         }else{
             QByteArray s;
             s.append(data.begin(),sizeof(ParameterTypeDef));
@@ -453,7 +460,7 @@ void MainWindow::read_timeout()
             if(QString(p->tailer)=="prme"){
                 pamameter_model_->setParameters(*p);
                 //qDebug()<<data<<'\n';
-                //show_message("Read Data From MPU Complete!\n");
+                show_message("Read Data From MPU Complete!\n");
             }
         }
 
@@ -485,6 +492,8 @@ void MainWindow::read_timeout()
                 if(QString(p->tailer)=="spde"){
                     auto speed = p->current_speed;
                     auto setpoint = p->setpoint;
+                    auto t = QDateTime::currentDateTime();
+                    time_vector.push_back(t);
                     speed_vector.push_back(speed);
                     setpoint_vector.push_back(setpoint);
                     output_vector.push_back(p->output);
@@ -500,12 +509,12 @@ void MainWindow::read_timeout()
                     yAxis_->setMax(max_y_+0.1);
                     yAxis_->setMin(min_y_-0.1);
 
-                    auto t = QDateTime::currentDateTime();
+
                     speed_series_->append(t.toMSecsSinceEpoch(), speed);
                     setpoint_series_->append(t.toMSecsSinceEpoch(),setpoint);
                     xAxis_->setMax(QDateTime::fromMSecsSinceEpoch(QDateTime::currentDateTime().toMSecsSinceEpoch()+100));
 
-
+                    show_message(QString("Speed:%1,%2\n").arg(speed).arg(setpoint));
                     //xAxis_->setMax(t);
                     //pamameter_model_->setParameters(*p);
                     //qDebug()<<data<<'\n';

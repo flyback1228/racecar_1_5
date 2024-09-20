@@ -57,6 +57,7 @@ private:
     QDateTimeAxis* xAxis_;
     QValueAxis* yAxis_;
     float max_y_=0.0f, min_y_=0.0f;
+    QVector<QDateTime> time_vector;
     QVector<float> speed_vector;
     QVector<float> setpoint_vector;
     QVector<float> output_vector;

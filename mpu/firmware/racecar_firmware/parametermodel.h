@@ -70,18 +70,23 @@ public slots:
     void set_brake_pwm_frequency(const QString &text);
     void set_speed_difference_warning(const QString &text);
 
-    void set_upload_speed(int state);
+    void set_upload_speed(bool value);
 
     void save();
 
+    void read_default_file();
 
 private:
 
     float string_to_float(const QString &text);
     uint8_t string_to_uint8(const QString &text);
 
-    QTimer *timer;
-    bool save_label;
+    //QTimer *timer;
+    //bool save_label;
+
+    QString default_file_name;
+
+
 
 signals:
     void parametersChanged(const ParameterTypeDef& parameters);

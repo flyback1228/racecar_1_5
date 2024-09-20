@@ -203,6 +203,8 @@ void send_message(char* str, uint8_t size){
 }
 
 //read esc data from ble
+
+/*
 HAL_StatusTypeDef read_ble_data(uint8_t* data){
 	static uint8_t start_index = 0;
 	for(uint8_t i=start_index;i<start_index+ESC_DATA_SIZE;++i){
@@ -229,14 +231,9 @@ HAL_StatusTypeDef read_ble_data(uint8_t* data){
 
 	current_esc_speed = 1.0f*esc_sensor.rpm/parameters.esc_rpm_to_speed_ratio;
 
-	/*
-	char s[30];
-	sprintf(s,"%0.2f,%0.2f\n",1.0*esc_sensor.rpm,current_esc_speed,parameters.esc_rpm_to_speed_ratio);
-	HAL_UART_Transmit(&huart7, (uint8_t*)s, 30, 10);*/
-
 	esc_receive_indicator = 0;
 	return HAL_OK;
-}
+}*/
 
 //read speed data from f103
 //the first data are "acsr", then the fifth is the integer part of speed1, and the sixth is the decimal part of speed1..
