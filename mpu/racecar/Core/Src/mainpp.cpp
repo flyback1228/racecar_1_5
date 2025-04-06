@@ -18,6 +18,8 @@
 #include "utility.h"
 #include "pid/pid.h"
 
+
+
 #define MAX_PARAMETER_LENGTH 200
 
 //watch dog
@@ -56,6 +58,7 @@ extern UART_HandleTypeDef huart7;
 extern UART_HandleTypeDef huart8;
 
 extern DMA_HandleTypeDef hdma_uart7_rx;
+extern DMA_HandleTypeDef hdma_uart4_rx;
 
 //force sensor adc
 extern ADC_HandleTypeDef hadc1;
@@ -67,11 +70,12 @@ extern ADC_HandleTypeDef hadc1;
 #define huart_imu huart8
 
 
-ros::NodeHandle nh;
+//ros::NodeHandle nh;
 
 //sensor data message published by ros
-std_msgs::UInt8MultiArray sensor_msg;
-ros::Publisher *ros_pub;//("stm32_sensor", &sensor_msg);
+//std_msgs::UInt8MultiArray sensor_msg;
+uint8_t* sensor_data;
+//ros::Publisher *ros_pub;//("stm32_sensor", &sensor_msg);
 
 
 //esc senso data
@@ -140,6 +144,8 @@ uint8_t jy901_data_length = 11;
 uint8_t jy901_data[11];
 CJY901 jy901(&huart8);
 
+uint8_t nvidia[20];
+
 ParameterTypeDef parameters = {
 		.header={'p','r','m','b'},
 
@@ -202,6 +208,43 @@ void send_message(char* str, uint8_t size){
 	HAL_UART_Transmit(&huart7, (uint8_t*)message, size+9, 10);
 }
 
+
+//ros brake subscriber callback
+void command_process(uint8_t* data){
+	//data[0] : input mode
+	HAL_GPIO_WritePin(Manual_Output_GPIO_Port, Manual_Output_Pin, (GPIO_PinState)data[0]);
+
+	//data[1] : pid mode
+	if(data[1] != (uint8_t)pid_mode){
+		pid_mode = (PIDMode_TypeDef)data[1];
+		pid_ptr->reset();
+		HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, (GPIO_PinState)data[1]);
+	}
+
+	//data[2]~data[5]:brake, brake is represent by a uint8 0-255 correponding dutycycle 0-1
+	set_brake(&data[2]);
+
+	//other commands are ignored if input mode is mannual
+	if(data[0] || input_mode == INPUT_MODE_CONTROLLER ){
+		return;
+	}
+
+	//data[6]: speed integer part if PID_MODE_AUTOMATIC, the high byte of int16 if PID_MODE_MANNUAL
+	//data[7]: speed decimal part if PID_MODE_AUTOMATIC, the low byte of int16 if PID_MODE_MANNUAL
+	//duty cycle shall convert to 0-1 by divided by 1000
+	if(pid_mode == PID_MODE_AUTOMATIC){
+		pid_speed_set = data[6] + data[7]/100.0;
+	}else{
+		auto dc = (int16_t) (data[6]<<8) | data[7];
+		set_esc_duty_cycle(dc/1000.0);
+	}
+
+	//data[8]: steering angle integer part (the first bit indicates the sign)
+	//data[9]: steering angle decimal part
+	float steering = (data[8] & 0b01111111) + data[9]/100.0;
+	if(data[8]>>7)steering=-steering;
+	set_servo_duty_cycle(steering);
+}
 //read esc data from ble
 
 /*
@@ -289,19 +332,20 @@ HAL_StatusTypeDef parse_f103_data(uint8_t* data){
 }
 
 //ros structure required
+/*
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart){
 	if(huart->Instance==huart_ros.Instance){
 		nh.getHardware()->flush();
 	}
-}
+}*/
 
 //uart data receive callback
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
-	if(huart->Instance==huart_ros.Instance){
+	/*if(huart->Instance==huart_ros.Instance){
 		nh.getHardware()->reset_rbuf();
-	}/*else if(huart->Instance==huart_esc.Instance){
-		read_ble_data(esc_receive);
-	}*/else if(huart->Instance==huart_f103.Instance){
+	}*/
+
+	if(huart->Instance==huart_f103.Instance){
 		parse_f103_data(f103_receive);
 	}else if(huart->Instance==huart_imu.Instance){
 		if(jy901_data[0]==0x55 && jy901_data_length==11){
@@ -369,6 +413,15 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size){
 		HAL_UARTEx_ReceiveToIdle_DMA(&huart_usb, (uint8_t *) usb_buf, MAX_PARAMETER_LENGTH);
 		__HAL_DMA_DISABLE_IT(&hdma_uart7_rx, DMA_IT_HT);
 	}
+	else if(huart->Instance == huart_ros.Instance){
+		if(Size!=13)return;
+		if(nvidia[0] != 0xAA || nvidia[1] != 0x55)return;
+		if(nvidia[Size-1] != 0x0A ) return;
+		command_process(nvidia+2);
+
+		HAL_UARTEx_ReceiveToIdle_DMA(&huart_ros, (uint8_t *) nvidia, 20);
+		__HAL_DMA_DISABLE_IT(&hdma_uart4_rx, DMA_IT_HT);
+	}
 }
 
 //error handle of uart
@@ -383,6 +436,9 @@ void HAL_UART_ErrorCallback(UART_HandleTypeDef *UartHandle) {
 	}else if(UartHandle->Instance==huart_usb.Instance){
 		HAL_UARTEx_ReceiveToIdle_DMA(&huart_usb, (uint8_t *) usb_buf, MAX_PARAMETER_LENGTH);
 		__HAL_DMA_DISABLE_IT(&hdma_uart7_rx, DMA_IT_HT);
+	}else if(UartHandle->Instance==huart_ros.Instance){
+		HAL_UARTEx_ReceiveToIdle_DMA(&huart_ros, (uint8_t *) nvidia, 20);
+		__HAL_DMA_DISABLE_IT(&hdma_uart4_rx, DMA_IT_HT);
 	}
 }
 
@@ -460,23 +516,26 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 
 	//ros publish
 	if(htim->Instance==TIM16){
-		memcpy(&sensor_msg.data[0],f103_data,2*wheel_speed_size+4);
+		memcpy(sensor_data,f103_data,2*wheel_speed_size+4);
 		uint8_t index =2*wheel_speed_size+4;
-		memcpy(&sensor_msg.data[index],force_raw,4*force_size);
+		memcpy(sensor_data+index,force_raw,4*force_size);
 		index+=4*force_size;
-		memcpy(&sensor_msg.data[index],&f103_data[2*SPEED_PIN_COUNT+5], sizeof(esc_sensor));
+		memcpy(sensor_data+index,&f103_data[2*SPEED_PIN_COUNT+5], sizeof(esc_sensor));
 		//memcpy(&esc_sensor,&f103_data[2*SPEED_PIN_COUNT+5], sizeof(esc_sensor));
 		index+=sizeof(esc_sensor);
-		memcpy(&sensor_msg.data[index],&jy901.JY901_data.acc,sizeof(jy901.JY901_data.acc));
+		memcpy(sensor_data+index,&jy901.JY901_data.acc,sizeof(jy901.JY901_data.acc));
 		index+=sizeof(jy901.JY901_data.acc);
-		memcpy(&sensor_msg.data[index],&jy901.JY901_data.gyro,sizeof(jy901.JY901_data.gyro));
+		memcpy(sensor_data+index,&jy901.JY901_data.gyro,sizeof(jy901.JY901_data.gyro));
 		index+=sizeof(jy901.JY901_data.gyro);
-		memcpy(&sensor_msg.data[index],&jy901.JY901_data.angle,sizeof(jy901.JY901_data.angle));
+		memcpy(sensor_data+index,&jy901.JY901_data.angle,sizeof(jy901.JY901_data.angle));
 		index+=sizeof(jy901.JY901_data.angle);
 
-		sensor_msg.data[index] = error_code;
-		ros_pub->publish(&sensor_msg);
-		nh.spinOnce();
+		sensor_data[index] = error_code;
+		sensor_data[index+1] = '\n';
+
+		HAL_UART_Transmit(&huart4, sensor_data, index+1, 100);
+		//ros_pub->publish(&sensor_msg);
+		//nh.spinOnce();
 
 		/*
 		if(send_esc_speed){
@@ -632,6 +691,9 @@ void uart_setup(){
 
 	HAL_UARTEx_ReceiveToIdle_DMA(&huart7, (uint8_t *) usb_buf, MAX_PARAMETER_LENGTH);
 	__HAL_DMA_DISABLE_IT(&hdma_uart7_rx, DMA_IT_HT);
+
+	HAL_UARTEx_ReceiveToIdle_DMA(&huart4, (uint8_t *) nvidia, 20);
+	__HAL_DMA_DISABLE_IT(&hdma_uart4_rx, DMA_IT_HT);
 }
 
 void timer_setup(){
@@ -680,6 +742,7 @@ void timer_setup(){
 
 }
 
+/*
 //ros brake subscriber callback
 void command_callback(const std_msgs::UInt8MultiArray& msg){
 	//data[0] : input mode
@@ -715,22 +778,23 @@ void command_callback(const std_msgs::UInt8MultiArray& msg){
 	float steering = (msg.data[8] & 0b01111111) + msg.data[9]/100.0;
 	if(msg.data[8]>>7)steering=-steering;
 	set_servo_duty_cycle(steering);
+}*/
 
-}
 
-ros::Subscriber<std_msgs::UInt8MultiArray> command_sub("/Command/stm32", &command_callback );
+
+//ros::Subscriber<std_msgs::UInt8MultiArray> command_sub("/Command/stm32", &command_callback );
 
 void ros_setup(){
 
-	nh.initNode();
-	nh.subscribe(command_sub);
+	//nh.initNode();
+	//nh.subscribe(command_sub);
+	sensor_data = new uint8_t[2*wheel_speed_size + 4 + 4*force_size + sizeof(esc_sensor) + sizeof(jy901.JY901_data.acc) + sizeof(jy901.JY901_data.gyro)+sizeof(jy901.JY901_data.angle)+2];
+	//sensor_msg.data_length = 2*wheel_speed_size + 4 + 4*force_size + sizeof(esc_sensor) + sizeof(jy901.JY901_data.acc) + sizeof(jy901.JY901_data.gyro)+sizeof(jy901.JY901_data.angle)+1;
+	//sensor_msg.data = new std_msgs::UInt8MultiArray::_data_type[sensor_msg.data_length];
 
-	sensor_msg.data_length = 2*wheel_speed_size + 4 + 4*force_size + sizeof(esc_sensor) + sizeof(jy901.JY901_data.acc) + sizeof(jy901.JY901_data.gyro)+sizeof(jy901.JY901_data.angle)+1;
-	sensor_msg.data = new std_msgs::UInt8MultiArray::_data_type[sensor_msg.data_length];
-
-	ros_pub = new ros::Publisher("stm32_sensor", &sensor_msg);
-	nh.advertise(*ros_pub);
-	HAL_Delay(1000);
+	//ros_pub = new ros::Publisher("stm32_sensor", &sensor_msg);
+	//nh.advertise(*ros_pub);
+	//HAL_Delay(1000);
 }
 
 void gpio_setup(){

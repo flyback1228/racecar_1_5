@@ -36,10 +36,10 @@
 /* USER CODE BEGIN PTD */
 typedef struct{
 	int16_t throttle;
+	uint16_t temperature;
 	uint32_t rpm;
 	float voltage;
 	float current;
-	uint16_t temperature;
 } ESC_SensorTypeDef;
 
 /* USER CODE END PTD */
