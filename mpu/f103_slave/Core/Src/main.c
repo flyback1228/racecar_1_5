@@ -21,7 +21,6 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-//#include "st7735.h"
 #include "ILI9341_STM32_Driver.h"
 #include "ILI9341_GFX.h"
 
@@ -34,12 +33,14 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
+
+//esc sensor data type define, real voltage = voltage/10.0, real current = current / 10.0
 typedef struct{
 	int16_t throttle;
 	uint16_t temperature;
 	uint32_t rpm;
-	float voltage;
-	float current;
+	uint16_t voltage;
+	uint16_t current;
 } ESC_SensorTypeDef;
 
 /* USER CODE END PTD */
@@ -69,13 +70,11 @@ DMA_HandleTypeDef hdma_usart1_rx;
 DMA_HandleTypeDef hdma_usart2_rx;
 
 /* USER CODE BEGIN PV */
+//fonts
 FontDef Font_5x5 = {5,5,95*5,Font5x5};
 FontDef Font_7x10 = {7,10,95*10,Font7x10};
 FontDef Font_11x18 = {11,18,95*18,Font11x18};
 FontDef Font_16x26 = {16,26,95*26,Font16x26};
-
-uint8_t pulse_pointer[SPEED_PIN_COUNT]={0};
-uint8_t increment_count[SPEED_PIN_COUNT]={0};
 
 /*
 "ACSR" + WHEEL ROTATING DIRECTION + SPEED_DATA + ESC_RECEIVE_LABEL + ESC_DATA
@@ -87,16 +86,18 @@ ESC_RECEIVE_LABEL : 0 -- no data, non-zeor -- has data
 */
 uint8_t send_data[4 + 4 + SPEED_PIN_COUNT*2 + 1 + sizeof(ESC_SensorTypeDef)];
 
-//record the pulse time for each pin
+//Speed tracking buffers
+uint8_t pulse_pointer[SPEED_PIN_COUNT]={0};
+uint8_t increment_count[SPEED_PIN_COUNT]={0};
 uint32_t pulse[SPEED_PIN_COUNT][SPEED_BUFFER_SIZE];
 
-//esc raw data
+
+//esc data
 uint8_t esc_receive[ESC_DATA_SIZE];
 ESC_SensorTypeDef esc_sensor;
-
-//an index label to indicate esc data received
 uint8_t esc_index=0;
 
+// UART receive
 uint8_t rx[RX_BUFFER_SIZE];
 uint8_t rx_index = 0;
 /* USER CODE END PV */
@@ -137,8 +138,8 @@ HAL_StatusTypeDef read_ble_data(uint8_t* data){
 	if(data[(11+start_index)%ESC_DATA_SIZE]!=0x01)esc_sensor.throttle=-esc_sensor.throttle;
 
 	esc_sensor.rpm = ((uint32_t)(data[(14+start_index)%ESC_DATA_SIZE] <<8) | (data[(13+start_index)%ESC_DATA_SIZE]))*10;
-	esc_sensor.voltage = (float)(data[(15+start_index)%ESC_DATA_SIZE])/10.0f;
-	esc_sensor.current = ((uint16_t)(data[(16+start_index)%ESC_DATA_SIZE] <<8) | (data[(17+start_index)%ESC_DATA_SIZE]))/10.0;
+	esc_sensor.voltage = (uint16_t)(data[(15+start_index)%ESC_DATA_SIZE]);
+	esc_sensor.current = ((uint16_t)(data[(16+start_index)%ESC_DATA_SIZE] <<8) | (data[(17+start_index)%ESC_DATA_SIZE]));
 	esc_sensor.temperature = (uint16_t)(data[(18+start_index)%ESC_DATA_SIZE] <<8) | (data[(19+start_index)%ESC_DATA_SIZE]);
 
 	esc_index = 0;
@@ -182,52 +183,24 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 	case S01_Pin:
 		index=1;
 		break;
-		/*
-	case S02_Pin:
-		index = 2;
-		break;
-	case S03_Pin:
-		index = 3;
-		break;*/
 	case S04_Pin:
 		index = 2;
 		break;
 	case S05_Pin:
 		index = 3;
 		break;
-		/*
-	case S06_Pin:
-		index = 6;
-		break;
-	case S07_Pin:
-		index = 7;
-		break;*/
 	case S08_Pin:
 		index = 4;
 		break;
 	case S09_Pin:
 		index = 5;
 		break;
-		/*
-	case S10_Pin:
-		index = 10;
-		break;
-	case S11_Pin:
-		index = 11;
-		break;*/
 	case S12_Pin:
 		index = 6;
 		break;
 	case S13_Pin:
 		index = 7;
 		break;
-		/*
-	case S14_Pin:
-		index = 14;
-		break;
-	case S15_Pin:
-		index = 15;
-		break;*/
 	}
 	pulse[index][pulse_pointer[index]]=micros();
 	++pulse_pointer[index];
@@ -326,12 +299,9 @@ int main(void)
   HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_SET);
   HAL_GPIO_WritePin(LCD_LED_GPIO_Port, LCD_LED_Pin, GPIO_PIN_SET);
   DWT_Init();
-  //ST7735_Init();
-  //ST7735_FillScreen(ST7735_BLACK);
   ILI9341_Init();
   ILI9341_Fill_Screen(WHITE);
   ILI9341_Set_Rotation(SCREEN_HORIZONTAL_2);
-  //ILI9341_Draw_Text("FPS TEST, 40 loop 2 screens", 10, 10, BLACK, 2, WHITE);
   ILI9341_Write_Text("FPS TEST, 40 loop 2 screens", 10, 10, &Font_11x18, BLACK, WHITE);
   HAL_TIM_Base_Start_IT(&htim1);
   HAL_UART_Receive_DMA(&huart1, esc_receive, ESC_DATA_SIZE);
