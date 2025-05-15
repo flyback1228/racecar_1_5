@@ -13,6 +13,15 @@
 
 #include "stm32h7xx_hal.h"
 
+
+template <int N>
+struct Acsr_PWM_TypeDef{
+	uint32_t arr;
+	uint32_t ccr[N];
+	uint32_t pre_ccr[N];
+	uint32_t pre_ic[N];
+};
+
 #ifdef __cplusplus
  extern "C" {
 #endif
@@ -22,9 +31,12 @@ typedef struct{
 	int16_t throttle;
 	uint16_t temperature;
 	uint32_t rpm;
-	float voltage;
-	float current;
+	uint16_t voltage;
+	uint16_t current;
 } ESC_SensorTypeDef;
+
+
+
 
 //writable parameter structure, stored in W25Q
 typedef struct{
@@ -99,14 +111,6 @@ typedef struct{
 } SpeedTypeDef;
 
 
-//pid mode
-//typedef enum
-//{
-//	PID_MODE_AUTOMATIC = 0,
-//	PID_MODE_MANUAL    = 1
-//
-//}PIDMode_TypeDef;
-
 //input mode, can be set via external switch or software
 typedef enum
 {
@@ -114,11 +118,8 @@ typedef enum
 	INPUT_MODE_CONTROLLER = 1
 }InputMode_TypeDef;
 
-//
-#define ESC_DATA_SIZE 32
-#define SPEED_PIN_COUNT 8
 
-//extern
+#define SPEED_PIN_COUNT 8
 
 void set_esc_duty_cycle(float );
 void set_servo_duty_cycle(float );
